@@ -1,19 +1,17 @@
 import componentsIndex from './components/html-components/componentsIndex';
+import dragStartWithTargetNodeName from './components/common/functions/drag-start-with-target-node_name';
 
 import Container from './components/html-components/Container';
+
 
 /* draggable element */
 const domElements = document.querySelectorAll('.dom-element');
 
 domElements.forEach((domElement) => {
-    domElement.addEventListener('dragstart', dragStart);
+    domElement.addEventListener('dragstart', dragStartWithTargetNodeName);
 });
 
-function dragStart(e: any) {
-    e.dataTransfer.setData('text/plain', e.target.nodeName);
-}
-
-// prueba agregar elementos mediante los objetos creados
+// prueba: agregar elementos mediante los objetos creados
 // const componentsContainer = document.querySelector('.components-container')
 // const newContainer = new Container().domElement;
 // newContainer.addEventListener('drop', drop);
