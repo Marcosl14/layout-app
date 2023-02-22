@@ -1,0 +1,59 @@
+.main-container {
+    display: flex;
+}
+
+.components-container {
+    box-sizing: border-box;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    border-color: black;
+    margin-right: 5px;
+    width: 400px;
+    padding: 10px;
+}
+
+.app-container {
+    border: dashed 1px green;
+    width: 100%;
+}
+
+.actions-container {
+    box-sizing: border-box;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    border-color: black;
+    margin-left: 5px;
+    width: 400px;
+}
+
+.dom-element:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+.dom-element-container {
+    border: dashed 1px black;
+    width: 100%;
+}
+
+.dom-element-input {
+    width: 100%;
+}
+
+.dom-element-button {
+    width: 100%;
+}
+
+.app-component-container {
+    margin: 5px;
+    padding: 5px;
+}
+
+.drag-enter {
+    border: dashed 1px red
+}
+
+.drag-leave {
+    border: dashed 1px green
+}
