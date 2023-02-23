@@ -1,4 +1,5 @@
 import dragStartWithTargetId from '../common/functions/drag-star-with-target-id';
+import StylesBuilder from '../common/models/StylesBuilder.class';
 
 export default class Container {
     private static iterator = 0;
@@ -60,5 +61,9 @@ export default class Container {
         // console.log(e.target.id);
     
         // e.target.parentNode.removeChild(e.target);
+        new StylesBuilder(this._domElement)
+        .addMarginSelector()
+        .addPaddinSelector()
+        .build()
     }
 }
