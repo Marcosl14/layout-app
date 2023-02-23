@@ -1,4 +1,5 @@
 import dragStartWithTargetId from '../common/functions/drag-star-with-target-id';
+import StylesBuilder from '../common/models/StylesBuilder.class';
 
 export default class Button {
     private static iterator = 0;
@@ -10,6 +11,7 @@ export default class Button {
 
         this._domElement.innerHTML = 'New button';
         this._domElement.style['margin'] = '5px';
+        this._domElement.style['padding'] = '5px';
         this._domElement.id = this.setId('button', Button.iterator);
 
         this._domElement.draggable = true;
@@ -21,13 +23,13 @@ export default class Button {
         Button.instances.push(this._domElement);
     }
 
-    private setId(initialName : string, increaser? : number) {
+    private setId(initialName: string, increaser?: number) {
         let name = initialName + (increaser >= 0 ? increaser : '');
 
-        while(true){
+        while (true) {
             const nameAlreadyExists = Button.instances.find((instance) => instance.id === name) ? true : false;
 
-            if(nameAlreadyExists) {
+            if (nameAlreadyExists) {
                 name = initialName + Button.iterator++;
                 alert(`Name already exists \n\t Name updated automatically to: ${name}`)
                 // TODO la logica no es de lo mejor, ya que asigna un valor en base al valir actual del Button.iterator...
@@ -49,40 +51,48 @@ export default class Button {
         // console.log(e.target.nodeName);
         // console.log(e.target.id);
 
-        const actionsContainer = document.querySelector('#actions-container');
-        actionsContainer.innerHTML = `
-        <div style='display: flex; flex-direction: column; padding: 5px'>
-            <h2> Actions </h2>
-            <label> Id </label>
-            <input id="pepe1" type="text" value=${this._domElement.id}>
+        // const actionsContainer = document.querySelector('#actions-container');
+        // actionsContainer.innerHTML = `
+        // <div style='display: flex; flex-direction: column; padding: 5px'>
+        //     <h2> Actions </h2>
+        //     <label> Id </label>
+        //     <input id="pepe1" type="text" value=${this._domElement.id}>
 
-            <label> Margin </label>
-            <input id="pepe2" type="number" min="0" value="${parseInt(this._domElement.style['margin'])}">
+        //     <label> Margin </label>
+        //     <input id="pepe2" type="number" min="0" value="${parseInt(this._domElement.style['margin'])}">
 
-            <button id="accept_button_actions">Aceptar Cambios</button>
-        </div>
-        `
+        //     <button id="accept_button_actions">Aceptar Cambios</button>
+        // </div>
+        // `
 
-        this.pepe1 = document.querySelector('#pepe1');
+        // this.pepe1 = document.querySelector('#pepe1');
 
-        this.pepe2 = document.querySelector('#pepe2');
-        this.updatePepe = this.updatePepe.bind(this);
-        this.pepe2.addEventListener('input', this.updatePepe);
+        // this.pepe2 = document.querySelector('#pepe2');
+        // this.updatePepe = this.updatePepe.bind(this);
+        // this.pepe2.addEventListener('input', this.updatePepe);
 
-        this.acceptButtonActions = document.querySelector('#accept_button_actions');
-        this.updateStyles = this.updateStyles.bind(this);
-        this.acceptButtonActions.addEventListener('click', this.updateStyles)
+        // this.acceptButtonActions = document.querySelector('#accept_button_actions');
+        // this.updateStyles = this.updateStyles.bind(this);
+        // this.acceptButtonActions.addEventListener('click', this.updateStyles)
+
+        const actionsContainer : HTMLDivElement = document.querySelector('#actions-container')
+        actionsContainer.innerHTML = '';
+
+        new StylesBuilder(this._domElement, actionsContainer)
+            .addMarginSelector()
+            .addPaddinSelector()
+            .build()
     }
 
-    private pepe1: HTMLInputElement;
-    private pepe2: HTMLInputElement;
-    private acceptButtonActions: HTMLButtonElement;
+    // private pepe1: HTMLInputElement;
+    // private pepe2: HTMLInputElement;
+    // private acceptButtonActions: HTMLButtonElement;
 
-    updatePepe() {
-        this._domElement.style['margin'] = `${this.pepe2.value}px`;
-    }
+    // updatePepe() {
+    //     this._domElement.style['margin'] = `${this.pepe2.value}px`;
+    // }
 
-    updateStyles() {
-        this._domElement.id = this.setId(`${this.pepe1.value}`);
-    }
+    // updateStyles() {
+    //     this._domElement.id = this.setId(`${this.pepe1.value}`);
+    // }
 }
