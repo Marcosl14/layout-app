@@ -8,7 +8,10 @@ export default class Container {
         this._domElement = document.createElement('div');
 
         this._domElement.classList.add('drag-leave');
-        this._domElement.classList.add('app-component-container');
+        this._domElement.style['margin'] = '5px';
+        this._domElement.style['padding'] = '5px';
+        this._domElement.style['min-height'] = '5px';
+
         this._domElement.id = 'container' + Container.iterator++;
 
         this.dragEnter = this.dragEnter.bind(this);
@@ -24,6 +27,7 @@ export default class Container {
         this._domElement.draggable = true;
         this._domElement.addEventListener('dragstart', dragStartWithTargetId);
     
+        this.openElementConfigs = this.openElementConfigs.bind(this);
         this._domElement.addEventListener('click', this.openElementConfigs);
     }
 
@@ -31,14 +35,12 @@ export default class Container {
         return this._domElement;
     }
 
-    private dragEnter(e: any) {
-        e.preventDefault();
+    private dragEnter() {
         this._domElement.classList.remove('drag-leave');
         this._domElement.classList.add('drag-enter');
     }
     
-    private dragOver(e: any) {
-        e.preventDefault();
+    private dragOver() {
         this._domElement.classList.remove('drag-leave');
         this._domElement.classList.add('drag-enter');
     }
@@ -53,10 +55,10 @@ export default class Container {
         this._domElement.classList.add('drag-leave');
     }
     
-    private openElementConfigs(e: any) {
-        console.log(e.target.nodeName);
-        console.log(e.target.id);
+    private openElementConfigs() {
+        // console.log(e.target.nodeName);
+        // console.log(e.target.id);
     
-        e.target.parentNode.removeChild(e.target);
+        // e.target.parentNode.removeChild(e.target);
     }
 }
