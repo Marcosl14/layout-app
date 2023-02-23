@@ -1,8 +1,8 @@
-.main-container {
+#main-container {
     display: flex;
 }
 
-.components-container {
+#components-container {
     box-sizing: border-box;
     border-style: solid;
     border-width: 2px;
@@ -13,12 +13,12 @@
     padding: 10px;
 }
 
-.app-container {
+#app-container {
     border: dashed 1px green;
     width: 100%;
 }
 
-.actions-container {
+#actions-container {
     box-sizing: border-box;
     border-style: solid;
     border-width: 2px;
@@ -26,6 +26,10 @@
     border-color: black;
     margin-left: 5px;
     width: 400px;
+}
+
+.dom-element {
+    box-sizing: border-box
 }
 
 .dom-element:not(:last-child) {
@@ -45,15 +49,10 @@
     width: 100%;
 }
 
-.app-component-container {
-    margin: 5px;
-    padding: 5px;
-}
-
 .drag-enter {
-    border: dashed 1px red
+    border: dashed 1px red;
 }
 
 .drag-leave {
-    border: dashed 1px green
+    border: dashed 1px green;
 }

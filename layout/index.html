@@ -5,23 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="module" src="../dist/bundle.js" defer></script>
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="layout.css">
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./layout.css">
     <title>App</title>
 </head>
 <body>
-    <div class="main-container">
-        <div class="components-container">
-            <div draggable="true" class="dom-element dom-element-container" id="div">div</div>
-            <button draggable="true" class="dom-element dom-element-button" id="button">Boton</button>
-            <input draggable="true" class="dom-element dom-element-input" value="input">
+    <div id="main-container">
+        <div id="components-container">
+            <div draggable="true" class="dom-element dom-element-container" id="div">Div Container</div>
+            <button draggable="true" class="dom-element dom-element-button" id="button">Button</button>
+            <input draggable="true" class="dom-element dom-element-input" value="Input">
         </div>
-        <div class="app-container">
-    
-        </div>
-        <div class="actions-container">
-            <h1>Acciones</h1>
-        </div>
+        <div id="app-container"></div>
+        <div id="actions-container"></div>
     </div>
 </body>
 </html>
