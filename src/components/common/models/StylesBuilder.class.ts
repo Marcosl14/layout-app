@@ -2,10 +2,17 @@ export default class StylesBuilder{
     public htmlStyles: HTMLDivElement;
     private domElement: HTMLElement;
 
-    constructor(domElement: HTMLElement, actionsContainer: HTMLDivElement) {
+    constructor(domElement: HTMLElement) {
         this.domElement = domElement;
+
+        const actionsContainer : HTMLDivElement = document.querySelector('#actions-container')
+        actionsContainer.innerHTML = '';
+
         this.htmlStyles = actionsContainer;
     }
+
+    // TODO: Margin y Padding selector deberian ser individuales para arriba, abajo costados o general...
+    // Quizas con un select o checkboxes, lo podriamos lograr...
 
     private newMarginSelector: HTMLInputElement;
     addMarginSelector() {

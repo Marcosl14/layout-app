@@ -75,10 +75,7 @@ export default class Button {
         // this.updateStyles = this.updateStyles.bind(this);
         // this.acceptButtonActions.addEventListener('click', this.updateStyles)
 
-        const actionsContainer : HTMLDivElement = document.querySelector('#actions-container')
-        actionsContainer.innerHTML = '';
-
-        new StylesBuilder(this._domElement, actionsContainer)
+        new StylesBuilder(this._domElement)
             .addMarginSelector()
             .addPaddinSelector()
             .build()
