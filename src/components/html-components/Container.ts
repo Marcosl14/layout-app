@@ -9,10 +9,8 @@ export default class Container {
         this._domElement = document.createElement('div');
 
         this._domElement.classList.add('drag-leave');
-        this._domElement.style['margin'] = '5px';
-        this._domElement.style['padding'] = '5px';
-        this._domElement.style['min-height'] = '5px';
-
+        this._domElement.style['margin'] = '5px 5px 5px 5px';
+        this._domElement.style['padding'] = '5px 5px 5px 5px';
         this._domElement.id = 'container' + Container.iterator++;
 
         this.dragEnter = this.dragEnter.bind(this);
@@ -57,13 +55,9 @@ export default class Container {
     }
     
     private openElementConfigs() {
-        // console.log(e.target.nodeName);
-        // console.log(e.target.id);
-    
-        // e.target.parentNode.removeChild(e.target);
         new StylesBuilder(this._domElement)
         .addMarginSelector()
-        .addPaddinSelector()
+        .addPaddingSelector()
         .build()
     }
 }
