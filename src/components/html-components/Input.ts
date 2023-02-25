@@ -8,7 +8,8 @@ export default class TextInput {
     constructor() {
         this._domElement = document.createElement('input');
         this._domElement.type = 'text';
-        this._domElement.style['margin'] = '5px';
+        this._domElement.style['margin'] = '5px 5px 5px 5px';
+        this._domElement.style['padding'] = '5px 5px 5px 5px';
         this._domElement.id = 'input' + TextInput.iterator++;
 
         this._domElement.draggable = true;
@@ -23,14 +24,9 @@ export default class TextInput {
     }
     
     private openElementConfigs() {
-        // console.log(e.target.nodeName);
-        // console.log(e.target.id);
-    
-        // e.target.parentNode.removeChild(e.target);
-
         new StylesBuilder(this._domElement)
         .addMarginSelector()
-        .addPaddinSelector()
+        .addPaddingSelector()
         .build()
     }
 }

@@ -10,8 +10,8 @@ export default class Button {
         this._domElement = document.createElement('button');
 
         this._domElement.innerHTML = 'New button';
-        this._domElement.style['margin'] = '5px';
-        this._domElement.style['padding'] = '5px';
+        this._domElement.style['margin'] = '5px 5px 5px 5px';
+        this._domElement.style['padding'] = '5px 5px 5px 5px';
         this._domElement.id = this.setId('button', Button.iterator);
 
         this._domElement.draggable = true;
@@ -48,48 +48,9 @@ export default class Button {
     }
 
     private openElementConfigs() {
-        // console.log(e.target.nodeName);
-        // console.log(e.target.id);
-
-        // const actionsContainer = document.querySelector('#actions-container');
-        // actionsContainer.innerHTML = `
-        // <div style='display: flex; flex-direction: column; padding: 5px'>
-        //     <h2> Actions </h2>
-        //     <label> Id </label>
-        //     <input id="pepe1" type="text" value=${this._domElement.id}>
-
-        //     <label> Margin </label>
-        //     <input id="pepe2" type="number" min="0" value="${parseInt(this._domElement.style['margin'])}">
-
-        //     <button id="accept_button_actions">Aceptar Cambios</button>
-        // </div>
-        // `
-
-        // this.pepe1 = document.querySelector('#pepe1');
-
-        // this.pepe2 = document.querySelector('#pepe2');
-        // this.updatePepe = this.updatePepe.bind(this);
-        // this.pepe2.addEventListener('input', this.updatePepe);
-
-        // this.acceptButtonActions = document.querySelector('#accept_button_actions');
-        // this.updateStyles = this.updateStyles.bind(this);
-        // this.acceptButtonActions.addEventListener('click', this.updateStyles)
-
         new StylesBuilder(this._domElement)
             .addMarginSelector()
-            .addPaddinSelector()
+            .addPaddingSelector()
             .build()
     }
-
-    // private pepe1: HTMLInputElement;
-    // private pepe2: HTMLInputElement;
-    // private acceptButtonActions: HTMLButtonElement;
-
-    // updatePepe() {
-    //     this._domElement.style['margin'] = `${this.pepe2.value}px`;
-    // }
-
-    // updateStyles() {
-    //     this._domElement.id = this.setId(`${this.pepe1.value}`);
-    // }
 }
