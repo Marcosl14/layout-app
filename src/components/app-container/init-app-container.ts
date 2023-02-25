@@ -9,14 +9,14 @@ export default function initAppContainer(){
     appContainer.addEventListener('drop', drop);
 }
 
-function dragEnter(e: any) {
-    e.preventDefault();
+function dragEnter(event: any) {
+    event.preventDefault();
     this.classList.add('drag-enter');
     this.classList.remove('drag-leave');
 }
 
-function dragOver(e: any) {
-    e.preventDefault();
+function dragOver(event: any) {
+    event.preventDefault();
     this.classList.add('drag-enter');
     this.classList.remove('drag-leave');
   }
@@ -26,15 +26,15 @@ function dragLeave() {
     this.classList.remove('drag-enter');
 }
 
-function drop(e: any) {
+function drop(event: any) {
     this.classList.add('drag-leave');
     this.classList.remove('drag-enter');
 
-    if (e.target.nodeName === 'INPUT') {
+    if (event.target.nodeName === 'INPUT') {
         return;
     }
 
-    const tipoDeElemento = e.dataTransfer.getData('text/plain');
+    const tipoDeElemento = event.dataTransfer.getData('text/plain');
 
     const newDomElement = componentsIndex(tipoDeElemento)();
 
@@ -42,9 +42,9 @@ function drop(e: any) {
 
     if (elementExists) {
         const draggable = document.getElementById(tipoDeElemento);
-        e.target.appendChild(draggable);
+        event.target.appendChild(draggable);
         return;
     }
 
-    e.target.appendChild(newDomElement);
+    event.target.appendChild(newDomElement);
 }

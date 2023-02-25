@@ -43,12 +43,15 @@ export default class Container extends RawHTMLConponent {
         return this._domElement;
     }
 
-    private dragEnter() {
+    private dragEnter(event: any) {
+        event.preventDefault();
         this._domElement.classList.remove('drag-leave');
         this._domElement.classList.add('drag-enter');
     }
 
-    private dragOver() {
+    private dragOver(event: any) {
+        event.preventDefault();
+        event.stopPropagation();
         this._domElement.classList.remove('drag-leave');
         this._domElement.classList.add('drag-enter');
     }
