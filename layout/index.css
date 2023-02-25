@@ -13,7 +13,7 @@
     padding: 10px;
 }
 
-#app-container {
+.app-container {
     border: dashed 1px green;
     width: 100%;
 }
