@@ -1,21 +1,13 @@
-export default class ContainerBuilder{
-    private container: HTMLDivElement;
+import RawBuilder from './RawBuilder';
 
+export default class ContainerBuilder extends RawBuilder<HTMLDivElement>{
     constructor() {
-        this.container = document.createElement('div');
-    }
-
-    public setId(id : string) {
-        this.container.id = id;
-        return this;
+        super('div');
     }
 
     public appendChild(element: HTMLElement){
-        this.container.appendChild(element);
+        this.element.appendChild(element);
         return this;
     }
 
-    build() {
-        return this.container;
-    }
 }

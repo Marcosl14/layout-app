@@ -1,22 +1,14 @@
-export default class InputBuilder{
-    private input: HTMLInputElement;
+import { InputType } from '../types/input.type';
+import RawBuilder from './RawBuilder';
 
-    constructor(type: 'text' | 'number' | 'checkbox') {
-        this.input = document.createElement('input');
-        this.input.type = type;
+export default class InputBuilder extends RawBuilder<HTMLInputElement>{
+    constructor(type: InputType) {
+        super('input')
+        this.element.type = type;
     }
 
-    public setId(id : string) {
-        this.input.id = id;
+    public checked(checked = true) {
+        this.element.checked = checked;
         return this;
-    }
-
-    public setChecked(checked: boolean) {
-        this.input.checked = checked;
-        return this;
-    }
-
-    build() {
-        return this.input;
     }
 }

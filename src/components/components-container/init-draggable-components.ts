@@ -1,4 +1,4 @@
-import dragStartWithTargetNodeName from "../common/functions/drag-start-with-target-node_name";
+import dragStartWithTargetNodeName from '../common/functions/drag-start-with-target-node_name';
 
 export default function initDraggableComponents() {
     const domElements = document.querySelectorAll('.dom-element');

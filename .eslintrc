@@ -1,0 +1,41 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules":{
+    "no-constant-condition":"off",
+    "require-jsdoc" : 0,
+    "block-scoped-var": "error",
+    "eqeqeq": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "eol-last": "error",
+    "prefer-arrow-callback": "error",
+    "no-trailing-spaces": "error",
+    "quotes": ["warn", "single", { "avoidEscape": true }],
+    "no-restricted-properties": [
+      "error",
+      {
+        "object": "describe",
+        "property": "only"
+      },
+      {
+        "object": "it",
+        "property": "only"
+      }
+    ],
+    "max-depth": "error",
+    "max-nested-callbacks": "error",
+    "max-params": ["warn", 6],
+    "n/no-missing-import": 0,
+    "n/no-unpublished-import": 0,
+    "node/no-unpublished-import": 0,
+    "n/no-unpublished-require": 0,
+    "node/no-unpublished-require": 0
+  }
+}
