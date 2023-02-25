@@ -1,6 +1,6 @@
 import { StyleNameType } from '../types/styles-names.type';
 
-export default class RawBuilder<T extends HTMLElement>{
+export default abstract class RawBuilder<T extends HTMLElement>{
     protected element: T;
 
     constructor(element) {
