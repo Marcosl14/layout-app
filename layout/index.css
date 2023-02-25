@@ -58,8 +58,10 @@
 
 .drag-enter {
     border: dashed 1px red;
+    background-color: aquamarine;
 }
 
 .drag-leave {
     border: dashed 1px green;
+    background-color: white;
 }
