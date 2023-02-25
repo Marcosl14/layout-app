@@ -1,4 +1,4 @@
-import appContainerStyleSheet from "../common/functions/app-container-style_sheet";
+import appContainerStyleSheet from '../common/functions/app-container-style_sheet';
 
 export default function initCssStyleSheet() {
     appContainerStyleSheet.insertRule(`.button-component {

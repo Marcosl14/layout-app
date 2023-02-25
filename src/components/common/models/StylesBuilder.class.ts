@@ -19,16 +19,16 @@ export default class StylesBuilder {
 
     private newMarginSelector: HTMLInputElement;
     private marginTopCheckbox: HTMLInputElement = new InputBuilder('checkbox')
-        .setChecked(true)
+        .checked()
         .build();
     private marginBottomCheckbox: HTMLInputElement = new InputBuilder('checkbox')
-        .setChecked(true)
+        .checked()
         .build();
     private marginRightCheckbox: HTMLInputElement = new InputBuilder('checkbox')
-        .setChecked(true)
+        .checked()
         .build();
     private marginLeftCheckbox: HTMLInputElement = new InputBuilder('checkbox')
-        .setChecked(true)
+        .checked()
         .build();
     addMarginSelector() {
         const label = document.createElement('label');
@@ -75,7 +75,7 @@ export default class StylesBuilder {
     }
     private updateMargin() {
         // TODO: los margenes pueden ser en px, em o auto....
-        const margins = this.domElement.style['margin'].split(' ');        
+        const margins = this.domElement.style['margin'].split(' ');
         let [top,right,bottom,left] = this.getCurrentMarginsPaddingProperties(margins);
 
         if(this.marginTopCheckbox.checked){

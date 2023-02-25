@@ -21,7 +21,7 @@ function dragOver(e: any) {
     this.classList.remove('drag-leave');
   }
 
-function dragLeave(e: any) {
+function dragLeave() {
     this.classList.add('drag-leave');
     this.classList.remove('drag-enter');
 }
@@ -38,7 +38,7 @@ function drop(e: any) {
 
     const newDomElement = componentsIndex(tipoDeElemento)();
 
-    let elementExists = newDomElement ? false : true;
+    const elementExists = newDomElement ? false : true;
 
     if (elementExists) {
         const draggable = document.getElementById(tipoDeElemento);
