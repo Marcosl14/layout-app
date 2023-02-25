@@ -33,6 +33,9 @@ export default class Container extends RawHTMLConponent {
         element.addEventListener('drop', this.drop)
         element.addEventListener('click', this.openElementConfigs);
 
+        // TODO how to add specific components to specific elements
+        // this.stylesComponents.appendChild(new MarginOrPaddingComponent('padding', this._domElement).component)
+
         Container.instances.push(element);
     }
 

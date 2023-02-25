@@ -32,7 +32,6 @@ export default class MarginOrPaddingComponent {
     constructor(type: 'margin' | 'padding', domElement: HTMLElement) {
         this.type = type;
         this.domElement = domElement;
-
         this.addComponents();
     }
 

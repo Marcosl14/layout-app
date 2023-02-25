@@ -31,7 +31,7 @@
     width: 400px;
 }
 
-#actions-container > *:not(label) {
+#actions-container > div > *:not(label) {
     margin-bottom: 10px;
 }
 

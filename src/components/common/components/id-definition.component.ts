@@ -8,7 +8,6 @@ export default class IdDefinitionComponent {
 
     constructor(domElement: HTMLElement) {
         this.domElement = domElement;
-
         this.addComponents();
     }
 

@@ -1,11 +1,7 @@
+import ContainerBuilder from './ContainerBuilder';
 export default class StylesComponentsBuilder {
-    public htmlStylesContainer: HTMLDivElement;
-
-    constructor() {
-        const actionsContainer: HTMLDivElement = document.querySelector('#actions-container');
-        actionsContainer.innerHTML = '';
-        this.htmlStylesContainer = actionsContainer;
-    }
+    public htmlStylesContainer: HTMLDivElement = new ContainerBuilder().build();
+    private actionsContainer: HTMLDivElement = document.querySelector('#actions-container');
 
     public appendChild(element) {
         this.htmlStylesContainer.appendChild(element);
@@ -13,6 +9,8 @@ export default class StylesComponentsBuilder {
     }
 
     build(): HTMLDivElement {
+        this.actionsContainer.innerHTML = '';
+        this.actionsContainer.appendChild(this.htmlStylesContainer);
         return this.htmlStylesContainer;
     }
 }
