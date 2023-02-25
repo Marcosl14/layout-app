@@ -1,11 +1,11 @@
 import Button from './Button';
-import TextInput from './Input';
+import Input from './Input';
 import Container from './Container';
 
 function componentsIndex(index) {
     const componentsIndex = {
         'BUTTON': () => new Button().domElement,
-        'INPUT': () => new TextInput().domElement,
+        'INPUT': () => new Input().domElement,
         'DIV': () => new Container().domElement,
         'default': () => undefined,
     }
