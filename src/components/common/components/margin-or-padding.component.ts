@@ -44,6 +44,7 @@ export default class MarginOrPaddingComponent {
         const [top, right, bottom, left] = this.getCurrentProperties(properties);
 
         // Falta agregar un boton auto, que disabled los selectores y asigne solo ese valor.
+        // en esta pagina la hace mucho mas facil https://codebeautify.org/html-button-generator
 
         this.topUnitSelector = new SelectorBuilder(UnitsEnum)
             .selectOption(this.getUnit(top))

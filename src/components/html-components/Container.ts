@@ -2,6 +2,8 @@ import dragStartWithTargetId from '../common/functions/drag-star-with-target-id'
 import ContainerBuilder from '../common/models/ContainerBuilder';
 import defineElementId from '../common/functions/define-element-id';
 import RawHTMLConponent from './RawHTMLComponent';
+import IdDefinitionComponent from '../common/components/id-definition.component';
+import MarginOrPaddingComponent from '../common/components/margin-or-padding.component';
 
 export default class Container extends RawHTMLConponent {
     private static iterator = 0;
@@ -18,6 +20,8 @@ export default class Container extends RawHTMLConponent {
 
         super(element);
 
+        this.buildStylesCompnents();
+
         this.dragEnter = this.dragEnter.bind(this);
         this.dragOver = this.dragOver.bind(this);
         this.dragLeave = this.dragLeave.bind(this);
@@ -28,9 +32,13 @@ export default class Container extends RawHTMLConponent {
         element.addEventListener('dragleave', this.dragLeave)
         element.addEventListener('drop', this.drop)
         element.addEventListener('click', this.openElementConfigs);
+    }
 
-        // TODO how to add specific components to specific elements
-        // this.stylesComponents.appendChild(new MarginOrPaddingComponent('padding', this._domElement).component)
+    private buildStylesCompnents() {
+        this.stylesComponents
+            .appendChild(new IdDefinitionComponent(this._domElement, RawHTMLConponent.instances).component)
+            .appendChild(new MarginOrPaddingComponent('margin', this._domElement).component)
+            .appendChild(new MarginOrPaddingComponent('padding', this._domElement).component)
     }
 
     get domElement(){
