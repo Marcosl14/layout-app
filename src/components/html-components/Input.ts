@@ -6,16 +6,12 @@ import RawHTMLConponent from './RawHTMLComponent';
 
 export default class Input extends RawHTMLConponent {
     private static iterator = 0;
-    private static instances: HTMLInputElement[] = [];
 
     constructor() {
-        const {idName, iterator} = defineElementId('input', Input.instances, Input.iterator);
-        Input.iterator = iterator;
-
         const element = new InputBuilder(InputTypeEnum.text)
             .setStyle('margin', '5px 5px 5px 5px')
             .setStyle('padding', '5px 5px 5px 5px')
-            .setId(idName)
+            .setId(defineElementId(`input${Input.iterator++}`, RawHTMLConponent.instances))
             .addEventListener('dragstart', dragStartWithTargetId)
             .draggable()
             .build();
@@ -23,7 +19,9 @@ export default class Input extends RawHTMLConponent {
         super(element);
 
         element.addEventListener('click', this.openElementConfigs);
+    }
 
-        Input.instances.push(element);
+    get domElement() {
+        return this._domElement;
     }
 }

@@ -5,17 +5,13 @@ import RawHTMLConponent from './RawHTMLComponent';
 
 export default class Container extends RawHTMLConponent {
     private static iterator = 0;
-    private static instances: HTMLDivElement[] = [];
 
     constructor() {
-        const {idName, iterator} = defineElementId('container', Container.instances, Container.iterator);
-        Container.iterator = iterator;
-
         const element = new ContainerBuilder()
             .setStyle('margin', '5px 5px 5px 5px')
             .setStyle('padding', '5px 5px 5px 5px')
             .addCssClassName('drag-leave')
-            .setId(idName)
+            .setId(defineElementId(`container${Container.iterator++}`, RawHTMLConponent.instances))
             .addEventListener('dragstart', dragStartWithTargetId)
             .draggable()
             .build();
@@ -35,8 +31,6 @@ export default class Container extends RawHTMLConponent {
 
         // TODO how to add specific components to specific elements
         // this.stylesComponents.appendChild(new MarginOrPaddingComponent('padding', this._domElement).component)
-
-        Container.instances.push(element);
     }
 
     get domElement(){
@@ -68,4 +62,7 @@ export default class Container extends RawHTMLConponent {
         this._domElement.classList.remove('drag-enter');
         this._domElement.classList.add('drag-leave');
     }
+
+    // TODO falta un mouse over para que cuando pasemos por encima del contenedor, sepamos que contenedor es.
+    // Y obvio que falta el mouse leave...
 }
