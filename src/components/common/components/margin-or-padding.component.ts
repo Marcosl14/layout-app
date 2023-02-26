@@ -8,7 +8,7 @@ import capitalizeFirstLetters from '../functions/first-letters-capitalized';
 
 export default class MarginOrPaddingComponent {
     private type;
-    private domElement;
+    private domElement: HTMLElement;
     private container: HTMLDivElement;
 
     private propertyValueInput: HTMLInputElement;
