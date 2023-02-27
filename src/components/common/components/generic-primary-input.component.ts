@@ -1,20 +1,21 @@
 import { InputTypeEnum } from '../enums/input-type.enum';
-import defineElementId from '../functions/define-element-id';
 import ContainerBuilder from '../models/ContainerBuilder';
 import InputBuilder from '../models/InputBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 import ButtonBuilder from '../models/ButtonBuilder';
 
-export default class IdDefinitionComponent {
+export default class GenericPrimaryInputComponent {
     private domElement: HTMLElement;
     private container: HTMLDivElement;
-    private static instances: HTMLElement[];
+    private label: string;
+    private style: string;
 
     private propertyValueInput: HTMLInputElement;
 
-    constructor(domElement: HTMLElement, instances: HTMLElement[]) {
+    constructor(domElement: HTMLElement, style: string, label: string) {
         this.domElement = domElement;
-        IdDefinitionComponent.instances = instances;
+        this.label = label;
+        this.style = style;
         this.addComponents();
     }
 
@@ -26,7 +27,7 @@ export default class IdDefinitionComponent {
         this.updateProperty = this.updateProperty.bind(this);
 
         this.propertyValueInput = new InputBuilder(InputTypeEnum.text)
-            .setValue(this.domElement.id)
+            .setValue(this.domElement[this.style])
             .addEventListener('keyup', this.updateProperty)
             .build()
 
@@ -42,7 +43,7 @@ export default class IdDefinitionComponent {
 
         this.container = new ContainerBuilder()
             .appendChild(new LabelBuilder()
-                .setInnerText('Id Definition')
+                .setInnerText(this.label)
                 .build()
             )
             .appendChild(elementsContainer)
@@ -50,14 +51,8 @@ export default class IdDefinitionComponent {
     }
 
     private updateProperty(event: any) {
-        if ( this.propertyValueInput.value !== this.domElement.id
-            && ( event.type === 'click' || event.key === 'Enter' || event.keyCode === 13 )
-        ) {
-            try {
-                this.domElement.id = defineElementId(this.propertyValueInput.value, IdDefinitionComponent.instances);
-            } catch {
-                this.propertyValueInput.value = this.domElement.id;
-            }
+        if ( event.type === 'click' || event.key === 'Enter' || event.keyCode === 13 ) {
+            this.domElement[this.style] = this.propertyValueInput.value;
         }
     }
 }

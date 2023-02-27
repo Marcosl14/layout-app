@@ -36,7 +36,7 @@ function drop(event: any) {
 
     const tipoDeElemento = event.dataTransfer.getData('text/plain');
 
-    const newDomElement = componentsIndex(tipoDeElemento)();
+    const newDomElement: HTMLElement = componentsIndex(tipoDeElemento)();
 
     const elementExists = newDomElement ? false : true;
 

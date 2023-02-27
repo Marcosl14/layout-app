@@ -1,19 +1,10 @@
 import initDraggableComponents from './components/components-container/init-draggable-components';
 import initAppContainer from './components/app-container/init-app-container';
-// import initCssStyleSheet from './components/main-container/init-css-style_sheet';
+// import CssStyleSheet from './components/css-stylesheet/css-stylesheet';
 
 initDraggableComponents();
 initAppContainer();
-// initCssStyleSheet();
+// CssStyleSheet.init(); // TODO: el metodo init debe buscar el css del localstorage, deberiamos crear el mismo elemento, pero HTML
+// CssStyleSheet.print();
 
-
-
-// import appContainerStyleSheet from './components/common/functions/app-container-style_sheet';
-
-// let cssFileOutput = '';
-
-// Object.keys(appContainerStyleSheet.rules).forEach(key => {
-//     cssFileOutput += `${appContainerStyleSheet.cssRules[parseInt(key)].cssText}\n\n`
-// });
-
-// console.log(cssFileOutput);
+// Deberiamos ver como almacenar y deshacer cambios....

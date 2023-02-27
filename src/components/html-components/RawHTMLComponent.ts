@@ -1,6 +1,5 @@
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
-import MarginOrPaddingComponent from '../common/components/margin-or-padding.component';
-import IdDefinitionComponent from '../common/components/id-definition.component';
+import ButtonBuilder from '../common/models/ButtonBuilder';
 
 export default abstract class RawHTMLConponent {
     protected _domElement: HTMLElement;
@@ -11,13 +10,20 @@ export default abstract class RawHTMLConponent {
         this._domElement = domElement
 
         this.stylesComponents = new StylesComponentsBuilder()
-        .appendChild(new IdDefinitionComponent(this._domElement, RawHTMLConponent.instances).component)
-        .appendChild(new MarginOrPaddingComponent('margin', this._domElement).component)
-        .appendChild(new MarginOrPaddingComponent('padding', this._domElement).component);
+
+        this.removeElement = this.removeElement.bind(this);
+
+        const removeButton = new ButtonBuilder()
+        .setInnerText('Remove Element')
+        .addEventListener('click', this.removeElement)
+        .build()
+
+        this.stylesComponents.appendChild(removeButton);
 
         this.openElementConfigs = this.openElementConfigs.bind(this);
 
         RawHTMLConponent.instances.push(this._domElement);
+
     }
 
     get domElement() {
@@ -26,6 +32,19 @@ export default abstract class RawHTMLConponent {
 
     protected openElementConfigs(event) {
         event.stopPropagation();
+
         this.stylesComponents.build()
+    }
+
+    protected dragStartWithTargetId(event: any) {
+        event.dataTransfer.setData('text/plain', event.target.id);
+    }
+
+    private removeElement() {
+        if(confirm('Are you sure to remove this component')){
+            const parent = this._domElement.parentNode;
+            parent.removeChild(this._domElement);
+            this.stylesComponents.remove();
+        }
     }
 }
