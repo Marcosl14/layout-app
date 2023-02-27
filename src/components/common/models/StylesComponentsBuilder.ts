@@ -13,4 +13,8 @@ export default class StylesComponentsBuilder {
         this.actionsContainer.appendChild(this.htmlStylesContainer);
         return this.htmlStylesContainer;
     }
+
+    remove() {
+        this.actionsContainer.innerHTML = '';
+    }
 }

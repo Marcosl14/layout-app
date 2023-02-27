@@ -1,10 +1,10 @@
-import dragStartWithTargetId from '../common/functions/drag-star-with-target-id';
 import defineElementId from '../common/functions/define-element-id';
 import ButtonBuilder from '../common/models/ButtonBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 import GenericInputComponent from '../common/components/generic-input.component';
 import IdDefinitionComponent from '../common/components/id-definition.component';
 import MarginOrPaddingComponent from '../common/components/margin-or-padding.component';
+import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 
 export default class Button extends RawHTMLConponent {
     private static iterator = 0;
@@ -12,23 +12,31 @@ export default class Button extends RawHTMLConponent {
     constructor() {
         // TODO cuando creo un nombre futuro, y justo creo un elemento con ese nombre futuro, tira error... por eso yo le pasaba el iterator... ver como solucionar...
 
+        const id = defineElementId(`button${Button.iterator++}`, RawHTMLConponent.instances);
+
+        // TODO habria que reemplazar todos los caracteres especiales por guiones o algo asi...
+
+        CssStyleSheet.styleSheet.insertRule(`.${id} {
+            margin: 5px;
+            padding: 5px;
+        }`);
+
         const element = new ButtonBuilder()
-            .setStyle('margin', '5px 5px 5px 5px')
-            .setStyle('padding', '5px 5px 5px 5px')
-            .setId(defineElementId(`button${Button.iterator++}`, RawHTMLConponent.instances))
+            .setId(id)
+            .addCssClassName(id)
             .setInnerText('New Button')
-            .addEventListener('dragstart', dragStartWithTargetId)
             .draggable()
             .build();
 
         super(element);
 
-        this.buildStylesCompnents();
+        this.buildStylesComponents();
 
+        element.addEventListener('dragstart', this.dragStartWithTargetId);
         element.addEventListener('click', this.openElementConfigs);
     }
 
-    private buildStylesCompnents() {
+    private buildStylesComponents() {
         this.stylesComponents
             .appendChild(new IdDefinitionComponent(this._domElement, RawHTMLConponent.instances).component)
             .appendChild(new GenericInputComponent(this._domElement, 'innerText', 'Inner Text').component)

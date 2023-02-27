@@ -14,4 +14,5 @@ export enum UnitsEnum {
     in = 'in',
     pt = 'pt',
     pc = 'pc',
+    auto = 'auto'
 }

@@ -15,7 +15,7 @@ export default abstract class RawBuilder<T extends HTMLElement>{
     public setStyle(styleName: StyleNameType, value: string) {
         this.element.style[styleName] = value;
         return this;
-    }
+    } // TODO comentar y ver que se rompe, ya que no manejaremos styles in-line
 
     public setInnerText(text: string){
         this.element.innerText = text;
@@ -34,6 +34,11 @@ export default abstract class RawBuilder<T extends HTMLElement>{
 
     public addEventListener(type: string, callback) {
         this.element.addEventListener(type, callback)
+        return this;
+    }
+
+    public disabled(value: boolean) {
+        this.element['disabled'] = value;
         return this;
     }
 
