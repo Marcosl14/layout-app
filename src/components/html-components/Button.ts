@@ -1,7 +1,7 @@
 import defineElementId from '../common/functions/define-element-id';
 import ButtonBuilder from '../common/models/ButtonBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
-import GenericInputComponent from '../common/components/generic-input.component';
+import GenericPrimaryInputComponent from '../common/components/generic-primary-input.component';
 import IdDefinitionComponent from '../common/components/id-definition.component';
 import MarginOrPaddingComponent from '../common/components/margin-or-padding.component';
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
@@ -17,9 +17,15 @@ export default class Button extends RawHTMLConponent {
         // TODO habria que reemplazar todos los caracteres especiales por guiones o algo asi...
 
         CssStyleSheet.styleSheet.insertRule(`.${id} {
-            margin: 5px;
-            padding: 5px;
+            margin: 10px;
+            padding: 10px;
+            background-color: #4CAF50;
+            border: 1px solid #4CAF50;
+            color: #FFFFFF;
+            text-align: center;
         }`);
+
+        CssStyleSheet.styleSheet.insertRule(`.${id}:hover {opacity: 0.6}`);
 
         const element = new ButtonBuilder()
             .setId(id)
@@ -39,7 +45,7 @@ export default class Button extends RawHTMLConponent {
     private buildStylesComponents() {
         this.stylesComponents
             .appendChild(new IdDefinitionComponent(this._domElement, RawHTMLConponent.instances).component)
-            .appendChild(new GenericInputComponent(this._domElement, 'innerText', 'Inner Text').component)
+            .appendChild(new GenericPrimaryInputComponent(this._domElement, 'innerText', 'Inner Text').component)
             .appendChild(new MarginOrPaddingComponent('margin', this._domElement).component)
             .appendChild(new MarginOrPaddingComponent('padding', this._domElement).component)
     }

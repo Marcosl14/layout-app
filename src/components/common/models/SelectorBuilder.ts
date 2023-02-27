@@ -22,7 +22,7 @@ export default class SelectorBuilder extends RawBuilder<HTMLSelectElement>{
         return this;
     }
 
-    public selectOptions(option: string) {
+    public selectOption(option: string) {
         const foundValueIndex = this.keys.findIndex((key) => this.options[key] === option);
         this.element.selectedIndex = foundValueIndex;
         return this;

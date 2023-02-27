@@ -1,5 +1,23 @@
 export enum InputTypeEnum {
     text = 'text',
     number = 'number',
-    checkbox = 'checkbox'
+    checkbox = 'checkbox',
+    button = 'button',
+    color = 'color',
+    date = 'date',
+    datetime = 'datetime',
+    'datetime-local' = 'datetime-local',
+    email = 'email',
+    file = 'file',
+    hidden = 'hidden',
+    month = 'month',
+    password = 'password',
+    radio = 'radio',
+    range = 'range',
+    reset = 'reset',
+    submit = 'submit',
+    tel = 'tel',
+    time = 'time',
+    url = 'url',
+    week = 'week'
 }

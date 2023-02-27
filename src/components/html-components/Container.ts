@@ -12,8 +12,8 @@ export default class Container extends RawHTMLConponent {
         const id = defineElementId(`container${Container.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.styleSheet.insertRule(`.${id} {
-            margin: 5px;
-            padding: 5px;
+            margin: 10px;
+            padding: 10px;
         }`);
 
         const element = new ContainerBuilder()

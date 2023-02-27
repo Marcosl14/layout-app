@@ -4,7 +4,7 @@ import InputBuilder from '../models/InputBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 import ButtonBuilder from '../models/ButtonBuilder';
 
-export default class GenericInputComponent {
+export default class GenericPrimaryInputComponent {
     private domElement: HTMLElement;
     private container: HTMLDivElement;
     private label: string;

@@ -41,6 +41,8 @@ export default class MarginOrPaddingComponent {
 
         // habria que hacer componentes en base a cada clase que tenga definida un componente???
         // y agregar componentes con un selector??????
+
+        // TODO: falta agregar el !important y quizas los inherit y no se si habra mas propiedades
         this.updateProperty = this.updateProperty.bind(this);
 
         this.selectAllCheckBox = new InputBuilder(InputTypeEnum.checkbox)
@@ -79,21 +81,21 @@ export default class MarginOrPaddingComponent {
             .build();
 
         this.topUnitSelector = new SelectorBuilder(UnitsEnum)
-            .selectOptions(this.getUnit(top))
+            .selectOption(this.getUnit(top))
             .addEventListener('change', this.updateProperty)
             .build()
         this.bottomUnitSelector = new SelectorBuilder(UnitsEnum)
-            .selectOptions(this.getUnit(bottom))
+            .selectOption(this.getUnit(bottom))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateProperty)
             .build()
         this.rightUnitSelector = new SelectorBuilder(UnitsEnum)
-            .selectOptions(this.getUnit(right))
+            .selectOption(this.getUnit(right))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateProperty)
             .build()
         this.leftUnitSelector = new SelectorBuilder(UnitsEnum)
-            .selectOptions(this.getUnit(left))
+            .selectOption(this.getUnit(left))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateProperty)
             .build()

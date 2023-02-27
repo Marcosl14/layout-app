@@ -5,6 +5,7 @@ import RawHTMLConponent from './RawHTMLComponent';
 import IdDefinitionComponent from '../common/components/id-definition.component';
 import MarginOrPaddingComponent from '../common/components/margin-or-padding.component';
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
+import GenericPrimarySelectorComponent from '../common/components/generic-primary-selector.component';
 
 export default class Input extends RawHTMLConponent {
     private static iterator = 0;
@@ -13,8 +14,15 @@ export default class Input extends RawHTMLConponent {
         const id = defineElementId(`input${Input.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.styleSheet.insertRule(`.${id} {
-            margin: 5px;
-            padding: 5px;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 3px #ddd;
+        }`);
+
+        CssStyleSheet.styleSheet.insertRule(`.${id}:hover {
+            border: 1px solid red;
         }`);
 
         const element = new InputBuilder(InputTypeEnum.text)
@@ -36,6 +44,7 @@ export default class Input extends RawHTMLConponent {
             .appendChild(new IdDefinitionComponent(this._domElement, RawHTMLConponent.instances).component)
             .appendChild(new MarginOrPaddingComponent('margin', this._domElement).component)
             .appendChild(new MarginOrPaddingComponent('padding', this._domElement).component)
+            .appendChild(new GenericPrimarySelectorComponent(this._domElement, 'type', 'Input Type Selector', InputTypeEnum).component)
     }
 
     get domElement() {
