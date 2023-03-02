@@ -9,5 +9,4 @@ export default class ContainerBuilder extends RawBuilder<HTMLDivElement>{
         this.element.appendChild(element);
         return this;
     }
-
 }

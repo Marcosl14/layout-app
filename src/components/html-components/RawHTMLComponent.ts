@@ -4,7 +4,7 @@ import ButtonBuilder from '../common/models/ButtonBuilder';
 export default abstract class RawHTMLConponent {
     protected _domElement: HTMLElement;
     protected stylesComponents: StylesComponentsBuilder;
-    protected static instances: HTMLElement[] = [];
+    public static instances: HTMLElement[] = [];
 
     constructor(domElement: HTMLElement) {
         this._domElement = domElement
@@ -33,7 +33,7 @@ export default abstract class RawHTMLConponent {
     protected openElementConfigs(event) {
         event.stopPropagation();
 
-        this.stylesComponents.build()
+        this.stylesComponents.build() // TODO: yo tendria que crear todos los elementos en este momento!!!!
     }
 
     protected dragStartWithTargetId(event: any) {

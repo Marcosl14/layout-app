@@ -4,6 +4,7 @@ import RawHTMLConponent from './RawHTMLComponent';
 import IdDefinitionComponent from '../common/components/id-definition.component';
 import MarginOrPaddingComponent from '../common/components/margin-or-padding.component';
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
+import DisplayComponent from '../common/components/display.component';
 
 export default class Container extends RawHTMLConponent {
     private static iterator = 0;
@@ -14,6 +15,8 @@ export default class Container extends RawHTMLConponent {
         CssStyleSheet.styleSheet.insertRule(`.${id} {
             margin: 10px;
             padding: 10px;
+            display: flex;
+            flex-direction: column;
         }`);
 
         const element = new ContainerBuilder()
@@ -42,9 +45,10 @@ export default class Container extends RawHTMLConponent {
 
     private buildStylesComponents() {
         this.stylesComponents
-            .appendChild(new IdDefinitionComponent(this._domElement, RawHTMLConponent.instances).component)
-            .appendChild(new MarginOrPaddingComponent('margin', this._domElement).component)
-            .appendChild(new MarginOrPaddingComponent('padding', this._domElement).component)
+            .appendChild(new IdDefinitionComponent(this._domElement).component)
+            .appendChild(new MarginOrPaddingComponent(this._domElement, 'margin').component)
+            .appendChild(new MarginOrPaddingComponent(this._domElement, 'padding').component)
+            .appendChild(new DisplayComponent(this._domElement).component)
     }
 
     get domElement(){

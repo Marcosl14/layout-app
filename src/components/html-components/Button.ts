@@ -44,10 +44,10 @@ export default class Button extends RawHTMLConponent {
 
     private buildStylesComponents() {
         this.stylesComponents
-            .appendChild(new IdDefinitionComponent(this._domElement, RawHTMLConponent.instances).component)
+            .appendChild(new IdDefinitionComponent(this._domElement).component)
             .appendChild(new GenericPrimaryInputComponent(this._domElement, 'innerText', 'Inner Text').component)
-            .appendChild(new MarginOrPaddingComponent('margin', this._domElement).component)
-            .appendChild(new MarginOrPaddingComponent('padding', this._domElement).component)
+            .appendChild(new MarginOrPaddingComponent(this._domElement, 'margin').component)
+            .appendChild(new MarginOrPaddingComponent(this._domElement, 'padding').component)
     }
 
     get domElement() {
