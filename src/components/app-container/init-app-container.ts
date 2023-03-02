@@ -30,7 +30,7 @@ function drop(event: any) {
     this.classList.add('drag-leave');
     this.classList.remove('drag-enter');
 
-    if (event.target.nodeName === 'INPUT') {
+    if (event.target.nodeName !== 'DIV') {
         return;
     }
 

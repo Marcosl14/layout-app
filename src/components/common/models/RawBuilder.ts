@@ -1,5 +1,4 @@
-import { StyleNameType } from '../types/styles-names.type';
-
+import { StyleNameEnum } from '../enums/style-name.enum';
 export default abstract class RawBuilder<T extends HTMLElement>{
     protected element: T;
 
@@ -12,10 +11,10 @@ export default abstract class RawBuilder<T extends HTMLElement>{
         return this;
     }
 
-    public setStyle(styleName: StyleNameType, value: string) {
+    public setStyle(styleName: StyleNameEnum, value: string) {
         this.element.style[styleName] = value;
         return this;
-    } // TODO comentar y ver que se rompe, ya que no manejaremos styles in-line
+    }
 
     public setInnerText(text: string){
         this.element.innerText = text;

@@ -26,8 +26,8 @@ export default class Input extends RawHTMLConponent {
         }`);
 
         const element = new InputBuilder(InputTypeEnum.text)
-            .addCssClassName(id)
             .setId(id)
+            .addCssClassName(id)
             .draggable()
             .build();
 
@@ -41,9 +41,9 @@ export default class Input extends RawHTMLConponent {
 
     private buildStylesComponents() {
         this.stylesComponents
-            .appendChild(new IdDefinitionComponent(this._domElement, RawHTMLConponent.instances).component)
-            .appendChild(new MarginOrPaddingComponent('margin', this._domElement).component)
-            .appendChild(new MarginOrPaddingComponent('padding', this._domElement).component)
+            .appendChild(new IdDefinitionComponent(this._domElement).component)
+            .appendChild(new MarginOrPaddingComponent(this._domElement, 'margin').component)
+            .appendChild(new MarginOrPaddingComponent(this._domElement, 'padding').component)
             .appendChild(new GenericPrimarySelectorComponent(this._domElement, 'type', 'Input Type Selector', InputTypeEnum).component)
     }
 

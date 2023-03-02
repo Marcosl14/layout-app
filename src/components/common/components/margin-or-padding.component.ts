@@ -24,7 +24,7 @@ export default class MarginOrPaddingComponent {
 
     private selectAllCheckBox: HTMLInputElement;
 
-    constructor(type: 'margin' | 'padding', domElement: HTMLElement) {
+    constructor(domElement: HTMLElement, type: 'margin' | 'padding', ) {
         this.type = type;
         this.domElement = domElement;
         this.addComponents();
