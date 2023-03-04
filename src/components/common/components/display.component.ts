@@ -10,7 +10,7 @@ import { StyleNameEnum } from '../enums/style-name.enum';
 export default class DisplayComponent {
     private domElement: HTMLElement;
     private container: HTMLDivElement;
-    private styleSheet;
+    private domElementStyleSheet;
 
     private displaySelector: HTMLSelectElement;
     private flexDirectionSelector: HTMLSelectElement;
@@ -19,7 +19,7 @@ export default class DisplayComponent {
 
     constructor(domElement: HTMLElement) {
         this.domElement = domElement;
-        this.styleSheet = CssStyleSheet.getRuleStyles(this.domElement.id);
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(this.domElement.id);
         this.addComponents();
     }
 
@@ -54,97 +54,22 @@ export default class DisplayComponent {
     }
 
     private updateProperty() {
-        this.styleSheet['display'] = this.displaySelector.value;
+        this.domElementStyleSheet['display'] = this.displaySelector.value;
 
         this.addComponentAccordingToSelector();
-
-        // TODO: para las opciones de flex como hijo, hay que preguntar si el padre tiene flex...
     }
 
     private getCurrentProperties(property: string): string {
-        return this.styleSheet[property];
+        return this.domElementStyleSheet[property];
     }
 
     addComponentAccordingToSelector() {
         const currentProperties = this.getCurrentProperties('display');
 
-        if(currentProperties === 'flex'){
-            this.changeFlexDirection = this.changeFlexDirection.bind(this);
-
-            this.flexDirectionSelector = new SelectorBuilder(FlexDirectionEnum)
-                .selectOption(this.styleSheet['flex-direction'])
-                .addEventListener('change', this.changeFlexDirection)
-                .build()
-
-            this.flexContainer = new ContainerBuilder()
-                .appendChild(new ContainerBuilder()
-                    .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-                    .setStyle(StyleNameEnum.padding, '3px')
-                    .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-                    .appendChild(new ContainerBuilder()
-                        .setStyle(StyleNameEnum.display, 'flex')
-                        .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-                        .appendChild(new LabelBuilder()
-                            .setInnerText('Flex as Parent')
-                            .build()
-                        )
-                        .build()
-                    )
-                    .appendChild(new ContainerBuilder()
-                        .setStyle(StyleNameEnum.display, 'flex')
-                        .setStyle(StyleNameEnum['flex-direction'], 'column')
-                        .setStyle(StyleNameEnum['align-items'], 'stretch')
-                        .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-                        .appendChild(new LabelBuilder()
-                            .setInnerText('Flex Direction')
-                            .build()
-                        )
-                        .appendChild(this.flexDirectionSelector)
-                        .build()
-                    )
-                    .build()
-                )
-                // TODO: El flex as child solo deberia mostrarlo si el padre tiene flex...
-                // TODO: habria que ver como llevar todo al constructor... Porque no reconoce el contenerdor padre hasta que se cambia a flex...
-                // TODO: ver como hariamos si existen varias clases...
-                // Quizas haya que implementar primero las clases...
-                .appendChild(new ContainerBuilder()
-                    .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-                    .setStyle(StyleNameEnum.padding, '3px')
-                    .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-                    .appendChild(new LabelBuilder()
-                        .setInnerText('Flex As Child')
-                        .build()
-                    )
-                    .appendChild(new ContainerBuilder()
-                        .setStyle(StyleNameEnum.display, 'flex')
-                        .setStyle(StyleNameEnum['flex-direction'], 'column')
-                        .setStyle(StyleNameEnum['align-items'], 'stretch')
-                        .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-                        .appendChild(new LabelBuilder()
-                            .setInnerText('Flex')
-                            .build()
-                        )
-                        // .appendChild(this.flexDirectionSelector)
-                        .build()
-                    )
-                    .appendChild(new ContainerBuilder()
-                        .setStyle(StyleNameEnum.display, 'flex')
-                        .setStyle(StyleNameEnum['flex-direction'], 'column')
-                        .setStyle(StyleNameEnum['align-items'], 'stretch')
-                        .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-                        .appendChild(new LabelBuilder()
-                            .setInnerText('Flex Direction')
-                            .build()
-                        )
-                        // .appendChild(this.flexDirectionSelector)
-                        .build()
-                    )
-                    .build()
-                )
-
+        if (currentProperties === 'flex') {
+            this.addFlexAsParentContainer();
             this.container.appendChild(this.flexContainer.build())
-        } else if(currentProperties === 'grid') {
+        } else if (currentProperties === 'grid') {
             try {
                 // TODO: faltan propiedades del grid...
                 this.container.removeChild(this.flexContainer.build());
@@ -159,9 +84,92 @@ export default class DisplayComponent {
                 return;
             }
         }
+
+        if (this.domElement.id !== 'app-container') {
+            if (CssStyleSheet.getRuleStyles(this.domElement.parentElement.id)['display'] === DisplayTypesEnum.flex) {
+                // TODO: ver como hariamos si existen varias clases...
+                // Quizas haya que implementar primero las clases...
+                this.addFlexAsChildrenContainer();
+            }
+        }
+    }
+
+    addFlexAsParentContainer() {
+        this.changeFlexDirection = this.changeFlexDirection.bind(this);
+
+        this.flexDirectionSelector = new SelectorBuilder(FlexDirectionEnum)
+            .selectOption(this.domElementStyleSheet['flex-direction'])
+            .addEventListener('change', this.changeFlexDirection)
+            .build()
+
+        this.flexContainer = new ContainerBuilder()
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
+                .setStyle(StyleNameEnum.padding, '3px')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new ContainerBuilder()
+                    .setStyle(StyleNameEnum.display, 'flex')
+                    .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                    .appendChild(new LabelBuilder()
+                        .setInnerText('Flex as Parent')
+                        .build()
+                    )
+                    .build()
+                )
+                .appendChild(new ContainerBuilder()
+                    .setStyle(StyleNameEnum.display, 'flex')
+                    .setStyle(StyleNameEnum['flex-direction'], 'column')
+                    .setStyle(StyleNameEnum['align-items'], 'stretch')
+                    .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                    .appendChild(new LabelBuilder()
+                        .setInnerText('Flex Direction')
+                        .build()
+                    )
+                    .appendChild(this.flexDirectionSelector)
+                    .build()
+                )
+                .build()
+            )
     }
 
     changeFlexDirection() {
-        this.styleSheet['flex-direction'] = this.flexDirectionSelector.value;
+        this.domElementStyleSheet['flex-direction'] = this.flexDirectionSelector.value;
+    }
+
+    addFlexAsChildrenContainer() {
+        this.container.appendChild(new ContainerBuilder()
+            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
+            .setStyle(StyleNameEnum.padding, '3px')
+            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+            .appendChild(new LabelBuilder()
+                .setInnerText('Flex As Child')
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum['flex-direction'], 'column')
+                .setStyle(StyleNameEnum['align-items'], 'stretch')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Flex')
+                    .build()
+                )
+                // .appendChild(this.flexDirectionSelector)
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum['flex-direction'], 'column')
+                .setStyle(StyleNameEnum['align-items'], 'stretch')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Flex Direction')
+                    .build()
+                )
+                // .appendChild(this.flexDirectionSelector)
+                .build()
+            )
+            .build()
+        )
     }
 }

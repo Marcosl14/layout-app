@@ -1,50 +1,76 @@
+import DisplayComponent from '../common/components/display.component';
+import MarginOrPaddingComponent from '../common/components/margin-or-padding.component';
+import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
 import componentsIndex from '../html-components/componentsIndex';
 
-export default function initAppContainer(){
-    const appContainer = document.querySelector('#app-container');
+import { StyleNameEnum } from '../common/enums/style-name.enum';
 
-    appContainer.addEventListener('dragenter', dragEnter);
-    appContainer.addEventListener('dragover', dragOver);
-    appContainer.addEventListener('dragleave', dragLeave);
-    appContainer.addEventListener('drop', drop);
-}
+export default class InitAppContainer {
+    private appContainer: HTMLDivElement;
+    protected stylesComponents: HTMLDivElement;
 
-function dragEnter(event: any) {
-    event.preventDefault();
-    this.classList.add('drag-enter');
-    this.classList.remove('drag-leave');
-}
+    constructor() {
+        this.appContainer = document.querySelector('#app-container');
 
-function dragOver(event: any) {
-    event.preventDefault();
-    this.classList.add('drag-enter');
-    this.classList.remove('drag-leave');
-  }
+        this.openElementConfigs = this.openElementConfigs.bind(this);
+        this.dragEnter = this.dragEnter.bind(this);
+        this.dragOver = this.dragOver.bind(this);
+        this.dragLeave = this.dragLeave.bind(this);
+        this.drop = this.drop.bind(this);
 
-function dragLeave() {
-    this.classList.add('drag-leave');
-    this.classList.remove('drag-enter');
-}
-
-function drop(event: any) {
-    this.classList.add('drag-leave');
-    this.classList.remove('drag-enter');
-
-    if (event.target.nodeName !== 'DIV') {
-        return;
+        this.appContainer.addEventListener('dragenter', this.dragEnter);
+        this.appContainer.addEventListener('dragover', this.dragOver);
+        this.appContainer.addEventListener('dragleave', this.dragLeave);
+        this.appContainer.addEventListener('drop', this.drop);
+        this.appContainer.addEventListener('click', this.openElementConfigs);
     }
 
-    const tipoDeElemento = event.dataTransfer.getData('text/plain');
-
-    const newDomElement: HTMLElement = componentsIndex(tipoDeElemento)();
-
-    const elementExists = newDomElement ? false : true;
-
-    if (elementExists) {
-        const draggable = document.getElementById(tipoDeElemento);
-        event.target.appendChild(draggable);
-        return;
+    private dragEnter(event: any) {
+        event.preventDefault();
+        this.appContainer.classList.add('drag-enter');
+        this.appContainer.classList.remove('drag-leave');
     }
 
-    event.target.appendChild(newDomElement);
+    private dragOver(event: any) {
+        event.preventDefault();
+        this.appContainer.classList.add('drag-enter');
+        this.appContainer.classList.remove('drag-leave');
+    }
+
+    private dragLeave() {
+        this.appContainer.classList.add('drag-leave');
+        this.appContainer.classList.remove('drag-enter');
+    }
+
+    private drop(event: any) {
+        this.appContainer.classList.add('drag-leave');
+        this.appContainer.classList.remove('drag-enter');
+
+        if (event.target.nodeName !== 'DIV') {
+            return;
+        }
+
+        const tipoDeElemento = event.dataTransfer.getData('text/plain');
+
+        const newDomElement: HTMLElement = componentsIndex(tipoDeElemento)();
+
+        const elementExists = newDomElement ? false : true;
+
+        if (elementExists) {
+            const draggable = document.getElementById(tipoDeElemento);
+            event.target.appendChild(draggable);
+            return;
+        }
+
+        event.target.appendChild(newDomElement);
+    }
+
+    private openElementConfigs(event) {
+        event.stopPropagation();
+
+        this.stylesComponents = new StylesComponentsBuilder()
+            .appendChild(new MarginOrPaddingComponent(this.appContainer, StyleNameEnum.padding).component)
+            .appendChild(new DisplayComponent(this.appContainer).component)
+            .build();
+    }
 }

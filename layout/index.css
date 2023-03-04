@@ -13,11 +13,6 @@
     padding: 10px;
 }
 
-.app-container {
-    border: dashed 1px green;
-    width: 100%;
-}
-
 #actions-container {
     box-sizing: border-box;
     display: flex;
