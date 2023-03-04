@@ -75,6 +75,8 @@ export default class Container extends RawHTMLConponent {
     protected openElementConfigs(event) {
         event.stopPropagation();
 
+        // TODO creo que vamos a tener que hacer un index y que un selector despliegue estos componentes uno por uno, porque va a ser larguisima la lista de posibles modificaciones
+
         this.stylesComponents = new StylesComponentsBuilder()
         .appendChild(this.addIdDefinitionComponent())
             .appendChild(this.addMarginStyleComponent())
