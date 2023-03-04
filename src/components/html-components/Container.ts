@@ -1,10 +1,10 @@
 import ContainerBuilder from '../common/models/ContainerBuilder';
 import defineElementId from '../common/functions/define-element-id';
 import RawHTMLConponent from './RawHTMLComponent';
-import IdDefinitionComponent from '../common/components/id-definition.component';
-import MarginOrPaddingComponent from '../common/components/margin-or-padding.component';
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
-import DisplayComponent from '../common/components/display.component';
+import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
+
+import { DisplayTypesEnum } from '../common/enums/display-types.enum';
 
 export default class Container extends RawHTMLConponent {
     private static iterator = 0;
@@ -15,7 +15,7 @@ export default class Container extends RawHTMLConponent {
         CssStyleSheet.styleSheet.insertRule(`.${id} {
             margin: 10px;
             padding: 10px;
-            display: flex;
+            display: ${DisplayTypesEnum.flex};
             flex-direction: column;
         }`);
 
@@ -28,8 +28,7 @@ export default class Container extends RawHTMLConponent {
 
         super(element);
 
-        this.buildStylesComponents();
-
+        this.openElementConfigs = this.openElementConfigs.bind(this);
         this.dragEnter = this.dragEnter.bind(this);
         this.dragOver = this.dragOver.bind(this);
         this.dragLeave = this.dragLeave.bind(this);
@@ -41,14 +40,6 @@ export default class Container extends RawHTMLConponent {
         element.addEventListener('dragleave', this.dragLeave)
         element.addEventListener('drop', this.drop)
         element.addEventListener('click', this.openElementConfigs);
-    }
-
-    private buildStylesComponents() {
-        this.stylesComponents
-            .appendChild(new IdDefinitionComponent(this._domElement).component)
-            .appendChild(new MarginOrPaddingComponent(this._domElement, 'margin').component)
-            .appendChild(new MarginOrPaddingComponent(this._domElement, 'padding').component)
-            .appendChild(new DisplayComponent(this._domElement).component)
     }
 
     get domElement(){
@@ -79,6 +70,18 @@ export default class Container extends RawHTMLConponent {
     private drop() {
         this._domElement.classList.remove('drag-enter');
         this._domElement.classList.add('drag-leave');
+    }
+
+    protected openElementConfigs(event) {
+        event.stopPropagation();
+
+        this.stylesComponents = new StylesComponentsBuilder()
+        .appendChild(this.addIdDefinitionComponent())
+            .appendChild(this.addMarginStyleComponent())
+            .appendChild(this.addPaddingStyleComponent())
+            .appendChild(this.addDisplayTypeComponent())
+            .appendChild(this.addRemoveElementComponent())
+            .build();
     }
 
     // TODO falta un mouse over para que cuando pasemos por encima del contenedor, sepamos que contenedor es.

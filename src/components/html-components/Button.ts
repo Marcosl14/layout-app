@@ -1,10 +1,8 @@
 import defineElementId from '../common/functions/define-element-id';
 import ButtonBuilder from '../common/models/ButtonBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
-import GenericPrimaryInputComponent from '../common/components/generic-primary-input.component';
-import IdDefinitionComponent from '../common/components/id-definition.component';
-import MarginOrPaddingComponent from '../common/components/margin-or-padding.component';
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
+import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
 
 export default class Button extends RawHTMLConponent {
     private static iterator = 0;
@@ -36,21 +34,25 @@ export default class Button extends RawHTMLConponent {
 
         super(element);
 
-        this.buildStylesComponents();
+        this.openElementConfigs = this.openElementConfigs.bind(this);
 
         element.addEventListener('dragstart', this.dragStartWithTargetId);
         element.addEventListener('click', this.openElementConfigs);
     }
 
-    private buildStylesComponents() {
-        this.stylesComponents
-            .appendChild(new IdDefinitionComponent(this._domElement).component)
-            .appendChild(new GenericPrimaryInputComponent(this._domElement, 'innerText', 'Inner Text').component)
-            .appendChild(new MarginOrPaddingComponent(this._domElement, 'margin').component)
-            .appendChild(new MarginOrPaddingComponent(this._domElement, 'padding').component)
-    }
-
     get domElement() {
         return this._domElement;
+    }
+
+    protected openElementConfigs(event) {
+        event.stopPropagation();
+
+        this.stylesComponents = new StylesComponentsBuilder()
+            .appendChild(this.addIdDefinitionComponent())
+            .appendChild(this.addInnerTextChangeComponent())
+            .appendChild(this.addMarginStyleComponent())
+            .appendChild(this.addPaddingStyleComponent())
+            .appendChild(this.addRemoveElementComponent())
+            .build();
     }
 }
