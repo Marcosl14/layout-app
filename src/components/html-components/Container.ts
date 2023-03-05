@@ -12,6 +12,10 @@ export default class Container extends RawHTMLConponent {
     constructor() {
         const id = defineElementId(`container${Container.iterator++}`, RawHTMLConponent.instances);
 
+        // las clases drag leave y drag enter deberian ser modificadas dinamicamente cuando asignamos un nuevo estilo al borde...
+        // creo que habria que asignarlas con un color opuesto al que tiene actualmente el borde o el background...
+
+        /* el border en el css es de desarrollo. Luego eliminar */
         CssStyleSheet.styleSheet.insertRule(`.${id} {
             margin: 10px;
             padding: 10px;
@@ -81,9 +85,10 @@ export default class Container extends RawHTMLConponent {
             .appendChild(this.addIdDefinitionComponent())
             .appendChild(this.addMarginStyleComponent())
             .appendChild(this.addPaddingStyleComponent())
+            .appendChild(this.addBorderSettingsComponent())
             .appendChild(this.addDisplayAsParentComponent())
             .appendChild(this.addDisplayAsChildComponent())
-            .appendChild(this.addRemoveElementComponent())
+            .appendChild(this.addActionsComponents())
             .build();
     }
 

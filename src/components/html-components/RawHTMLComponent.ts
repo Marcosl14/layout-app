@@ -9,6 +9,8 @@ import { InputTypeEnum } from '../common/enums/input-type.enum';
 import { StyleNameEnum } from '../common/enums/style-name.enum';
 import DisplayAsChildComponent from '../common/components/display-as-child.component';
 import LabelBuilder from '../common/models/LabelBuilder';
+import BorderComponent from '../common/components/border.component';
+import ContainerBuilder from '../common/models/ContainerBuilder';
 
 export default abstract class RawHTMLConponent {
     protected _domElement: HTMLElement;
@@ -55,7 +57,30 @@ export default abstract class RawHTMLConponent {
         return new GenericPrimaryInputComponent(this._domElement, 'innerText', 'Inner Text').component;
     }
 
-    protected addRemoveElementComponent() {
+    protected addActionsComponents() {
+        return new ContainerBuilder()
+            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
+            .setStyle(StyleNameEnum.padding, '3px')
+            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Available Actions')
+                    .build()
+                )
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(this.addRemoveElementComponent())
+                .build()
+            )
+            .build()
+    }
+
+    private addRemoveElementComponent() {
         return new ButtonBuilder()
             .setInnerText('Remove Element')
             .addEventListener('click', this.removeElement)
@@ -66,7 +91,7 @@ export default abstract class RawHTMLConponent {
         return new GenericPrimarySelectorComponent(this._domElement, 'type', 'Input Type Selector', InputTypeEnum).component;
     }
 
-    addLabelComponent(label: string) {
+    protected addLabelComponent(label: string) {
         return new LabelBuilder()
             .setInnerText(label)
             .build()
@@ -78,5 +103,9 @@ export default abstract class RawHTMLConponent {
 
     protected addDisplayAsChildComponent() {
         return new DisplayAsChildComponent(this._domElement).component;
+    }
+
+    protected addBorderSettingsComponent() {
+        return new BorderComponent(this._domElement).component;
     }
 }

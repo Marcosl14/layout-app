@@ -18,7 +18,9 @@ export default class Button extends RawHTMLConponent {
             margin: 10px;
             padding: 10px;
             background-color: #4CAF50;
-            border: 1px solid #4CAF50;
+            border-style: solid;
+            border-color: #4CAF50;
+            border-width: 1px;
             color: #FFFFFF;
             text-align: center;
         }`);
@@ -52,8 +54,9 @@ export default class Button extends RawHTMLConponent {
             .appendChild(this.addInnerTextChangeComponent())
             .appendChild(this.addMarginStyleComponent())
             .appendChild(this.addPaddingStyleComponent())
+            .appendChild(this.addBorderSettingsComponent())
             .appendChild(this.addDisplayAsChildComponent())
-            .appendChild(this.addRemoveElementComponent())
+            .appendChild(this.addActionsComponents())
             .build();
     }
 }

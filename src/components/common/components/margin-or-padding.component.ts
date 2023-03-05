@@ -6,6 +6,7 @@ import { InputTypeEnum } from '../enums/input-type.enum';
 import { UnitsEnum } from '../enums/units.enum';
 import capitalizeFirstLetters from '../functions/first-letters-capitalized';
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
+import { StyleNameEnum } from '../enums/style-name.enum';
 
 export default class MarginOrPaddingComponent {
     private type;
@@ -144,6 +145,9 @@ export default class MarginOrPaddingComponent {
             .build()
 
         this.container = new ContainerBuilder()
+            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
+            .setStyle(StyleNameEnum.padding, '3px')
+            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new LabelBuilder()
                 .setInnerText(`${capitalizeFirstLetters(this.type)} Selector`)
                 .build()

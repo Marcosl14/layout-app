@@ -49,6 +49,8 @@ export default class DisplayAsParentComponent {
                 .setStyle(StyleNameEnum.display, 'flex')
                 .setStyle(StyleNameEnum['flex-direction'], 'column')
                 .setStyle(StyleNameEnum['align-items'], 'stretch')
+                .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
+                .setStyle(StyleNameEnum.padding, '3px')
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Display Settings')

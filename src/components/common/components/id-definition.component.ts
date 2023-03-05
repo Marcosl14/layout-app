@@ -5,6 +5,7 @@ import InputBuilder from '../models/InputBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 import ButtonBuilder from '../models/ButtonBuilder';
 import RawHTMLConponent from '../../html-components/RawHTMLComponent';
+import { StyleNameEnum } from '../enums/style-name.enum';
 
 export default class IdDefinitionComponent {
     private domElement: HTMLElement;
@@ -42,6 +43,9 @@ export default class IdDefinitionComponent {
             .build()
 
         this.container = new ContainerBuilder()
+            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
+            .setStyle(StyleNameEnum.padding, '3px')
+            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new LabelBuilder()
                 .setInnerText('Id Definition')
                 .build()
