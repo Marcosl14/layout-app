@@ -78,10 +78,11 @@ export default class Container extends RawHTMLConponent {
         // TODO creo que vamos a tener que hacer un index y que un selector despliegue estos componentes uno por uno, porque va a ser larguisima la lista de posibles modificaciones
 
         this.stylesComponents = new StylesComponentsBuilder()
-        .appendChild(this.addIdDefinitionComponent())
+            .appendChild(this.addIdDefinitionComponent())
             .appendChild(this.addMarginStyleComponent())
             .appendChild(this.addPaddingStyleComponent())
-            .appendChild(this.addDisplayTypeComponent())
+            .appendChild(this.addDisplayAsParentComponent())
+            .appendChild(this.addDisplayAsChildComponent())
             .appendChild(this.addRemoveElementComponent())
             .build();
     }

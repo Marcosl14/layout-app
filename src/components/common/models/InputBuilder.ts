@@ -16,4 +16,14 @@ export default class InputBuilder extends RawBuilder<HTMLInputElement>{
         this.element.checked = checked;
         return this;
     }
+
+    public setMax(max: number) {
+        this.element.max = `${max}`;
+        return this;
+    }
+
+    public setMin(min: number) {
+        this.element.min = `${min}`;
+        return this;
+    }
 }

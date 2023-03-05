@@ -1,9 +1,10 @@
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
 import ContainerBuilder from '../models/ContainerBuilder';
 import SelectorBuilder from '../models/SelectorBuilder';
+import LabelBuilder from '../models/LabelBuilder';
+
 import { DisplayTypesEnum } from '../enums/display-types.enum';
 import { FlexDirectionEnum } from '../enums/flex-direction.enum';
-import LabelBuilder from '../models/LabelBuilder';
 import { StyleNameEnum } from '../enums/style-name.enum';
 import { FlexWrapEnum } from '../enums/flex-wrap.enum';
 import { AlignItemsEnum } from '../enums/align-items.enum';
@@ -11,7 +12,7 @@ import { JustifyContentEnum } from '../enums/justify-content.enum';
 import { AlignContentEnum } from '../enums/align-content.enum';
 
 
-export default class DisplayComponent {
+export default class DisplayAsParentComponent {
     private domElement: HTMLElement;
     private container: HTMLDivElement;
     private domElementStyleSheet;
@@ -23,8 +24,7 @@ export default class DisplayComponent {
     private justifyContentSelector: HTMLSelectElement;
     private alignContentSelector: HTMLSelectElement;
 
-
-    private flexContainer: ContainerBuilder;
+    private flexContainerAsParent: ContainerBuilder;
 
     constructor(domElement: HTMLElement) {
         this.domElement = domElement;
@@ -74,15 +74,28 @@ export default class DisplayComponent {
 
     private addComponentAccordingToSelector() {
         const currentProperties = this.getCurrentProperties('display');
+                // TODO: ver como hariamos si existen varias clases...
+                // Quizas haya que implementar primero las clases...
 
         if (currentProperties === 'flex') {
             this.addFlexAsParentContainer();
-            this.container.appendChild(this.flexContainer.build())
+            this.container.appendChild(this.flexContainerAsParent.build())
         } else if (currentProperties === 'grid') {
             try {
                 // TODO: faltan propiedades del grid...
                 // TODO: eliminar del css todo lo que sea del flex...
-                this.container.removeChild(this.flexContainer.build());
+                this.container.removeChild(this.flexContainerAsParent.build());
+
+                this.domElementStyleSheet['flex-direction'] = '';
+                this.domElementStyleSheet['flex-wrap'] = '';
+                this.domElementStyleSheet['align-items'] = '';
+                this.domElementStyleSheet['justify-content'] = '';
+                this.domElementStyleSheet['align-content'] = '';
+
+                this.domElement.childNodes.forEach((child) => {
+                    CssStyleSheet.getRuleStyles(child['id'])['align-self'] = '';
+                    // TODO aca faltan propiedades para borrar en los hijos!!!!
+                })
             } catch {
                 return;
             }
@@ -90,19 +103,9 @@ export default class DisplayComponent {
             try {
                 // TODO: remover tambien propiedades del grid...
                 // TODO: eliminar del css todo lo que sea del flex...
-                this.container.removeChild(this.flexContainer.build());
+                this.container.removeChild(this.flexContainerAsParent.build());
             } catch {
                 return;
-            }
-        }
-
-        if (this.domElement.id !== 'app-container') {
-            if (CssStyleSheet.getRuleStyles(this.domElement.parentElement.id)['display'] === DisplayTypesEnum.flex) {
-                // TODO: ver como hariamos si existen varias clases...
-                // Quizas haya que implementar primero las clases...
-                this.addFlexAsChildrenContainer();
-
-                // TODO que pasa si el padre elimina el flex... que hacemos con los hijos... Deberiamos eliminarles las propiedades fles as child element
             }
         }
     }
@@ -143,7 +146,7 @@ export default class DisplayComponent {
             .addEventListener('change', this.changeAlignContent)
             .build()
 
-        this.flexContainer = new ContainerBuilder()
+        this.flexContainerAsParent = new ContainerBuilder()
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
                 .setStyle(StyleNameEnum.padding, '3px')
@@ -152,7 +155,7 @@ export default class DisplayComponent {
                     .setStyle(StyleNameEnum.display, 'flex')
                     .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                     .appendChild(new LabelBuilder()
-                        .setInnerText('Flex as Parent')
+                        .setInnerText('Display Flex as Parent')
                         .build()
                     )
                     .build()
@@ -164,20 +167,6 @@ export default class DisplayComponent {
                 .appendChild(this.buildGenericSelectorContainer('Align Content', this.alignContentSelector))
                 .build()
             )
-    }
-
-    private buildGenericSelectorContainer(label: string, selector: HTMLSelectElement) {
-        return new ContainerBuilder()
-            .setStyle(StyleNameEnum.display, 'flex')
-            .setStyle(StyleNameEnum['flex-direction'], 'column')
-            .setStyle(StyleNameEnum['align-items'], 'stretch')
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-            .appendChild(new LabelBuilder()
-                .setInnerText(label)
-                .build()
-            )
-            .appendChild(selector)
-            .build()
     }
 
     private changeFlexDirection() {
@@ -200,16 +189,17 @@ export default class DisplayComponent {
         this.domElementStyleSheet['align-content'] = this.alignContentSelector.value;
     }
 
-    private addFlexAsChildrenContainer() {
-        this.container.appendChild(new ContainerBuilder()
-            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-            .setStyle(StyleNameEnum.padding, '3px')
+    private buildGenericSelectorContainer(label: string, selector: HTMLSelectElement) {
+        return new ContainerBuilder()
+            .setStyle(StyleNameEnum.display, 'flex')
+            .setStyle(StyleNameEnum['flex-direction'], 'column')
+            .setStyle(StyleNameEnum['align-items'], 'stretch')
             .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new LabelBuilder()
-                .setInnerText('Flex As Child')
+                .setInnerText(label)
                 .build()
             )
+            .appendChild(selector)
             .build()
-        )
     }
 }
