@@ -52,6 +52,7 @@ export default class Button extends RawHTMLConponent {
             .appendChild(this.addInnerTextChangeComponent())
             .appendChild(this.addMarginStyleComponent())
             .appendChild(this.addPaddingStyleComponent())
+            .appendChild(this.addDisplayAsChildComponent())
             .appendChild(this.addRemoveElementComponent())
             .build();
     }

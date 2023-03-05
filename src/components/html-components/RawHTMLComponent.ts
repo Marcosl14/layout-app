@@ -1,4 +1,4 @@
-import DisplayComponent from '../common/components/display.component';
+import DisplayAsParentComponent from '../common/components/display-as-parent.component';
 import GenericPrimaryInputComponent from '../common/components/generic-primary-input.component';
 import GenericPrimarySelectorComponent from '../common/components/generic-primary-selector.component';
 import IdDefinitionComponent from '../common/components/id-definition.component';
@@ -7,6 +7,8 @@ import ButtonBuilder from '../common/models/ButtonBuilder';
 
 import { InputTypeEnum } from '../common/enums/input-type.enum';
 import { StyleNameEnum } from '../common/enums/style-name.enum';
+import DisplayAsChildComponent from '../common/components/display-as-child.component';
+import LabelBuilder from '../common/models/LabelBuilder';
 
 export default abstract class RawHTMLConponent {
     protected _domElement: HTMLElement;
@@ -64,7 +66,17 @@ export default abstract class RawHTMLConponent {
         return new GenericPrimarySelectorComponent(this._domElement, 'type', 'Input Type Selector', InputTypeEnum).component;
     }
 
-    protected addDisplayTypeComponent() {
-        return new DisplayComponent(this._domElement).component;
+    addLabelComponent(label: string) {
+        return new LabelBuilder()
+            .setInnerText(label)
+            .build()
+    }
+
+    protected addDisplayAsParentComponent() {
+        return new DisplayAsParentComponent(this._domElement).component;
+    }
+
+    protected addDisplayAsChildComponent() {
+        return new DisplayAsChildComponent(this._domElement).component;
     }
 }

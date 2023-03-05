@@ -1,4 +1,4 @@
-import DisplayComponent from '../common/components/display.component';
+import DisplayComponent from '../common/components/display-as-parent.component';
 import MarginOrPaddingComponent from '../common/components/margin-or-padding.component';
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
 import componentsIndex from '../html-components/componentsIndex';
