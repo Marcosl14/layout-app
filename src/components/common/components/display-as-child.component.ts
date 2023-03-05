@@ -17,7 +17,8 @@ export default class DisplayAsChildComponent {
 
     private alignSelfSelector: HTMLSelectElement;
     private flexGrowInput: HTMLInputElement;
-    private flexShrikInput: HTMLInputElement;
+    private flexShrinkInput: HTMLInputElement;
+    private flexBasisInput: HTMLInputElement;
 
     private flexContainerAsChildren: ContainerBuilder;
 
@@ -55,7 +56,8 @@ export default class DisplayAsChildComponent {
     private addFlexAsChildrenContainer() {
         this.changeAlignSelf = this.changeAlignSelf.bind(this);
         this.changeFlexGrow = this.changeFlexGrow.bind(this);
-        this.changeShrinkGrow = this.changeShrinkGrow.bind(this);
+        this.changeFlexShrink = this.changeFlexShrink.bind(this);
+        this.changeFlexBasis = this.changeFlexBasis.bind(this);
 
         this.alignSelfSelector = new SelectorBuilder(AlignSelfEnum)
             .selectOption(this.domElementStyleSheet['align-self'])
@@ -69,11 +71,18 @@ export default class DisplayAsChildComponent {
             .addEventListener('input', this.changeFlexGrow)
             .build();
 
-        this.flexShrikInput = new InputBuilder(InputTypeEnum.number)
+        this.flexShrinkInput = new InputBuilder(InputTypeEnum.number)
             .setValue(`${parseInt(this.domElementStyleSheet['flex-shrink'])}`)
             .setMax(1000)
             .setMin(0)
-            .addEventListener('input', this.changeShrinkGrow)
+            .addEventListener('input', this.changeFlexShrink)
+            .build();
+
+        this.flexBasisInput = new InputBuilder(InputTypeEnum.number)
+            .setValue(`${parseInt(this.domElementStyleSheet['flex-basis'])}`)
+            .setMax(1000)
+            .setMin(0)
+            .addEventListener('input', this.changeFlexBasis)
             .build();
 
         this.flexContainerAsChildren = new ContainerBuilder()
@@ -92,7 +101,8 @@ export default class DisplayAsChildComponent {
                 )
                 .appendChild(this.buildGenericSelectorContainer('Align Self', this.alignSelfSelector))
                 .appendChild(this.buildGenericInputContainer('Flex Grow', this.flexGrowInput))
-                .appendChild(this.buildGenericInputContainer('Flex Shrink', this.flexShrikInput))
+                .appendChild(this.buildGenericInputContainer('Flex Shrink', this.flexShrinkInput))
+                .appendChild(this.buildGenericInputContainer('Flex Basis (%)', this.flexBasisInput))
                 .build()
             )
     }
@@ -105,8 +115,12 @@ export default class DisplayAsChildComponent {
         this.domElementStyleSheet['flex-grow'] = this.flexGrowInput.value;
     }
 
-    private changeShrinkGrow() {
-        this.domElementStyleSheet['flex-shrink'] = this.flexShrikInput.value;
+    private changeFlexShrink() {
+        this.domElementStyleSheet['flex-shrink'] = this.flexShrinkInput.value;
+    }
+
+    private changeFlexBasis() {
+        this.domElementStyleSheet['flex-basis'] = `${this.flexBasisInput.value}%`;
     }
 
     private buildGenericSelectorContainer(label: string, selector: HTMLSelectElement) {
@@ -123,7 +137,6 @@ export default class DisplayAsChildComponent {
             .build()
     }
 
-    // TODO: Esto deberia ser un componente generico....
     private buildGenericInputContainer(label: string, input: HTMLInputElement) {
         return new ContainerBuilder()
             .setStyle(StyleNameEnum.display, 'flex')
