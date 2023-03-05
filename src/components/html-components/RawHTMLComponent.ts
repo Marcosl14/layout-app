@@ -11,6 +11,7 @@ import DisplayAsChildComponent from '../common/components/display-as-child.compo
 import LabelBuilder from '../common/models/LabelBuilder';
 import BorderComponent from '../common/components/border.component';
 import ContainerBuilder from '../common/models/ContainerBuilder';
+import BackgroundComponent from '../common/components/background.component';
 
 export default abstract class RawHTMLConponent {
     protected _domElement: HTMLElement;
@@ -107,5 +108,9 @@ export default abstract class RawHTMLConponent {
 
     protected addBorderSettingsComponent() {
         return new BorderComponent(this._domElement).component;
+    }
+
+    protected addBackgroundSettingsComponent() {
+        return new BackgroundComponent(this._domElement).component;
     }
 }

@@ -7,6 +7,7 @@ import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
 import { BorderStyleEnum } from '../enums/border-style.enum';
 import { UnitsEnum } from '../enums/units.enum';
 import { StyleNameEnum } from '../enums/style-name.enum';
+import rgbToHex from '../functions/rgb-to-hex';
 
 export default class BorderComponent {
     private domElement: HTMLElement;
@@ -270,8 +271,6 @@ export default class BorderComponent {
     private buildBorderWidthUnitsSelectors() {
         const [top, right, bottom, left] = this.getCurrentBorderWidth();
 
-        console.log(this.getCurrentBorderWidth())
-
         this.topBorderWidthUnitSelector = new SelectorBuilder(UnitsEnum)
             .selectOption(this.getUnit(top))
             .addEventListener('change', this.updateBorderWidth)
@@ -410,7 +409,7 @@ export default class BorderComponent {
         const bottom = CssStyleSheet.getRuleStyles(this.domElement.id)['border-bottom-color'];
         const left = CssStyleSheet.getRuleStyles(this.domElement.id)['border-left-color'];
 
-        return [this.rgbToHex(top),this.rgbToHex(right),this.rgbToHex(bottom),this.rgbToHex(left)];
+        return [rgbToHex(top),rgbToHex(right),rgbToHex(bottom),rgbToHex(left)];
     }
 
     private getCurrentBorderWidth(): string[] {
@@ -420,16 +419,6 @@ export default class BorderComponent {
         const left = CssStyleSheet.getRuleStyles(this.domElement.id)['border-left-width'];
 
         return [top,right,bottom,left];
-    }
-
-    private rgbToHex(text: string) {
-        const [r,g,b] = text.replace(/[^\d,]+/g, '').split(',');
-        return '#' + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
-    }
-
-    private componentToHex(c) {
-        const hex = parseInt(c).toString(16);
-        return hex.length === 1 ? '0' + hex : hex;
     }
 
     private getUnit(text: string) {
