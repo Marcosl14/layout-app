@@ -1,5 +1,10 @@
+body {
+    height: 98vh;
+}
+
 #main-container {
     display: flex;
+    height: 100%;
 }
 
 #components-container {
@@ -9,8 +14,20 @@
     border-radius: 5px;
     border-color: black;
     margin-right: 5px;
-    width: 400px;
+    width: 300px;
     padding: 10px;
+
+    overflow-y:auto;
+}
+
+#app-container-fixed {
+    box-sizing: border-box;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    border-color: black;
+    
+    overflow:auto;
 }
 
 #actions-container {
@@ -24,6 +41,8 @@
     margin-left: 5px;
     padding: 5px;
     width: 400px;
+
+    overflow-y:auto;
 }
 
 #actions-container > div > *:not(label) {
@@ -74,5 +93,13 @@
 
 .drag-leave {
     border: dashed 1px green;
+    background-color: white;
+}
+
+.drag-enter-app {
+    background-color: aquamarine;
+}
+
+.drag-leave-app {
     background-color: white;
 }

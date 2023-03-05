@@ -267,7 +267,7 @@ export default class MarginOrPaddingComponent {
             left = properties[3];
         }
 
-        return [top, right, bottom, left];
+        return [top ? top : '0px', right ? right : '0px', bottom ? bottom : '0px', left ? left : '0px'];
     }
 
     private getUnit(text: string) {

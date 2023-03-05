@@ -33,6 +33,16 @@ export default class BorderComponent {
     private bottomBorderWidthUnitSelector: HTMLSelectElement;
     private leftBorderWidthUnitSelector: HTMLSelectElement;
 
+    private topBorderRadiusInput: HTMLInputElement;
+    private rightBorderRadiusInput: HTMLInputElement;
+    private bottomBorderRadiusInput: HTMLInputElement;
+    private leftBorderRadiusInput: HTMLInputElement;
+
+    private topBorderRadiusUnitSelector: HTMLSelectElement;
+    private rightBorderRadiusUnitSelector: HTMLSelectElement;
+    private bottomBorderRadiusUnitSelector: HTMLSelectElement;
+    private leftBorderRadiusUnitSelector: HTMLSelectElement;
+
     private selectAllCheckBox: HTMLInputElement;
 
     constructor(domElement: HTMLElement) {
@@ -48,12 +58,14 @@ export default class BorderComponent {
         this.updateBorderStyleProperty = this.updateBorderStyleProperty.bind(this);
         this.updateBorderColor = this.updateBorderColor.bind(this);
         this.updateBorderWidth = this.updateBorderWidth.bind(this);
+        this.updateBorderRadius = this.updateBorderRadius.bind(this);
 
         this.selectAllCheckBox = new InputBuilder(InputTypeEnum.checkbox)
             .checked()
             .addEventListener('change', this.updateBorderStyleProperty)
             .addEventListener('change', this.updateBorderColor)
             .addEventListener('change', this.updateBorderWidth)
+            .addEventListener('change', this.updateBorderRadius)
             .build()
 
         const selectAllContainer = new ContainerBuilder()
@@ -65,19 +77,18 @@ export default class BorderComponent {
             .build()
 
         this.buildColorInputs();
-
         this.buildStyleSelectors();
-
-        this.buildBorderWidthInpus();
-
+        this.buildBorderWidthInputs();
         this.buildBorderWidthUnitsSelectors();
+        this.buildBorderRadiusInputs()
+        this.buildBorderRadiusUnitsSelectors();
 
         const topContainer = new ContainerBuilder()
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, 'flex')
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
-                    .setInnerText('Top')
+                    .setInnerText('Top Border Color / Style')
                     .build()
                 )
                 .build()
@@ -92,8 +103,33 @@ export default class BorderComponent {
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, 'flex')
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Top Border Width')
+                    .build()
+                )
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.topBorderWidthInput)
                 .appendChild(this.topBorderWidthUnitSelector)
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Top Border Radius')
+                    .build()
+                )
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(this.topBorderRadiusInput)
+                .appendChild(this.topBorderRadiusUnitSelector)
                 .build()
             )
             .build()
@@ -103,7 +139,7 @@ export default class BorderComponent {
                 .setStyle(StyleNameEnum.display, 'flex')
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
-                    .setInnerText('Right')
+                    .setInnerText('Right Border Color / Style')
                     .build()
                 )
                 .build()
@@ -118,8 +154,33 @@ export default class BorderComponent {
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, 'flex')
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Right Border Width')
+                    .build()
+                )
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.rightBorderWidthInput)
                 .appendChild(this.rightBorderWidthUnitSelector)
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Right Border Radius')
+                    .build()
+                )
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(this.rightBorderRadiusInput)
+                .appendChild(this.rightBorderRadiusUnitSelector)
                 .build()
             )
             .build()
@@ -129,7 +190,7 @@ export default class BorderComponent {
                 .setStyle(StyleNameEnum.display, 'flex')
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
-                    .setInnerText('Bottom')
+                    .setInnerText('Bottom Border Color / Style')
                     .build()
                 )
                 .build()
@@ -144,8 +205,33 @@ export default class BorderComponent {
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, 'flex')
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Bottom Border Width')
+                    .build()
+                )
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.bottomBorderWidthInput)
                 .appendChild(this.bottomBorderWidthUnitSelector)
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Bottom Border Radius')
+                    .build()
+                )
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(this.bottomBorderRadiusInput)
+                .appendChild(this.bottomBorderRadiusUnitSelector)
                 .build()
             )
             .build()
@@ -155,7 +241,7 @@ export default class BorderComponent {
                 .setStyle(StyleNameEnum.display, 'flex')
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
-                    .setInnerText('Left')
+                    .setInnerText('Left Border Color / Style')
                     .build()
                 )
                 .build()
@@ -170,8 +256,33 @@ export default class BorderComponent {
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, 'flex')
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Left Border Width')
+                    .build()
+                )
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.leftBorderWidthInput)
                 .appendChild(this.leftBorderWidthUnitSelector)
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Left Border Radius')
+                    .build()
+                )
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(this.leftBorderRadiusInput)
+                .appendChild(this.leftBorderRadiusUnitSelector)
                 .build()
             )
             .build()
@@ -244,7 +355,7 @@ export default class BorderComponent {
             .build()
     }
 
-    private buildBorderWidthInpus() {
+    private buildBorderWidthInputs() {
         const [top, right, bottom, left] = this.getCurrentBorderWidth();
 
         this.topBorderWidthInput = new InputBuilder(InputTypeEnum.number)
@@ -292,11 +403,59 @@ export default class BorderComponent {
             .build()
     }
 
+    private buildBorderRadiusInputs() {
+        const [top, right, bottom, left] = this.getCurrentBorderRadius();
+
+        this.topBorderRadiusInput = new InputBuilder(InputTypeEnum.number)
+            .setValue(`${parseInt(top)}`)
+            .addEventListener('input', this.updateBorderRadius)
+            .build();
+        this.rightBorderRadiusInput = new InputBuilder(InputTypeEnum.number)
+            .setValue(`${parseInt(right)}`)
+            .disabled(this.selectAllCheckBox.checked)
+            .addEventListener('change', this.updateBorderRadius)
+            .build()
+        this.bottomBorderRadiusInput = new InputBuilder(InputTypeEnum.number)
+            .setValue(`${parseInt(bottom)}`)
+            .disabled(this.selectAllCheckBox.checked)
+            .addEventListener('change', this.updateBorderRadius)
+            .build()
+        this.leftBorderRadiusInput = new InputBuilder(InputTypeEnum.number)
+            .setValue(`${parseInt(left)}`)
+            .disabled(this.selectAllCheckBox.checked)
+            .addEventListener('change', this.updateBorderRadius)
+            .build()
+    }
+
+    private buildBorderRadiusUnitsSelectors() {
+        const [top, right, bottom, left] = this.getCurrentBorderRadius();
+
+        this.topBorderRadiusUnitSelector = new SelectorBuilder(UnitsEnum)
+            .selectOption(this.getUnit(top))
+            .addEventListener('change', this.updateBorderRadius)
+            .build()
+        this.rightBorderRadiusUnitSelector = new SelectorBuilder(UnitsEnum)
+            .selectOption(this.getUnit(right))
+            .disabled(this.selectAllCheckBox.checked)
+            .addEventListener('change', this.updateBorderRadius)
+            .build()
+        this.bottomBorderRadiusUnitSelector = new SelectorBuilder(UnitsEnum)
+            .selectOption(this.getUnit(bottom))
+            .disabled(this.selectAllCheckBox.checked)
+            .addEventListener('change', this.updateBorderRadius)
+            .build()
+        this.leftBorderRadiusUnitSelector = new SelectorBuilder(UnitsEnum)
+            .selectOption(this.getUnit(left))
+            .disabled(this.selectAllCheckBox.checked)
+            .addEventListener('change', this.updateBorderRadius)
+            .build()
+    }
+
     private updateBorderStyleProperty() {
         // TODO si el border style es none, deberia eliminar los border-colors y el border-width
         let [top, right, bottom, left] = this.getCurrentBorderStyle();
 
-        if(this.selectAllCheckBox.checked){
+        if (this.selectAllCheckBox.checked) {
             this.rightStyleSelector.disabled = true;
             this.bottomStyleSelector.disabled = true;
             this.leftStyleSelector.disabled = true;
@@ -326,7 +485,7 @@ export default class BorderComponent {
     private updateBorderColor() {
         let [top, right, bottom, left] = this.getCurrentBorderColor();
 
-        if(this.selectAllCheckBox.checked){
+        if (this.selectAllCheckBox.checked) {
             this.rightBorderColorInput.disabled = true;
             this.bottomBorderColorInput.disabled = true;
             this.leftBorderColorInput.disabled = true;
@@ -356,7 +515,7 @@ export default class BorderComponent {
     private updateBorderWidth() {
         let [top, right, bottom, left] = this.getCurrentBorderWidth();
 
-        if(this.selectAllCheckBox.checked){
+        if (this.selectAllCheckBox.checked) {
             this.rightBorderWidthInput.disabled = true;
             this.bottomBorderWidthInput.disabled = true;
             this.leftBorderWidthInput.disabled = true;
@@ -394,13 +553,54 @@ export default class BorderComponent {
         CssStyleSheet.getRuleStyles(this.domElement.id)['border-width'] = [top, right, bottom, left].join(' ')
     }
 
+    private updateBorderRadius() {
+        let [top, right, bottom, left] = this.getCurrentBorderRadius();
+
+        if (this.selectAllCheckBox.checked) {
+            this.rightBorderRadiusInput.disabled = true;
+            this.bottomBorderRadiusInput.disabled = true;
+            this.leftBorderRadiusInput.disabled = true;
+
+            this.rightBorderRadiusUnitSelector.disabled = true;
+            this.bottomBorderRadiusUnitSelector.disabled = true;
+            this.leftBorderRadiusUnitSelector.disabled = true;
+
+            top = `${this.topBorderRadiusInput.value}${this.topBorderRadiusUnitSelector.value}`;
+            right = top;
+            bottom = top;
+            left = top;
+
+            this.rightBorderRadiusInput.value = this.topBorderRadiusInput.value;
+            this.bottomBorderRadiusInput.value = this.topBorderRadiusInput.value;
+            this.leftBorderRadiusInput.value = this.topBorderRadiusInput.value;
+
+            this.rightBorderRadiusUnitSelector.value = this.topBorderRadiusUnitSelector.value;
+            this.bottomBorderRadiusUnitSelector.value = this.topBorderRadiusUnitSelector.value;
+            this.leftBorderRadiusUnitSelector.value = this.topBorderRadiusUnitSelector.value;
+        } else {
+            this.rightBorderRadiusInput.disabled = false;
+            this.bottomBorderRadiusInput.disabled = false;
+            this.leftBorderRadiusInput.disabled = false;
+
+            this.rightBorderRadiusUnitSelector.disabled = false;
+            this.bottomBorderRadiusUnitSelector.disabled = false;
+            this.leftBorderRadiusUnitSelector.disabled = false;
+
+            top = `${this.topBorderRadiusInput.value}${this.topBorderRadiusUnitSelector.value}`;
+            right = `${this.rightBorderRadiusInput.value}${this.rightBorderRadiusUnitSelector.value}`;
+            bottom = `${this.bottomBorderRadiusInput.value}${this.bottomBorderRadiusUnitSelector.value}`;
+            left = `${this.leftBorderRadiusInput.value}${this.leftBorderRadiusUnitSelector.value}`;
+        }
+        CssStyleSheet.getRuleStyles(this.domElement.id)['border-radius'] = [top, right, bottom, left].join(' ')
+    }
+
     private getCurrentBorderStyle(): string[] {
         const top = CssStyleSheet.getRuleStyles(this.domElement.id)['border-top-style'];
         const right = CssStyleSheet.getRuleStyles(this.domElement.id)['border-right-style'];
         const bottom = CssStyleSheet.getRuleStyles(this.domElement.id)['border-bottom-style'];
         const left = CssStyleSheet.getRuleStyles(this.domElement.id)['border-left-style'];
 
-        return [top,right,bottom,left];
+        return [top ? top : 'none', right ? right : 'none', bottom ? bottom : 'none', left ? left : 'none'];
     }
 
     private getCurrentBorderColor(): string[] {
@@ -409,7 +609,7 @@ export default class BorderComponent {
         const bottom = CssStyleSheet.getRuleStyles(this.domElement.id)['border-bottom-color'];
         const left = CssStyleSheet.getRuleStyles(this.domElement.id)['border-left-color'];
 
-        return [rgbToHex(top),rgbToHex(right),rgbToHex(bottom),rgbToHex(left)];
+        return [rgbToHex(top), rgbToHex(right), rgbToHex(bottom), rgbToHex(left)];
     }
 
     private getCurrentBorderWidth(): string[] {
@@ -418,7 +618,16 @@ export default class BorderComponent {
         const bottom = CssStyleSheet.getRuleStyles(this.domElement.id)['border-bottom-width'];
         const left = CssStyleSheet.getRuleStyles(this.domElement.id)['border-left-width'];
 
-        return [top,right,bottom,left];
+        return [top ? top : '0px', right ? right : '0px', bottom ? bottom : '0px', left ? left : '0px'];
+    }
+
+    private getCurrentBorderRadius(): string[] {
+        const top = CssStyleSheet.getRuleStyles(this.domElement.id)['border-top-left-radius'];
+        const right = CssStyleSheet.getRuleStyles(this.domElement.id)['border-top-right-radius'];
+        const bottom = CssStyleSheet.getRuleStyles(this.domElement.id)['border-bottom-right-radius'];
+        const left = CssStyleSheet.getRuleStyles(this.domElement.id)['border-bottom-left-radius'];
+
+        return [top ? top : '0px', right ? right : '0px', bottom ? bottom : '0px', left ? left : '0px'];
     }
 
     private getUnit(text: string) {
