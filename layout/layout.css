@@ -1,7 +1,9 @@
 .app-container {
-    border: dashed 1px green;
-    padding: 10px;
-    width: 100%;
     display: flex;
     flex-direction: column;
+
+    /* Esto debe ser modificable desde el dom*/
+    height: 1080px;
+    width: 1920px;
+    /* Esto debe ser modificable desde el dom*/
 }

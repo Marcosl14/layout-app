@@ -27,24 +27,24 @@ export default class InitAppContainer {
 
     private dragEnter(event: any) {
         event.preventDefault();
-        this.appContainer.classList.add('drag-enter');
-        this.appContainer.classList.remove('drag-leave');
+        this.appContainer.classList.add('drag-enter-app');
+        this.appContainer.classList.remove('drag-leave-app');
     }
 
     private dragOver(event: any) {
         event.preventDefault();
-        this.appContainer.classList.add('drag-enter');
-        this.appContainer.classList.remove('drag-leave');
+        this.appContainer.classList.add('drag-enter-app');
+        this.appContainer.classList.remove('drag-leave-app');
     }
 
     private dragLeave() {
-        this.appContainer.classList.add('drag-leave');
-        this.appContainer.classList.remove('drag-enter');
+        this.appContainer.classList.add('drag-leave-app');
+        this.appContainer.classList.remove('drag-enter-app');
     }
 
     private drop(event: any) {
-        this.appContainer.classList.add('drag-leave');
-        this.appContainer.classList.remove('drag-enter');
+        this.appContainer.classList.add('drag-leave-app');
+        this.appContainer.classList.remove('drag-enter-app');
 
         if (event.target.nodeName !== 'DIV') {
             return;
