@@ -34,13 +34,6 @@ export default class DisplayAsChildComponent {
 
     private addComponents() {
         this.container = new ContainerBuilder()
-            .appendChild(new ContainerBuilder()
-                .setStyle(StyleNameEnum.display, 'flex')
-                .setStyle(StyleNameEnum['flex-direction'], 'column')
-                .setStyle(StyleNameEnum['align-items'], 'stretch')
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-                .build()
-            )
             .build();
 
         if (this.domElement.id !== 'app-container') {

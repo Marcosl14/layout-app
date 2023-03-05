@@ -68,7 +68,7 @@
 .dom-element-button:hover {opacity: 0.6}
 
 .drag-enter {
-    border: dashed 1px red;
+    border: dashed 1px red; 
     background-color: aquamarine;
 }
 

@@ -3,6 +3,7 @@ import ContainerBuilder from '../models/ContainerBuilder';
 import InputBuilder from '../models/InputBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 import ButtonBuilder from '../models/ButtonBuilder';
+import { StyleNameEnum } from '../enums/style-name.enum';
 
 export default class GenericPrimaryInputComponent {
     private domElement: HTMLElement;
@@ -42,6 +43,9 @@ export default class GenericPrimaryInputComponent {
             .build()
 
         this.container = new ContainerBuilder()
+            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
+            .setStyle(StyleNameEnum.padding, '3px')
+            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new LabelBuilder()
                 .setInnerText(this.label)
                 .build()
