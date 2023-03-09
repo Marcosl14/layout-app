@@ -3,4 +3,5 @@ export enum FlexDirectionEnum {
     'row-reverse' = 'row-reverse',
     column = 'column',
     'column-reverse' = 'column-reverse',
+    none = ''
 }

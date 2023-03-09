@@ -48,6 +48,8 @@ export default class BorderComponent {
     constructor(domElement: HTMLElement) {
         this.domElement = domElement;
         this.addComponents();
+
+        // TODO: falta el border-shadow
     }
 
     get component() {
@@ -360,20 +362,24 @@ export default class BorderComponent {
 
         this.topBorderWidthInput = new InputBuilder(InputTypeEnum.number)
             .setValue(`${parseInt(top)}`)
+            .setMin(0)
             .addEventListener('input', this.updateBorderWidth)
             .build();
         this.rightBorderWidthInput = new InputBuilder(InputTypeEnum.number)
             .setValue(`${parseInt(right)}`)
+            .setMin(0)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderWidth)
             .build()
         this.bottomBorderWidthInput = new InputBuilder(InputTypeEnum.number)
             .setValue(`${parseInt(bottom)}`)
+            .setMin(0)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderWidth)
             .build()
         this.leftBorderWidthInput = new InputBuilder(InputTypeEnum.number)
             .setValue(`${parseInt(left)}`)
+            .setMin(0)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderWidth)
             .build()
@@ -408,20 +414,24 @@ export default class BorderComponent {
 
         this.topBorderRadiusInput = new InputBuilder(InputTypeEnum.number)
             .setValue(`${parseInt(top)}`)
+            .setMin(0)
             .addEventListener('input', this.updateBorderRadius)
             .build();
         this.rightBorderRadiusInput = new InputBuilder(InputTypeEnum.number)
             .setValue(`${parseInt(right)}`)
+            .setMin(0)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderRadius)
             .build()
         this.bottomBorderRadiusInput = new InputBuilder(InputTypeEnum.number)
             .setValue(`${parseInt(bottom)}`)
+            .setMin(0)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderRadius)
             .build()
         this.leftBorderRadiusInput = new InputBuilder(InputTypeEnum.number)
             .setValue(`${parseInt(left)}`)
+            .setMin(0)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderRadius)
             .build()

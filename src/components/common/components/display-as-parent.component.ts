@@ -76,8 +76,6 @@ export default class DisplayAsParentComponent {
 
     private addComponentAccordingToSelector() {
         const currentProperties = this.getCurrentProperties('display');
-                // TODO: ver como hariamos si existen varias clases...
-                // Quizas haya que implementar primero las clases...
 
         if (currentProperties === 'flex') {
             this.addFlexAsParentContainer();

@@ -4,4 +4,5 @@ export enum JustifyContentEnum {
     center = 'center',
     'space-between' = 'space-between',
     'space-around' = 'space-around',
+    none = ''
 }
