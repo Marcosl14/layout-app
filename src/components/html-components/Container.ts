@@ -9,23 +9,22 @@ import { DisplayTypesEnum } from '../common/enums/display-types.enum';
 export default class Container extends RawHTMLConponent {
     private static iterator = 0;
 
+    // TODO falta propiedad scrollable
+
     constructor() {
         const id = defineElementId(`container${Container.iterator++}`, RawHTMLConponent.instances);
 
-        // las clases drag leave y drag enter deberian ser modificadas dinamicamente cuando asignamos un nuevo estilo al borde...
-        // creo que habria que asignarlas con un color opuesto al que tiene actualmente el borde o el background...
-
-        /* el border en el css es de desarrollo. Luego eliminar */
         CssStyleSheet.styleSheet.insertRule(`.${id} {
             margin: 10px;
             padding: 10px;
             display: ${DisplayTypesEnum.flex};
             flex-direction: column;
+            background-color: rgb(255,255,255);
+            border: 1px dashed black;
         }`);
 
         const element = new ContainerBuilder()
             .addCssClassName(id)
-            .addCssClassName('drag-leave')
             .setId(id)
             .draggable()
             .build();
@@ -79,8 +78,6 @@ export default class Container extends RawHTMLConponent {
     protected openElementConfigs(event) {
         event.stopPropagation();
 
-        // TODO creo que vamos a tener que hacer un index y que un selector despliegue estos componentes uno por uno, porque va a ser larguisima la lista de posibles modificaciones
-
         this.stylesComponents = new StylesComponentsBuilder()
             .appendChild(this.addIdDefinitionComponent())
             .appendChild(this.addMarginStyleComponent())
@@ -92,7 +89,4 @@ export default class Container extends RawHTMLConponent {
             .appendChild(this.addActionsComponents())
             .build();
     }
-
-    // TODO falta un mouse over para que cuando pasemos por encima del contenedor, sepamos que contenedor es.
-    // Y obvio que falta el mouse leave...
 }

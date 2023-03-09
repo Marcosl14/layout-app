@@ -4,4 +4,5 @@ export enum AlignItemsEnum {
     center = 'center',
     baseline = 'baseline',
     stretch = 'stretch',
+    none = ''
 }

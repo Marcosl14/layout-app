@@ -5,4 +5,5 @@ export enum AlignSelfEnum {
     center = 'center',
     'baseline' = 'baseline',
     stretch = 'stretch',
+    none = '',
 }

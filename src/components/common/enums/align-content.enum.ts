@@ -5,4 +5,5 @@ export enum AlignContentEnum {
     'space-between' = 'space-between',
     'space-around' = 'space-around',
     stretch = 'stretch',
+    none = '',
 }

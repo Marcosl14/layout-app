@@ -1,9 +1,16 @@
 .app-container {
     display: flex;
     flex-direction: column;
+    background-color: rgb(255,255,255);
 
-    /* Esto debe ser modificable desde el dom*/
     height: 1080px;
     width: 1920px;
-    /* Esto debe ser modificable desde el dom*/
+}
+
+.drag-enter-app {
+    background-color: aquamarine;
+}
+
+.drag-leave-app {
+    background-color: white;
 }
