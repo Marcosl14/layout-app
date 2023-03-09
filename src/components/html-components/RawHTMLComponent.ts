@@ -12,6 +12,7 @@ import LabelBuilder from '../common/models/LabelBuilder';
 import BorderComponent from '../common/components/border.component';
 import ContainerBuilder from '../common/models/ContainerBuilder';
 import BackgroundComponent from '../common/components/background.component';
+import contants from '../common/constants/constants';
 
 export default abstract class RawHTMLConponent {
     protected _domElement: HTMLElement;
@@ -112,5 +113,12 @@ export default abstract class RawHTMLConponent {
 
     protected addBackgroundSettingsComponent() {
         return new BackgroundComponent(this._domElement).component;
+    }
+
+    protected dragLeave(event: any) {
+        event.stopPropagation();
+        if(this._domElement.parentElement.tagName === 'DIV') {
+            this._domElement.parentElement.style.backgroundColor = contants.INVERTED_BACKGROUND_COLOR;
+        }
     }
 }

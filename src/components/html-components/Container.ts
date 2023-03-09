@@ -5,9 +5,13 @@ import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
 
 import { DisplayTypesEnum } from '../common/enums/display-types.enum';
+import constants from '../common/constants/constants';
 
 export default class Container extends RawHTMLConponent {
     private static iterator = 0;
+
+    private backgroundColor: string;
+    private fatherBackgroundColor: string;
 
     // TODO falta propiedad scrollable
 
@@ -31,18 +35,24 @@ export default class Container extends RawHTMLConponent {
 
         super(element);
 
-        this.openElementConfigs = this.openElementConfigs.bind(this);
         this.dragEnter = this.dragEnter.bind(this);
-        this.dragOver = this.dragOver.bind(this);
-        this.dragLeave = this.dragLeave.bind(this);
+        this.dragLeaveForThisElement = this.dragLeaveForThisElement.bind(this);
         this.drop = this.drop.bind(this);
 
-        element.addEventListener('dragstart', this.dragStartWithTargetId);
-        element.addEventListener('dragenter', this.dragEnter)
-        element.addEventListener('dragover', this.dragOver)
-        element.addEventListener('dragleave', this.dragLeave)
-        element.addEventListener('drop', this.drop)
-        element.addEventListener('click', this.openElementConfigs);
+        this.mouseOver = this.mouseOver.bind(this);
+        this.mouseLeave = this.mouseLeave.bind(this);
+
+        this.openElementConfigs = this.openElementConfigs.bind(this);
+
+        this._domElement.addEventListener('dragstart', this.dragStartWithTargetId);
+        this._domElement.addEventListener('dragenter', this.dragEnter);
+        this._domElement.addEventListener('dragleave', this.dragLeaveForThisElement);
+        this._domElement.addEventListener('drop', this.drop);
+
+        this._domElement.addEventListener('mouseenter', this.mouseOver);
+        this._domElement.addEventListener('mouseleave', this.mouseLeave);
+
+        this._domElement.addEventListener('click', this.openElementConfigs);
     }
 
     get domElement(){
@@ -50,29 +60,35 @@ export default class Container extends RawHTMLConponent {
     }
 
     private dragEnter(event: any) {
-        event.preventDefault();
         event.stopPropagation();
-        this._domElement.classList.remove('drag-leave');
-        this._domElement.classList.add('drag-enter');
+
+        this.backgroundColor = CssStyleSheet.getRuleStyles(this.domElement.id)['background-color'];
+        this.fatherBackgroundColor = CssStyleSheet.getRuleStyles(this.domElement.parentElement.id)['background-color'];
+        this.domElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
+        this.domElement.parentElement.style.backgroundColor = '';
     }
 
-    private dragOver(event: any) {
-        event.preventDefault();
+    private dragLeaveForThisElement(event: any) {
         event.stopPropagation();
-        this._domElement.classList.remove('drag-leave');
-        this._domElement.classList.add('drag-enter');
-    }
 
-    private dragLeave(event: any) {
-        event.preventDefault();
-        event.stopPropagation();
-        this._domElement.classList.remove('drag-enter');
-        this._domElement.classList.add('drag-leave');
+        this.domElement.style.backgroundColor = '';
     }
 
     private drop() {
-        this._domElement.classList.remove('drag-enter');
-        this._domElement.classList.add('drag-leave');
+        this.domElement.style.backgroundColor = '';
+        this.domElement.parentElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
+    }
+
+    private mouseOver() {
+        this.backgroundColor = CssStyleSheet.getRuleStyles(this.domElement.id)['background-color'];
+        this.fatherBackgroundColor = CssStyleSheet.getRuleStyles(this.domElement.parentElement.id)['background-color'];
+        this._domElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
+        this._domElement.parentElement.style.backgroundColor = '';
+    }
+
+    private mouseLeave() {
+        this._domElement.style.backgroundColor = '';
+        this._domElement.parentElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
     }
 
     protected openElementConfigs(event) {
