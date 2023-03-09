@@ -6,11 +6,3 @@
     height: 1080px;
     width: 1920px;
 }
-
-.drag-enter-app {
-    background-color: aquamarine;
-}
-
-.drag-leave-app {
-    background-color: white;
-}

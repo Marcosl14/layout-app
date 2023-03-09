@@ -3,6 +3,7 @@ import ButtonBuilder from '../common/models/ButtonBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
+import contants from '../common/constants/constants';
 
 export default class Button extends RawHTMLConponent {
     private static iterator = 0;
@@ -37,9 +38,11 @@ export default class Button extends RawHTMLConponent {
         super(element);
 
         this.openElementConfigs = this.openElementConfigs.bind(this);
+        this.dragLeave = this.dragLeave.bind(this);
 
-        element.addEventListener('dragstart', this.dragStartWithTargetId);
-        element.addEventListener('click', this.openElementConfigs);
+        this._domElement.addEventListener('dragstart', this.dragStartWithTargetId);
+        this._domElement.addEventListener('click', this.openElementConfigs);
+        this._domElement.addEventListener('dragleave', this.dragLeave);
     }
 
     get domElement() {

@@ -6,6 +6,7 @@ import componentsIndex from '../html-components/componentsIndex';
 import { StyleNameEnum } from '../common/enums/style-name.enum';
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 import BackgroundComponent from '../common/components/background.component';
+import constants from '../common/constants/constants';
 
 export default class InitAppContainer {
     private appContainer: HTMLDivElement;
@@ -14,7 +15,7 @@ export default class InitAppContainer {
     protected stylesComponents: HTMLDivElement;
 
     protected backgroundColor: string;
-    protected opositeBackgroundColor: string;
+    protected fatherBackgroundColor: string;
 
     // TODO falta propiedad scrollable
 
@@ -46,24 +47,20 @@ export default class InitAppContainer {
 
     private dragEnter(event: any) {
         event.preventDefault();
-        this.appContainer.classList.add('drag-enter-app');
-        this.appContainer.classList.remove('drag-leave-app');
+        this.backgroundColor = CssStyleSheet.getRuleStyles(this.appContainer.id)['background-color'];
+        this.appContainer.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
     }
 
     private dragOver(event: any) {
         event.preventDefault();
-        this.appContainer.classList.add('drag-enter-app');
-        this.appContainer.classList.remove('drag-leave-app');
     }
 
     private dragLeave() {
-        this.appContainer.classList.add('drag-leave-app');
-        this.appContainer.classList.remove('drag-enter-app');
+        this.appContainer.style.backgroundColor = '';
     }
 
     private drop(event: any) {
-        this.appContainer.classList.add('drag-leave-app');
-        this.appContainer.classList.remove('drag-enter-app');
+        this.appContainer.style.backgroundColor = '';
 
         if (event.target.nodeName !== 'DIV') {
             return;
