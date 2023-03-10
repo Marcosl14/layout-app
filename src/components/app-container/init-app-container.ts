@@ -32,17 +32,22 @@ export default class InitAppContainer {
         this.appContainerWidthInput.value = `${parseInt(this.getCurrentWidth())}`;
         this.appContainerWidthInput.addEventListener('input', this.changeAppContainerWidth);
 
-        this.openElementConfigs = this.openElementConfigs.bind(this);
         this.dragEnter = this.dragEnter.bind(this);
         this.dragOver = this.dragOver.bind(this);
         this.dragLeave = this.dragLeave.bind(this);
         this.drop = this.drop.bind(this);
 
+        this.openElementConfigs = this.openElementConfigs.bind(this);
+        this.changeSize = this.changeSize.bind(this);
+
         this.appContainer.addEventListener('dragenter', this.dragEnter);
         this.appContainer.addEventListener('dragover', this.dragOver);
         this.appContainer.addEventListener('dragleave', this.dragLeave);
         this.appContainer.addEventListener('drop', this.drop);
+
         this.appContainer.addEventListener('click', this.openElementConfigs);
+
+        this.onResize(this.appContainer, this.changeSize);
     }
 
     private dragEnter(event: any) {
@@ -89,6 +94,27 @@ export default class InitAppContainer {
             .appendChild(new BackgroundComponent(this.appContainer).component)
             .appendChild(new DisplayComponent(this.appContainer).component)
             .build();
+    }
+
+    private onResize(dom_elem, callback) {
+        const resizeObserver = new ResizeObserver(() => callback() );
+        resizeObserver.observe(dom_elem);
+    }
+
+    private changeSize() {
+        const height = this.appContainer.style['height'];
+        const width = this.appContainer.style['width'];
+
+        if(height) {
+            this.appContainerHeightInput.value = `${parseInt(height)}`;
+            CssStyleSheet.getRuleStyles(this.appContainer.id)['height'] = height;
+            this.appContainer.style['height'] = '';
+        }
+        if(width) {
+            this.appContainerWidthInput.value = `${parseInt(width)}`;
+            CssStyleSheet.getRuleStyles(this.appContainer.id)['width'] = width;
+            this.appContainer.style['width'] = '';
+        }
     }
 
     private changeAppContainerHeight() {

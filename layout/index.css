@@ -36,7 +36,7 @@ body {
     border-color: black;
     width: calc(100% - var(--components-container-width) - var(--actions-container-width));
     min-width: 400px;
-    background-color: #d1f3d2;
+    background-color: #fabee1;
     
     overflow:auto;
 }
