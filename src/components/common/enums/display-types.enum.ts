@@ -1,6 +1,8 @@
 export enum DisplayTypesEnum {
     flex = 'flex',
+    'inline-flex' = 'inline-flex',
     grid = 'grid',
+    'inline-grid' = 'inline-grid',
     block = 'block',
     inline = 'inline',
     contents = 'contents',
