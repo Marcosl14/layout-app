@@ -6,21 +6,21 @@ import LabelBuilder from '../models/LabelBuilder';
 
 import { DisplayTypesEnum } from '../enums/display-types.enum';
 import { StyleNameEnum } from '../enums/style-name.enum';
-import { AlignSelfEnum } from '../enums/align-self.enum';
+import { AlignFlexSelfEnum } from '../enums/align-flex-self.enum';
 import { InputTypeEnum } from '../enums/input-type.enum';
+import GenericCssPropertyMutatorComponent from './generic-css-property-mutator.component';
+import { EventTypeEnum } from '../enums/event-type.enum';
+import { JustifyGridSelfEnum } from '../enums/justify-grid-self.enum';
+import { AlignGridSelfEnum } from '../enums/align-grid-self.enum';
 
 
 export default class DisplayAsChildComponent {
     private domElement: HTMLElement;
     private container: HTMLDivElement;
-    private domElementStyleSheet;
-
-    private alignSelfSelector: HTMLSelectElement;
-    private flexGrowInput: HTMLInputElement;
-    private flexShrinkInput: HTMLInputElement;
-    private flexBasisInput: HTMLInputElement;
+    private domElementStyleSheet: CSSStyleDeclaration;
 
     private flexContainerAsChildren: ContainerBuilder;
+    private gridContainerAsChildren: ContainerBuilder;
 
     constructor(domElement: HTMLElement) {
         this.domElement = domElement;
@@ -32,53 +32,68 @@ export default class DisplayAsChildComponent {
         return this.container;
     }
 
+    // TODO: deberia agregar algo mas de flex???. Grid esta completo, pero se puede mejorar...
+
+    // TODO: ver si el grid lo podemos hacer mas user friendly
+    // https://css-tricks.com/snippets/css/complete-guide-grid/#prop-align-items
+    // https://css-tricks.com/almanac/properties/g/grid-auto-columns/
+
     private addComponents() {
         this.container = new ContainerBuilder()
             .build();
 
         if (this.domElement.id !== 'app-container') {
-            if (CssStyleSheet.getRuleStyles(this.domElement.parentElement.id)['display'] === DisplayTypesEnum.flex) {
-                // TODO: ver como hariamos si existen varias clases...
-                // Quizas haya que implementar primero las clases...
-                this.addFlexAsChildrenContainer();
-                this.container.appendChild(this.flexContainerAsChildren.build());
+            const currentProperties = CssStyleSheet.getRuleStyles(this.domElement.parentElement.id)['display']
+
+            if (currentProperties === DisplayTypesEnum.flex || currentProperties === DisplayTypesEnum['inline-flex']) {
+                try {
+                    this.container.appendChild(this.flexContainerAsChildren.build());
+                } catch (err) {
+                    this.flexContainerAsChildren = this.createFlexAsChildrenContainer();
+                    this.container.appendChild(this.flexContainerAsChildren.build());
+                } finally {
+                    this.resetGrid();
+                }
+            } else if (currentProperties === DisplayTypesEnum.grid || currentProperties === DisplayTypesEnum['inline-grid']) {
+                try {
+                    this.container.appendChild(this.gridContainerAsChildren.build());
+                } catch (err) {
+                    this.gridContainerAsChildren = this.createGridAsChildrenContainer();
+                    this.container.appendChild(this.gridContainerAsChildren.build());
+                } finally {
+                    this.resetFlex();
+                }
+            } else {
+                this.resetFlex();
+                this.resetGrid();
             }
         }
     }
 
-    private addFlexAsChildrenContainer() {
-        this.changeAlignSelf = this.changeAlignSelf.bind(this);
-        this.changeFlexGrow = this.changeFlexGrow.bind(this);
-        this.changeFlexShrink = this.changeFlexShrink.bind(this);
-        this.changeFlexBasis = this.changeFlexBasis.bind(this);
-
-        this.alignSelfSelector = new SelectorBuilder(AlignSelfEnum)
-            .selectOption(this.domElementStyleSheet['align-self'])
-            .addEventListener('change', this.changeAlignSelf)
+    private createFlexAsChildrenContainer() {
+        const alignSelfSelector = new SelectorBuilder(AlignFlexSelfEnum)
+            .selectOption(this.domElementStyleSheet['align-self'] || '')
             .build()
 
-        this.flexGrowInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(this.domElementStyleSheet['flex-grow'])}`)
+        const flexGrowInput = new InputBuilder(InputTypeEnum.number)
+            .setValue(`${parseInt(this.domElementStyleSheet['flex-grow']) || 0}`)
             .setMax(1000)
             .setMin(0)
-            .addEventListener('input', this.changeFlexGrow)
             .build();
 
-        this.flexShrinkInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(this.domElementStyleSheet['flex-shrink'])}`)
+        const flexShrinkInput = new InputBuilder(InputTypeEnum.number)
+            .setValue(`${parseInt(this.domElementStyleSheet['flex-shrink']) || 0}`)
             .setMax(1000)
             .setMin(0)
-            .addEventListener('input', this.changeFlexShrink)
             .build();
 
-        this.flexBasisInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(this.domElementStyleSheet['flex-basis'])}`)
+        const flexBasisInput = new InputBuilder(InputTypeEnum.number)
+            .setValue(`${parseInt(this.domElementStyleSheet['flex-basis']) || 0}`)
             .setMax(1000)
             .setMin(0)
-            .addEventListener('input', this.changeFlexBasis)
             .build();
 
-        this.flexContainerAsChildren = new ContainerBuilder()
+        return new ContainerBuilder()
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
                 .setStyle(StyleNameEnum.padding, '3px')
@@ -92,55 +107,76 @@ export default class DisplayAsChildComponent {
                     )
                     .build()
                 )
-                .appendChild(this.buildGenericSelectorContainer('Align Self', this.alignSelfSelector))
-                .appendChild(this.buildGenericInputContainer('Flex Grow', this.flexGrowInput))
-                .appendChild(this.buildGenericInputContainer('Flex Shrink', this.flexShrinkInput))
-                .appendChild(this.buildGenericInputContainer('Flex Basis (%)', this.flexBasisInput))
+                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'align-self', 'Align Self', alignSelfSelector, EventTypeEnum.change).component)
+                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'flex-grow', 'Flex Grow', flexGrowInput, EventTypeEnum.input).component)
+                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'flex-shrink', 'Flex Shrink', flexShrinkInput, EventTypeEnum.input).component)
+                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'flex-basis', 'Flex Basis (%)', flexBasisInput, EventTypeEnum.input).component)
                 .build()
             )
     }
 
-    private changeAlignSelf() {
-        this.domElementStyleSheet['align-self'] = this.alignSelfSelector.value;
-    }
-
-    private changeFlexGrow() {
-        this.domElementStyleSheet['flex-grow'] = this.flexGrowInput.value;
-    }
-
-    private changeFlexShrink() {
-        this.domElementStyleSheet['flex-shrink'] = this.flexShrinkInput.value;
-    }
-
-    private changeFlexBasis() {
-        this.domElementStyleSheet['flex-basis'] = `${this.flexBasisInput.value}%`;
-    }
-
-    private buildGenericSelectorContainer(label: string, selector: HTMLSelectElement) {
-        return new ContainerBuilder()
-            .setStyle(StyleNameEnum.display, 'flex')
-            .setStyle(StyleNameEnum['flex-direction'], 'column')
-            .setStyle(StyleNameEnum['align-items'], 'stretch')
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-            .appendChild(new LabelBuilder()
-                .setInnerText(label)
-                .build()
-            )
-            .appendChild(selector)
+    private createGridAsChildrenContainer() {
+        const gridColumnStartInput = new InputBuilder(InputTypeEnum.text)
+            .setValue(this.domElementStyleSheet['grid-column-start'] || '')
             .build()
-    }
 
-    private buildGenericInputContainer(label: string, input: HTMLInputElement) {
+        const gridColumnEndInput = new InputBuilder(InputTypeEnum.text)
+            .setValue(this.domElementStyleSheet['grid-column-end'] || '')
+            .build()
+
+        const gridRowStartInput = new InputBuilder(InputTypeEnum.text)
+            .setValue(this.domElementStyleSheet['grid-row-start'] || '')
+            .build()
+
+        const gridRowEndInput = new InputBuilder(InputTypeEnum.text)
+            .setValue(this.domElementStyleSheet['grid-row-end'] || '')
+            .build()
+
+        const gridJustifySelf = new SelectorBuilder(JustifyGridSelfEnum)
+            .selectOption(this.domElementStyleSheet['justify-self'] || '')
+            .build()
+
+        const gridAlignSelf = new SelectorBuilder(AlignGridSelfEnum)
+            .selectOption(this.domElementStyleSheet['align-self'] || '')
+            .build()
+
         return new ContainerBuilder()
-            .setStyle(StyleNameEnum.display, 'flex')
-            .setStyle(StyleNameEnum['flex-direction'], 'column')
-            .setStyle(StyleNameEnum['align-items'], 'stretch')
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-            .appendChild(new LabelBuilder()
-                .setInnerText(label)
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
+                .setStyle(StyleNameEnum.padding, '3px')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new ContainerBuilder()
+                    .setStyle(StyleNameEnum.display, 'flex')
+                    .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                    .appendChild(new LabelBuilder()
+                        .setInnerText('Display Grid as Parent')
+                        .build()
+                    )
+                    .build()
+                )
+                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'grid-column-start', 'Grid Column Start', gridColumnStartInput, EventTypeEnum.input).component)
+                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'grid-column-end', 'Grid Column End', gridColumnEndInput, EventTypeEnum.input).component)
+                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'grid-row-start', 'Grid Row Start', gridRowStartInput, EventTypeEnum.input).component)
+                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'grid-row-end', 'Grid Row End', gridRowEndInput, EventTypeEnum.input).component)
+                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'justify-self', 'Grid Justify Self', gridJustifySelf, EventTypeEnum.change).component)
+                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'align-self', 'Grid Align Self', gridAlignSelf, EventTypeEnum.change).component)
                 .build()
             )
-            .appendChild(input)
-            .build()
+    }
+
+    private resetFlex() {
+        try {
+            this.container.removeChild(this.flexContainerAsChildren.build());
+        } catch (err) {
+            undefined;
+        }
+    }
+
+    private resetGrid() {
+        try {
+            this.container.removeChild(this.gridContainerAsChildren.build());
+        } catch (err) {
+            undefined;
+        }
     }
 }
