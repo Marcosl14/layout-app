@@ -1,17 +1,16 @@
 import ContainerBuilder from '../common/models/ContainerBuilder';
-import defineElementId from '../common/functions/define-element-id';
-import RawHTMLConponent from './RawHTMLComponent';
-import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
 
-import { DisplayTypesEnum } from '../common/enums/display-types.enum';
+import RawHTMLConponent from './RawHTMLComponent';
+
+import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 import constants from '../common/constants/constants';
+import defineElementId from '../common/functions/define-element-id';
+
+import { DisplayTypesEnum } from '../common/enums/display-types.enum';
 
 export default class Container extends RawHTMLConponent {
     private static iterator = 0;
-
-    private backgroundColor: string;
-    private fatherBackgroundColor: string;
 
     // TODO falta propiedad scrollable
 
@@ -62,8 +61,6 @@ export default class Container extends RawHTMLConponent {
     private dragEnter(event: any) {
         event.stopPropagation();
 
-        this.backgroundColor = CssStyleSheet.getRuleStyles(this.domElement.id)['background-color'];
-        this.fatherBackgroundColor = CssStyleSheet.getRuleStyles(this.domElement.parentElement.id)['background-color'];
         this.domElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
         this.domElement.parentElement.style.backgroundColor = '';
     }
@@ -80,8 +77,6 @@ export default class Container extends RawHTMLConponent {
     }
 
     private mouseOver() {
-        this.backgroundColor = CssStyleSheet.getRuleStyles(this.domElement.id)['background-color'];
-        this.fatherBackgroundColor = CssStyleSheet.getRuleStyles(this.domElement.parentElement.id)['background-color'];
         this._domElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
         this._domElement.parentElement.style.backgroundColor = '';
     }

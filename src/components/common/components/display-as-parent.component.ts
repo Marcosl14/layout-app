@@ -82,7 +82,7 @@ export default class DisplayAsParentComponent {
     private updateProperty() {
         this.domElementStyleSheet['display'] = this.displaySelector.value;
 
-        this.addComponentAccordingToSelector();
+        this.changeComponentAccordingToSelector();
     }
 
     private getCurrentProperties(property: string): string {
@@ -93,23 +93,25 @@ export default class DisplayAsParentComponent {
         const currentProperties = this.getCurrentProperties('display');
 
         if (currentProperties === DisplayTypesEnum.flex || currentProperties === DisplayTypesEnum['inline-flex']) {
-            try {
-                this.container.appendChild(this.flexContainerAsParent.build());
-            } catch (err) {
-                this.flexContainerAsParent = this.createFlexAsParentContainer();
-                this.container.appendChild(this.flexContainerAsParent.build());
-            } finally {
-                this.resetGrid();
-            }
+            this.flexContainerAsParent = this.createFlexAsParentContainer();
+            this.container.appendChild(this.flexContainerAsParent.build());
         } else if (currentProperties === DisplayTypesEnum.grid || currentProperties === DisplayTypesEnum['inline-grid']) {
-            try {
-                this.container.appendChild(this.gridContainerAsParent.build());
-            } catch (err) {
-                this.gridContainerAsParent = this.createGridAsParentContainer();
-                this.container.appendChild(this.gridContainerAsParent.build());
-            } finally {
-                this.resetFlex();
-            }
+            this.gridContainerAsParent = this.createGridAsParentContainer();
+            this.container.appendChild(this.gridContainerAsParent.build());
+        }
+    }
+
+    private changeComponentAccordingToSelector() {
+        const currentProperties = this.getCurrentProperties('display');
+
+        if (currentProperties === DisplayTypesEnum.flex || currentProperties === DisplayTypesEnum['inline-flex']) {
+            this.resetGrid();
+            this.flexContainerAsParent = this.createFlexAsParentContainer();
+            this.container.appendChild(this.flexContainerAsParent.build());
+        } else if (currentProperties === DisplayTypesEnum.grid || currentProperties === DisplayTypesEnum['inline-grid']) {
+            this.resetFlex();
+            this.gridContainerAsParent = this.createGridAsParentContainer();
+            this.container.appendChild(this.gridContainerAsParent.build());
         } else {
             this.resetFlex();
             this.resetGrid();
