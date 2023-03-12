@@ -1,11 +1,13 @@
 import InputBuilder from '../common/models/InputBuilder';
-import defineElementId from '../common/functions/define-element-id';
-import RawHTMLConponent from './RawHTMLComponent';
-import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
 
+import RawHTMLConponent from './RawHTMLComponent';
+
+
+import CssStyleSheet from '../css-stylesheet/css-stylesheet';
+import defineElementId from '../common/functions/define-element-id';
+
 import { InputTypeEnum } from '../common/enums/input-type.enum';
-import contants from '../common/constants/constants';
 
 export default class Input extends RawHTMLConponent {
     private static iterator = 0;

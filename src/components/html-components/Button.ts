@@ -1,9 +1,10 @@
-import defineElementId from '../common/functions/define-element-id';
 import ButtonBuilder from '../common/models/ButtonBuilder';
-import RawHTMLConponent from './RawHTMLComponent';
-import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
-import contants from '../common/constants/constants';
+
+import RawHTMLConponent from './RawHTMLComponent';
+
+import CssStyleSheet from '../css-stylesheet/css-stylesheet';
+import defineElementId from '../common/functions/define-element-id';
 
 export default class Button extends RawHTMLConponent {
     private static iterator = 0;
