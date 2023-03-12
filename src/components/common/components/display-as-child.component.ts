@@ -1,14 +1,16 @@
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
+
 import ContainerBuilder from '../models/ContainerBuilder';
 import SelectorBuilder from '../models/SelectorBuilder';
 import InputBuilder from '../models/InputBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 
+import GenericCssPropertyMutatorComponent from './generic-css-property-mutator.component';
+
 import { DisplayTypesEnum } from '../enums/display-types.enum';
 import { StyleNameEnum } from '../enums/style-name.enum';
 import { AlignFlexSelfEnum } from '../enums/align-flex-self.enum';
 import { InputTypeEnum } from '../enums/input-type.enum';
-import GenericCssPropertyMutatorComponent from './generic-css-property-mutator.component';
 import { EventTypeEnum } from '../enums/event-type.enum';
 import { JustifyGridSelfEnum } from '../enums/justify-grid-self.enum';
 import { AlignGridSelfEnum } from '../enums/align-grid-self.enum';
@@ -99,7 +101,7 @@ export default class DisplayAsChildComponent {
                 .setStyle(StyleNameEnum.padding, '3px')
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new ContainerBuilder()
-                    .setStyle(StyleNameEnum.display, 'flex')
+                    .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                     .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                     .appendChild(new LabelBuilder()
                         .setInnerText('Display Flex as Child')
@@ -146,7 +148,7 @@ export default class DisplayAsChildComponent {
                 .setStyle(StyleNameEnum.padding, '3px')
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new ContainerBuilder()
-                    .setStyle(StyleNameEnum.display, 'flex')
+                    .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                     .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                     .appendChild(new LabelBuilder()
                         .setInnerText('Display Grid as Parent')

@@ -4,5 +4,7 @@ export enum StyleNameEnum {
     display = 'display',
     'flex-direction' = 'flex-direction',
     'align-items' = 'align-items',
-    border= 'border'
+    'align-self' = 'align-self',
+    border= 'border',
+    resize= 'resize',
 }

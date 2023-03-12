@@ -90,6 +90,7 @@ export default class InitAppContainer {
         event.stopPropagation();
 
         this.stylesComponents = new StylesComponentsBuilder()
+            .appendChild(new MarginOrPaddingComponent(this.appContainer, StyleNameEnum.margin).component)
             .appendChild(new MarginOrPaddingComponent(this.appContainer, StyleNameEnum.padding).component)
             .appendChild(new BackgroundComponent(this.appContainer).component)
             .appendChild(new DisplayComponent(this.appContainer).component)

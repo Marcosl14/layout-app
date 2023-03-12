@@ -55,6 +55,7 @@ export default class Input extends RawHTMLConponent {
             .appendChild(this.addPaddingStyleComponent())
             .appendChild(this.addBackgroundSettingsComponent())
             .appendChild(this.addBorderSettingsComponent())
+            .appendChild(this.addBoxShadowComponent())
             .appendChild(this.addDisplayAsChildComponent())
             .appendChild(this.addActionsComponents())
             .build();

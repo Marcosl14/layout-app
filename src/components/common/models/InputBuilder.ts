@@ -12,6 +12,11 @@ export default class InputBuilder extends RawBuilder<HTMLInputElement>{
         return this;
     }
 
+    public setName(name: string) {
+        this.element.name = name;
+        return this;
+    }
+
     public checked(checked = true) {
         this.element.checked = checked;
         return this;
