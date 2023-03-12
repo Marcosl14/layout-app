@@ -1,9 +1,13 @@
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
+
 import ContainerBuilder from '../models/ContainerBuilder';
 import SelectorBuilder from '../models/SelectorBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 import InputBuilder from '../models/InputBuilder';
-import TextareaBuilder from '../models/TextAreaBuilder';
+import TextareaBuilder from '../models/TextareaBuilder';
+
+import InputAndUnitsSelectorComponent from './input-with-units-selector.component';
+import GenericCssPropertyMutatorComponent from './generic-css-property-mutator.component';
 
 import { DisplayTypesEnum } from '../enums/display-types.enum';
 import { FlexDirectionEnum } from '../enums/flex-direction.enum';
@@ -13,8 +17,6 @@ import { AlignFlexItemsEnum } from '../enums/align-flex-items.enum';
 import { JustifyFlexContentEnum } from '../enums/justify-flex-content.enum';
 import { AlignFlexContentEnum } from '../enums/align-flex-content.enum';
 import { InputTypeEnum } from '../enums/input-type.enum';
-import InputAndUnitsSelectorComponent from './input-with-units-selector.component';
-import GenericCssPropertyMutatorComponent from './generic-css-property-mutator.component';
 import { EventTypeEnum } from '../enums/event-type.enum';
 import { JustifyGridItemsEnum } from '../enums/justify-grid-items.enum';
 import { AlignGridItemsEnum } from '../enums/align-grid-items.enum';
@@ -59,9 +61,9 @@ export default class DisplayAsParentComponent {
 
         this.container = new ContainerBuilder()
             .appendChild(new ContainerBuilder()
-                .setStyle(StyleNameEnum.display, 'flex')
-                .setStyle(StyleNameEnum['flex-direction'], 'column')
-                .setStyle(StyleNameEnum['align-items'], 'stretch')
+                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+                .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
+                .setStyle(StyleNameEnum['align-items'], AlignFlexItemsEnum.stretch)
                 .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
                 .setStyle(StyleNameEnum.padding, '3px')
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
@@ -141,7 +143,7 @@ export default class DisplayAsParentComponent {
                 .setStyle(StyleNameEnum.padding, '3px')
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new ContainerBuilder()
-                    .setStyle(StyleNameEnum.display, 'flex')
+                    .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                     .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                     .appendChild(new LabelBuilder()
                         .setInnerText('Display Flex as Parent')
@@ -176,6 +178,7 @@ export default class DisplayAsParentComponent {
             .build()
 
         const gridTemplateAreasTextarea = new TextareaBuilder()
+            .setStyle(StyleNameEnum.resize, 'vertical')
             .setValue(this.domElementStyleSheet['grid-template-areas'] || '')
             .build()
 
@@ -205,7 +208,7 @@ export default class DisplayAsParentComponent {
                 .setStyle(StyleNameEnum.padding, '3px')
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new ContainerBuilder()
-                    .setStyle(StyleNameEnum.display, 'flex')
+                    .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                     .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                     .appendChild(new LabelBuilder()
                         .setInnerText('Display Grid as Parent')

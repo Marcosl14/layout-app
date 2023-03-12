@@ -1,18 +1,22 @@
+import ButtonBuilder from '../common/models/ButtonBuilder';
+import LabelBuilder from '../common/models/LabelBuilder';
+import ContainerBuilder from '../common/models/ContainerBuilder';
+
 import DisplayAsParentComponent from '../common/components/display-as-parent.component';
 import GenericPrimaryInputComponent from '../common/components/generic-primary-input.component';
 import GenericPrimarySelectorComponent from '../common/components/generic-primary-selector.component';
 import IdDefinitionComponent from '../common/components/id-definition.component';
 import MarginOrPaddingComponent from '../common/components/margin-or-padding.component';
-import ButtonBuilder from '../common/models/ButtonBuilder';
+import DisplayAsChildComponent from '../common/components/display-as-child.component';
+import BorderComponent from '../common/components/border.component';
+import BackgroundComponent from '../common/components/background.component';
+import BoxShadowComponent from '../common/components/box-shadow.component';
+
+import contants from '../common/constants/constants';
 
 import { InputTypeEnum } from '../common/enums/input-type.enum';
 import { StyleNameEnum } from '../common/enums/style-name.enum';
-import DisplayAsChildComponent from '../common/components/display-as-child.component';
-import LabelBuilder from '../common/models/LabelBuilder';
-import BorderComponent from '../common/components/border.component';
-import ContainerBuilder from '../common/models/ContainerBuilder';
-import BackgroundComponent from '../common/components/background.component';
-import contants from '../common/constants/constants';
+import { DisplayTypesEnum } from '../common/enums/display-types.enum';
 
 export default abstract class RawHTMLConponent {
     protected _domElement: HTMLElement;
@@ -65,7 +69,7 @@ export default abstract class RawHTMLConponent {
             .setStyle(StyleNameEnum.padding, '3px')
             .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new ContainerBuilder()
-                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Available Actions')
@@ -74,7 +78,7 @@ export default abstract class RawHTMLConponent {
                 .build()
             )
             .appendChild(new ContainerBuilder()
-                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.addRemoveElementComponent())
                 .build()
@@ -114,6 +118,11 @@ export default abstract class RawHTMLConponent {
     protected addBackgroundSettingsComponent() {
         return new BackgroundComponent(this._domElement).component;
     }
+
+    protected addBoxShadowComponent() {
+        return new BoxShadowComponent(this._domElement).component;
+    }
+
 
     protected dragLeave(event: any) {
         event.stopPropagation();

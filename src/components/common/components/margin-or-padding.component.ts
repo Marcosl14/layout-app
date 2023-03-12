@@ -2,11 +2,15 @@ import ContainerBuilder from '../models/ContainerBuilder';
 import InputBuilder from '../models/InputBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 import SelectorBuilder from '../models/SelectorBuilder';
+
 import { InputTypeEnum } from '../enums/input-type.enum';
 import { UnitsEnum } from '../enums/units.enum';
-import capitalizeFirstLetters from '../functions/first-letters-capitalized';
-import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
 import { StyleNameEnum } from '../enums/style-name.enum';
+
+import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
+
+import capitalizeFirstLetters from '../functions/first-letters-capitalized';
+import getUnit from '../functions/get-css-unit';
 
 export default class MarginOrPaddingComponent {
     private type;
@@ -82,21 +86,21 @@ export default class MarginOrPaddingComponent {
             .build();
 
         this.topUnitSelector = new SelectorBuilder(UnitsEnum)
-            .selectOption(this.getUnit(top))
+            .selectOption(getUnit(top))
             .addEventListener('change', this.updateProperty)
             .build()
         this.bottomUnitSelector = new SelectorBuilder(UnitsEnum)
-            .selectOption(this.getUnit(bottom))
+            .selectOption(getUnit(bottom))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateProperty)
             .build()
         this.rightUnitSelector = new SelectorBuilder(UnitsEnum)
-            .selectOption(this.getUnit(right))
+            .selectOption(getUnit(right))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateProperty)
             .build()
         this.leftUnitSelector = new SelectorBuilder(UnitsEnum)
-            .selectOption(this.getUnit(left))
+            .selectOption(getUnit(left))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateProperty)
             .build()
@@ -268,9 +272,5 @@ export default class MarginOrPaddingComponent {
         }
 
         return [top ? top : '0px', right ? right : '0px', bottom ? bottom : '0px', left ? left : '0px'];
-    }
-
-    private getUnit(text: string) {
-        return text.match(/[a-z]+$/i)[0];
     }
 }

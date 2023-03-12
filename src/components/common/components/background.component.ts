@@ -1,10 +1,13 @@
 import ContainerBuilder from '../models/ContainerBuilder';
 import InputBuilder from '../models/InputBuilder';
 import LabelBuilder from '../models/LabelBuilder';
+
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
+import rgbToHex from '../functions/rgb-to-hex';
+
 import { InputTypeEnum } from '../enums/input-type.enum';
 import { StyleNameEnum } from '../enums/style-name.enum';
-import rgbToHex from '../functions/rgb-to-hex';
+import { DisplayTypesEnum } from '../enums/display-types.enum';
 
 export default class BackgroundComponent {
     private domElement: HTMLElement;
@@ -46,7 +49,7 @@ export default class BackgroundComponent {
 
         const backgroundComponents = new ContainerBuilder()
             .appendChild(new ContainerBuilder()
-                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Color / Opacity')
@@ -55,7 +58,7 @@ export default class BackgroundComponent {
                 .build()
             )
             .appendChild(new ContainerBuilder()
-                .setStyle(StyleNameEnum.display, 'flex')
+                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.colorInput)
                 .appendChild(this.opacitySlider)

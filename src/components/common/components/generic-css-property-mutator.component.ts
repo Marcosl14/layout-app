@@ -1,9 +1,13 @@
 import ContainerBuilder from '../models/ContainerBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 
-import { StyleNameEnum } from '../enums/style-name.enum';
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
+
+import { StyleNameEnum } from '../enums/style-name.enum';
 import { EventTypeEnum } from '../enums/event-type.enum';
+import { FlexDirectionEnum } from '../enums/flex-direction.enum';
+import { DisplayTypesEnum } from '../enums/display-types.enum';
+import { AlignFlexItemsEnum } from '../enums/align-flex-items.enum';
 
 export default class GenericCssPropertyMutatorComponent {
     private domElement: HTMLElement;
@@ -36,9 +40,9 @@ export default class GenericCssPropertyMutatorComponent {
         this.changeElement.addEventListener(this.eventType, this.updateProperty)
 
         this.container = new ContainerBuilder()
-            .setStyle(StyleNameEnum.display, 'flex')
-            .setStyle(StyleNameEnum['flex-direction'], 'column')
-            .setStyle(StyleNameEnum['align-items'], 'stretch')
+            .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+            .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
+            .setStyle(StyleNameEnum['align-items'], AlignFlexItemsEnum.stretch)
             .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new LabelBuilder()
                 .setInnerText(this.label)

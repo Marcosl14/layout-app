@@ -1,6 +1,11 @@
 export default function rgbToHex(rgb: string) {
-    const [r,g,b] = rgb.replace(/[^\d,]+/g, '').split(',');
-    return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    try {
+        const [r,g,b] = rgb.replace(/[^\d,]+/g, '').split(',');
+        return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    } catch (err) {
+        return '';
+    }
+
 }
 
 function componentToHex(c) {

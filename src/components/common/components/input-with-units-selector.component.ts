@@ -3,10 +3,15 @@ import LabelBuilder from '../models/LabelBuilder';
 import InputBuilder from '../models/InputBuilder';
 import SelectorBuilder from '../models/SelectorBuilder';
 
+import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
+import getUnit from '../functions/get-css-unit';
+
 import { StyleNameEnum } from '../enums/style-name.enum';
 import { InputTypeEnum } from '../enums/input-type.enum';
 import { UnitsEnum } from '../enums/units.enum';
-import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
+import { DisplayTypesEnum } from '../enums/display-types.enum';
+import { FlexDirectionEnum } from '../enums/flex-direction.enum';
+import { AlignFlexItemsEnum } from '../enums/align-flex-items.enum';
 
 export default class InputAndUnitsSelectorComponent {
     private domElement: HTMLElement;
@@ -36,7 +41,7 @@ export default class InputAndUnitsSelectorComponent {
         this.updateProperty = this.updateProperty.bind(this);
 
         this.unitsSelectorInput = new SelectorBuilder(UnitsEnum)
-            .selectOption(this.getUnit(this.domElementStyleSheet[this.style]))
+            .selectOption(getUnit(this.domElementStyleSheet[this.style]))
             .addEventListener('change', this.updateProperty)
             .build()
 
@@ -51,9 +56,9 @@ export default class InputAndUnitsSelectorComponent {
             .build()
 
         this.container = new ContainerBuilder()
-            .setStyle(StyleNameEnum.display, 'flex')
-            .setStyle(StyleNameEnum['flex-direction'], 'column')
-            .setStyle(StyleNameEnum['align-items'], 'stretch')
+            .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+            .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
+            .setStyle(StyleNameEnum['align-items'], AlignFlexItemsEnum.stretch)
             .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new LabelBuilder()
                 .setInnerText(this.label)
@@ -65,10 +70,5 @@ export default class InputAndUnitsSelectorComponent {
 
     private updateProperty() {
         this.domElementStyleSheet[this.style] = `${this.propertyValueInput.value}${this.unitsSelectorInput.value}`
-    }
-
-    private getUnit(text: string) {
-        const values = text.match(/[a-z]+$/i)
-        return values ? values[0] : 'px';
     }
 }

@@ -1,7 +1,7 @@
 :root {
     --components-container-width: 200px;
     --actions-container-width: 300px;
-  }
+}
 
 body {
     height: 98vh;
@@ -25,7 +25,7 @@ body {
     width: var(--components-container-width);
     min-width: var(--components-container-width);
 
-    overflow-y:auto;
+    overflow-y: auto;
 }
 
 #app-container-fixed {
@@ -36,9 +36,12 @@ body {
     border-color: black;
     width: calc(100% - var(--components-container-width) - var(--actions-container-width));
     min-width: 400px;
-    background-color: #fabee1;
-    
-    overflow:auto;
+    /* background-color: #fabee1; */
+
+    background: linear-gradient(-45deg, black 5%, #ffffff 5% 45%, black 45% 55%, #ffe1f3 55% 95%, black 95%);
+    background-size: 5px 5px;
+
+    overflow: auto;
 }
 
 #actions-container {
@@ -55,10 +58,10 @@ body {
     width: var(--actions-container-width);
     min-width: var(--actions-container-width);
 
-    overflow-y:auto;
+    overflow-y: auto;
 }
 
-#actions-container > div > *:not(label) {
+#actions-container>div>*:not(label) {
     margin-bottom: 10px;
 }
 
@@ -97,9 +100,11 @@ body {
     width: 100%;
 }
 
-.dom-element-button:hover {opacity: 0.6}
+.dom-element-button:hover {
+    opacity: 0.6
+}
 
-#update-dom-elements{
+#update-dom-elements {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -109,12 +114,12 @@ body {
     border: 1px solid #4CAF50;
 }
 
-#update-dom-elements > div{
+#update-dom-elements>div {
     display: flex;
     flex-direction: column;
     align-items: center
 }
 
-.update-size-input { 
+.update-size-input {
     width: 50px;
 }
