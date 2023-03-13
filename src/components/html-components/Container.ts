@@ -91,6 +91,7 @@ export default class Container extends RawHTMLConponent {
 
         this.stylesComponents = new StylesComponentsBuilder()
             .appendChild(this.addIdDefinitionComponent())
+            .appendChild(this.addClassNameDefinitionComponent())
             .appendChild(this.addMarginStyleComponent())
             .appendChild(this.addPaddingStyleComponent())
             .appendChild(this.addBackgroundSettingsComponent())

@@ -1,7 +1,9 @@
+import ClassChangeObserverInterface from '../interfaces/class-change-observer.interface';
+
 import ContainerBuilder from '../models/ContainerBuilder';
 import InputBuilder from '../models/InputBuilder';
 import LabelBuilder from '../models/LabelBuilder';
-import SelectorBuilder from '../models/SelectorBuilder';
+import SelectorFromEnumBuilder from '../models/SelectorFromEnumBuilder';
 
 import { InputTypeEnum } from '../enums/input-type.enum';
 import { UnitsEnum } from '../enums/units.enum';
@@ -12,10 +14,11 @@ import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
 import capitalizeFirstLetters from '../functions/first-letters-capitalized';
 import getUnit from '../functions/get-css-unit';
 
-export default class MarginOrPaddingComponent {
+export default class MarginOrPaddingComponent implements ClassChangeObserverInterface {
     private type;
     private domElement: HTMLElement;
     private container: HTMLDivElement;
+    private domElementStyleSheet: CSSStyleDeclaration;
 
     private topPropertyValueInput: HTMLInputElement;
     private rigthPropertyValueInput: HTMLInputElement;
@@ -29,9 +32,10 @@ export default class MarginOrPaddingComponent {
 
     private selectAllCheckBox: HTMLInputElement;
 
-    constructor(domElement: HTMLElement, type: 'margin' | 'padding', ) {
+    constructor(domElement: HTMLElement, initialClassName: string,  type: 'margin' | 'padding', ) {
         this.type = type;
         this.domElement = domElement;
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(initialClassName);
         this.addComponents();
     }
 
@@ -85,21 +89,21 @@ export default class MarginOrPaddingComponent {
             .addEventListener('input', this.updateProperty)
             .build();
 
-        this.topUnitSelector = new SelectorBuilder(UnitsEnum)
+        this.topUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
             .selectOption(getUnit(top))
             .addEventListener('change', this.updateProperty)
             .build()
-        this.bottomUnitSelector = new SelectorBuilder(UnitsEnum)
+        this.bottomUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
             .selectOption(getUnit(bottom))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateProperty)
             .build()
-        this.rightUnitSelector = new SelectorBuilder(UnitsEnum)
+        this.rightUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
             .selectOption(getUnit(right))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateProperty)
             .build()
-        this.leftUnitSelector = new SelectorBuilder(UnitsEnum)
+        this.leftUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
             .selectOption(getUnit(left))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateProperty)
@@ -236,11 +240,11 @@ export default class MarginOrPaddingComponent {
             }
         }
 
-        CssStyleSheet.getRuleStyles(this.domElement.id)[this.type] = [top, right, bottom, left].join(' ')
+        this.domElementStyleSheet[this.type] = [top, right, bottom, left].join(' ')
     }
 
     private getCurrentProperties(): string[] {
-        const properties: string[] = CssStyleSheet.getRuleStyles(this.domElement.id)[this.type].split(' ')
+        const properties: string[] = this.domElementStyleSheet[this.type].split(' ')
         let top, right, bottom, left;
 
         if (properties.length === 1) {
@@ -272,5 +276,9 @@ export default class MarginOrPaddingComponent {
         }
 
         return [top ? top : '0px', right ? right : '0px', bottom ? bottom : '0px', left ? left : '0px'];
+    }
+
+    public classNameUpdated(name: string) {
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(name);
     }
 }

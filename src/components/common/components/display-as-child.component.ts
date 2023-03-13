@@ -1,7 +1,9 @@
+import ClassChangeObserverInterface from '../interfaces/class-change-observer.interface';
+
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
 
 import ContainerBuilder from '../models/ContainerBuilder';
-import SelectorBuilder from '../models/SelectorBuilder';
+import SelectorFromEnumBuilder from '../models/SelectorFromEnumBuilder';
 import InputBuilder from '../models/InputBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 
@@ -16,7 +18,7 @@ import { JustifyGridSelfEnum } from '../enums/justify-grid-self.enum';
 import { AlignGridSelfEnum } from '../enums/align-grid-self.enum';
 
 
-export default class DisplayAsChildComponent {
+export default class DisplayAsChildComponent implements ClassChangeObserverInterface {
     private domElement: HTMLElement;
     private container: HTMLDivElement;
     private domElementStyleSheet: CSSStyleDeclaration;
@@ -24,9 +26,9 @@ export default class DisplayAsChildComponent {
     private flexContainerAsChildren: ContainerBuilder;
     private gridContainerAsChildren: ContainerBuilder;
 
-    constructor(domElement: HTMLElement) {
+    constructor(domElement: HTMLElement, initialClassName: string) {
         this.domElement = domElement;
-        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(this.domElement.id);
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(initialClassName);
         this.addComponents();
     }
 
@@ -73,7 +75,7 @@ export default class DisplayAsChildComponent {
     }
 
     private createFlexAsChildrenContainer() {
-        const alignSelfSelector = new SelectorBuilder(AlignFlexSelfEnum)
+        const alignSelfSelector = new SelectorFromEnumBuilder(AlignFlexSelfEnum)
             .selectOption(this.domElementStyleSheet['align-self'] || '')
             .build()
 
@@ -134,11 +136,11 @@ export default class DisplayAsChildComponent {
             .setValue(this.domElementStyleSheet['grid-row-end'] || '')
             .build()
 
-        const gridJustifySelf = new SelectorBuilder(JustifyGridSelfEnum)
+        const gridJustifySelf = new SelectorFromEnumBuilder(JustifyGridSelfEnum)
             .selectOption(this.domElementStyleSheet['justify-self'] || '')
             .build()
 
-        const gridAlignSelf = new SelectorBuilder(AlignGridSelfEnum)
+        const gridAlignSelf = new SelectorFromEnumBuilder(AlignGridSelfEnum)
             .selectOption(this.domElementStyleSheet['align-self'] || '')
             .build()
 
@@ -151,7 +153,7 @@ export default class DisplayAsChildComponent {
                     .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                     .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                     .appendChild(new LabelBuilder()
-                        .setInnerText('Display Grid as Parent')
+                        .setInnerText('Display Grid as Child')
                         .build()
                     )
                     .build()
@@ -180,5 +182,9 @@ export default class DisplayAsChildComponent {
         } catch (err) {
             undefined;
         }
+    }
+
+    public classNameUpdated(name: string) {
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(name);
     }
 }

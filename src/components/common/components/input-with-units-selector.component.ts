@@ -1,7 +1,7 @@
 import ContainerBuilder from '../models/ContainerBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 import InputBuilder from '../models/InputBuilder';
-import SelectorBuilder from '../models/SelectorBuilder';
+import SelectorFromEnumBuilder from '../models/SelectorFromEnumBuilder';
 
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
 import getUnit from '../functions/get-css-unit';
@@ -40,7 +40,7 @@ export default class InputAndUnitsSelectorComponent {
     private addComponents() {
         this.updateProperty = this.updateProperty.bind(this);
 
-        this.unitsSelectorInput = new SelectorBuilder(UnitsEnum)
+        this.unitsSelectorInput = new SelectorFromEnumBuilder(UnitsEnum)
             .selectOption(getUnit(this.domElementStyleSheet[this.style]))
             .addEventListener('change', this.updateProperty)
             .build()
