@@ -1,3 +1,7 @@
+import ArraySelectorBodyInterface from '../common/interfaces/selector-from-array-body.interface';
+
+import ClassChangePublisher from '../common/publishers/ClassChangePublisher';
+
 import ButtonBuilder from '../common/models/ButtonBuilder';
 import LabelBuilder from '../common/models/LabelBuilder';
 import ContainerBuilder from '../common/models/ContainerBuilder';
@@ -11,6 +15,7 @@ import DisplayAsChildComponent from '../common/components/display-as-child.compo
 import BorderComponent from '../common/components/border.component';
 import BackgroundComponent from '../common/components/background.component';
 import BoxShadowComponent from '../common/components/box-shadow.component';
+import ClassManagementComponent from '../common/components/class-management.component';
 
 import contants from '../common/constants/constants';
 
@@ -21,18 +26,42 @@ import { DisplayTypesEnum } from '../common/enums/display-types.enum';
 export default abstract class RawHTMLConponent {
     protected _domElement: HTMLElement;
     protected stylesComponents: HTMLDivElement;
+
     public static instances: HTMLElement[] = [];
+    private classNames: ArraySelectorBodyInterface[];
+    private initialClassName: string;
+
+    protected publisher: ClassChangePublisher;
 
     constructor(domElement: HTMLElement) {
         this._domElement = domElement
 
         RawHTMLConponent.instances.push(this._domElement);
 
+        this.populateClassesList();
+
+        this.publisher = new ClassChangePublisher();
+
         this.removeElement = this.removeElement.bind(this);
     }
 
     get domElement() {
         return this._domElement;
+    }
+
+    private populateClassesList() {
+        const classNames = []
+
+        this.domElement.classList.forEach((c, index) => {
+            classNames.push({
+                text: c,
+                value: c,
+            })
+        });
+
+        this.classNames = classNames;
+
+        this.initialClassName = this.classNames[0].value
     }
 
     protected dragStartWithTargetId(event: any) {
@@ -51,12 +80,20 @@ export default abstract class RawHTMLConponent {
         return new IdDefinitionComponent(this._domElement).component;
     }
 
+    protected addClassNameDefinitionComponent() {
+        return new ClassManagementComponent(this._domElement ,this.classNames, this.initialClassName, this.publisher).component;
+    }
+
     protected addMarginStyleComponent() {
-        return new MarginOrPaddingComponent(this._domElement, StyleNameEnum.margin).component;
+        const component = new MarginOrPaddingComponent(this._domElement, this.initialClassName, StyleNameEnum.margin);
+        this.publisher.attach(component);
+        return component.component;
     }
 
     protected addPaddingStyleComponent() {
-        return new MarginOrPaddingComponent(this._domElement, StyleNameEnum.padding).component;
+        const component = new MarginOrPaddingComponent(this._domElement, this.initialClassName, StyleNameEnum.padding);
+        this.publisher.attach(component);
+        return component.component;
     }
 
     protected addInnerTextChangeComponent() {
@@ -104,23 +141,33 @@ export default abstract class RawHTMLConponent {
     }
 
     protected addDisplayAsParentComponent() {
-        return new DisplayAsParentComponent(this._domElement).component;
+        const component = new DisplayAsParentComponent(this._domElement, this.initialClassName);
+        this.publisher.attach(component);
+        return component.component;
     }
 
     protected addDisplayAsChildComponent() {
-        return new DisplayAsChildComponent(this._domElement).component;
+        const component = new DisplayAsChildComponent(this._domElement, this.initialClassName);
+        this.publisher.attach(component);
+        return component.component;
     }
 
     protected addBorderSettingsComponent() {
-        return new BorderComponent(this._domElement).component;
+        const component = new BorderComponent(this._domElement, this.initialClassName);
+        this.publisher.attach(component);
+        return component.component;
     }
 
     protected addBackgroundSettingsComponent() {
-        return new BackgroundComponent(this._domElement).component;
+        const component = new BackgroundComponent(this._domElement, this.initialClassName);
+        this.publisher.attach(component);
+        return component.component;
     }
 
     protected addBoxShadowComponent() {
-        return new BoxShadowComponent(this._domElement).component;
+        const component = new BoxShadowComponent(this._domElement, this.initialClassName);
+        this.publisher.attach(component);
+        return component.component;
     }
 
 

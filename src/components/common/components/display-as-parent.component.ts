@@ -1,7 +1,9 @@
+import ClassChangeObserverInterface from '../interfaces/class-change-observer.interface';
+
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
 
 import ContainerBuilder from '../models/ContainerBuilder';
-import SelectorBuilder from '../models/SelectorBuilder';
+import SelectorFromEnumBuilder from '../models/SelectorFromEnumBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 import InputBuilder from '../models/InputBuilder';
 import TextareaBuilder from '../models/TextareaBuilder';
@@ -25,7 +27,7 @@ import { AlignGridContentEnum } from '../enums/align-grid-content.enum';
 import { GridAutoFlowEnum } from '../enums/grid-auto-flow.enum';
 
 
-export default class DisplayAsParentComponent {
+export default class DisplayAsParentComponent implements ClassChangeObserverInterface {
     private domElement: HTMLElement;
     private container: HTMLDivElement;
     private domElementStyleSheet: CSSStyleDeclaration;
@@ -35,9 +37,9 @@ export default class DisplayAsParentComponent {
     private flexContainerAsParent: ContainerBuilder;
     private gridContainerAsParent: ContainerBuilder;
 
-    constructor(domElement: HTMLElement) {
+    constructor(domElement: HTMLElement, initialClassName: string) {
         this.domElement = domElement;
-        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(this.domElement.id);
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(initialClassName);
         this.addComponents();
     }
 
@@ -54,7 +56,7 @@ export default class DisplayAsParentComponent {
     private addComponents() {
         this.updateProperty = this.updateProperty.bind(this);
 
-        this.displaySelector = new SelectorBuilder(DisplayTypesEnum)
+        this.displaySelector = new SelectorFromEnumBuilder(DisplayTypesEnum)
             .selectOption(this.getCurrentProperties('display'))
             .addEventListener('change', this.updateProperty)
             .build()
@@ -119,23 +121,23 @@ export default class DisplayAsParentComponent {
     }
 
     private createFlexAsParentContainer() {
-        const flexDirectionSelector = new SelectorBuilder(FlexDirectionEnum)
+        const flexDirectionSelector = new SelectorFromEnumBuilder(FlexDirectionEnum)
             .selectOption(this.domElementStyleSheet['flex-direction'] || '')
             .build()
 
-        const flexWrapSelector = new SelectorBuilder(FlexWrapEnum)
+        const flexWrapSelector = new SelectorFromEnumBuilder(FlexWrapEnum)
             .selectOption(this.domElementStyleSheet['flex-wrap'] || '')
             .build()
 
-        const alignItemsSelector = new SelectorBuilder(AlignFlexItemsEnum)
+        const alignItemsSelector = new SelectorFromEnumBuilder(AlignFlexItemsEnum)
             .selectOption(this.domElementStyleSheet['align-items'] || '')
             .build()
 
-        const justifyContentSelector = new SelectorBuilder(JustifyFlexContentEnum)
+        const justifyContentSelector = new SelectorFromEnumBuilder(JustifyFlexContentEnum)
             .selectOption(this.domElementStyleSheet['justify-content'] || '')
             .build()
 
-        const alignContentSelector = new SelectorBuilder(AlignFlexContentEnum)
+        const alignContentSelector = new SelectorFromEnumBuilder(AlignFlexContentEnum)
             .selectOption(this.domElementStyleSheet['align-content'] || '')
             .build()
 
@@ -184,23 +186,23 @@ export default class DisplayAsParentComponent {
             .setValue(this.domElementStyleSheet['grid-template-areas'] || '')
             .build()
 
-        const gridJustifyItemsSelector = new SelectorBuilder(JustifyGridItemsEnum)
+        const gridJustifyItemsSelector = new SelectorFromEnumBuilder(JustifyGridItemsEnum)
             .selectOption(this.domElementStyleSheet['justify-items'] || '')
             .build()
 
-        const gridAlignItemsSelector = new SelectorBuilder(AlignGridItemsEnum)
+        const gridAlignItemsSelector = new SelectorFromEnumBuilder(AlignGridItemsEnum)
             .selectOption(this.domElementStyleSheet['align-items'] || '')
             .build()
 
-        const gridJustifyContentSelector = new SelectorBuilder(JustifyGridContentEnum)
+        const gridJustifyContentSelector = new SelectorFromEnumBuilder(JustifyGridContentEnum)
             .selectOption(this.domElementStyleSheet['justify-content'] || '')
             .build()
 
-        const gridAlignContentSelector = new SelectorBuilder(AlignGridContentEnum)
+        const gridAlignContentSelector = new SelectorFromEnumBuilder(AlignGridContentEnum)
             .selectOption(this.domElementStyleSheet['align-content'] || '')
             .build()
 
-        const gridAutoFlowSelector = new SelectorBuilder(GridAutoFlowEnum)
+        const gridAutoFlowSelector = new SelectorFromEnumBuilder(GridAutoFlowEnum)
             .selectOption(this.domElementStyleSheet['grid-auto-flow'] || '')
             .build()
 
@@ -283,5 +285,9 @@ export default class DisplayAsParentComponent {
                 CssStyleSheet.getRuleStyles(child['id'])['align-self'] = '';
             })
         }
+    }
+
+    public classNameUpdated(name: string) {
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(name);
     }
 }

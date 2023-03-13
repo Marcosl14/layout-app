@@ -1,6 +1,6 @@
 import RawBuilder from './RawBuilder';
 
-export default class SelectorBuilder extends RawBuilder<HTMLSelectElement>{
+export default class SelectorFromEnumBuilder extends RawBuilder<HTMLSelectElement>{
     private keys: string[];
     private options: Record<string,string>;
 

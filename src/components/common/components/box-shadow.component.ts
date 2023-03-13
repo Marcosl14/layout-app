@@ -1,5 +1,7 @@
+import ClassChangeObserverInterface from '../interfaces/class-change-observer.interface';
+
 import ContainerBuilder from '../models/ContainerBuilder';
-import SelectorBuilder from '../models/SelectorBuilder';
+import SelectorFromEnumBuilder from '../models/SelectorFromEnumBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 import InputBuilder from '../models/InputBuilder';
 
@@ -16,7 +18,7 @@ import { FlexDirectionEnum } from '../enums/flex-direction.enum';
 import { DisplayTypesEnum } from '../enums/display-types.enum';
 
 
-export default class BoxShadowComponent {
+export default class BoxShadowComponent implements ClassChangeObserverInterface {
     private domElement: HTMLElement;
     private container: HTMLDivElement;
     private componentsContainer: HTMLDivElement;
@@ -52,10 +54,9 @@ export default class BoxShadowComponent {
     private advancedShadowBoxContainer: HTMLDivElement;
 
 
-    constructor(domElement: HTMLElement) {
+    constructor(domElement: HTMLElement, initialClassName: string) {
         this.domElement = domElement;
-        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(this.domElement.id);
-
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(initialClassName);
         this.getInitialValues();
         this.addComponents();
     }
@@ -142,7 +143,7 @@ export default class BoxShadowComponent {
             .addEventListener('input', this.updateBasicProperty)
             .build()
 
-        this.horizontalOffsetUnitSelector = new SelectorBuilder(UnitsEnum)
+        this.horizontalOffsetUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
             .selectOption(getUnit(this.getInitialValues().horizontalOffset))
             .addEventListener('change', this.updateBasicProperty)
             .build()
@@ -152,7 +153,7 @@ export default class BoxShadowComponent {
             .addEventListener('input', this.updateBasicProperty)
             .build()
 
-        this.verticalOffsetUnitSelector = new SelectorBuilder(UnitsEnum)
+        this.verticalOffsetUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
             .selectOption(getUnit(this.getInitialValues().verticalOffset))
             .addEventListener('change', this.updateBasicProperty)
             .build()
@@ -163,7 +164,7 @@ export default class BoxShadowComponent {
             .addEventListener('input', this.updateBasicProperty)
             .build()
 
-        this.blurRadiusUnitSelector = new SelectorBuilder(UnitsEnum)
+        this.blurRadiusUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
             .selectOption(getUnit(this.getInitialValues().blurRadius))
             .addEventListener('change', this.updateBasicProperty)
             .build()
@@ -173,7 +174,7 @@ export default class BoxShadowComponent {
             .addEventListener('input', this.updateBasicProperty)
             .build()
 
-        this.spreadRadiusUnitSelector = new SelectorBuilder(UnitsEnum)
+        this.spreadRadiusUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
             .selectOption(getUnit(this.getInitialValues().spreadRadius))
             .addEventListener('change', this.updateBasicProperty)
             .build()
@@ -414,5 +415,9 @@ export default class BoxShadowComponent {
             blurRadius: sizesArr[2],
             spreadRadius: sizesArr[3],
         }
+    }
+
+    public classNameUpdated(name: string) {
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(name);
     }
 }

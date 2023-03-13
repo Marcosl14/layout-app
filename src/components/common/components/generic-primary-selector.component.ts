@@ -1,7 +1,7 @@
 import { StyleNameEnum } from '../enums/style-name.enum';
 import ContainerBuilder from '../models/ContainerBuilder';
 import LabelBuilder from '../models/LabelBuilder';
-import SelectorBuilder from '../models/SelectorBuilder';
+import SelectorFromEnumBuilder from '../models/SelectorFromEnumBuilder';
 
 export default class GenericPrimarySelectorComponent {
     private domElement: HTMLElement;
@@ -26,7 +26,7 @@ export default class GenericPrimarySelectorComponent {
     private addComponents() {
         this.updateProperty = this.updateProperty.bind(this);
 
-        this.propertySelector = new SelectorBuilder(this.options)
+        this.propertySelector = new SelectorFromEnumBuilder(this.options)
             .selectOption(this.domElement[this.atributeToModify])
             .addEventListener('change', this.updateProperty)
             .build()
