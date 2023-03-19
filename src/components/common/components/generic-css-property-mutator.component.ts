@@ -17,7 +17,7 @@ export default class GenericCssPropertyMutatorComponent {
     private eventType: EventTypeEnum;
     private unit: string;
 
-    // TODO: acomodar estructura con prettier y tslinter. Saltar linea cuando muy larga.
+    private zeroValue: number;
 
     constructor(
         domElementStyleSheet: CSSStyleDeclaration,
@@ -67,6 +67,15 @@ export default class GenericCssPropertyMutatorComponent {
     }
 
     private updateProperty() {
+        if(parseInt(this.changeElement.value) === this.zeroValue){
+            this.domElementStyleSheet[this.style] = '';
+            return;
+        }
         this.domElementStyleSheet[this.style] = this.changeElement.value + this.unit;
+    }
+
+    public setZeroValue(value: number) {
+        this.zeroValue = value;
+        return this;
     }
 }

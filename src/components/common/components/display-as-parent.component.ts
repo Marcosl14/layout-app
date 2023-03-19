@@ -61,12 +61,6 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
         this.addComponents();
     }
 
-    // TODO: deberia agregar algo mas de flex???. Grid esta completo, pero se puede mejorar...
-
-    // TODO: ver si el grid lo podemos hacer mas user friendly
-    // https://css-tricks.com/snippets/css/complete-guide-grid/#prop-align-items
-    // https://css-tricks.com/almanac/properties/g/grid-auto-columns/
-
     get component() {
         return this.container;
     }
@@ -96,42 +90,32 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
             )
             .build();
 
-        this.addComponentAccordingToSelector();
+        this.flexContainerAsParent = this.createFlexAsParentContainer();
+        this.gridContainerAsParent = this.createGridAsParentContainer();
+        this.setComponentAccordingToSelector();
     }
 
     private updateProperty() {
         this.domElementStyleSheet['display'] = this.displaySelector.value;
-        this.changeComponentAccordingToSelector();
+        this.setComponentAccordingToSelector();
     }
 
     private getCurrentProperties(property: string): string {
         return this.domElementStyleSheet[property];
     }
 
-    private addComponentAccordingToSelector() {
-        const currentProperties = this.getCurrentProperties('display');
-
-        if (currentProperties === DisplayTypesEnum.flex || currentProperties === DisplayTypesEnum['inline-flex']) {
-            this.flexContainerAsParent = this.createFlexAsParentContainer();
-            this.setFlexAsChildrenInitialValues();
-            this.container.appendChild(this.flexContainerAsParent.build());
-        } else if (currentProperties === DisplayTypesEnum.grid || currentProperties === DisplayTypesEnum['inline-grid']) {
-            this.gridContainerAsParent = this.createGridAsParentContainer();
-            this.setGridAsChildrenInitialValues();
-            this.container.appendChild(this.gridContainerAsParent.build());
-        }
-    }
-
-    private changeComponentAccordingToSelector() {
+    private setComponentAccordingToSelector() {
         const currentProperties = this.getCurrentProperties('display');
 
         if (currentProperties === DisplayTypesEnum.flex || currentProperties === DisplayTypesEnum['inline-flex']) {
             this.resetGrid();
-            this.flexContainerAsParent = this.createFlexAsParentContainer();
+            this.updateFlexComponentsStyleSheet();
+            this.setFlexAsParentInitialValues();
             this.container.appendChild(this.flexContainerAsParent.build());
         } else if (currentProperties === DisplayTypesEnum.grid || currentProperties === DisplayTypesEnum['inline-grid']) {
             this.resetFlex();
-            this.gridContainerAsParent = this.createGridAsParentContainer();
+            this.updateGridComponentsStyleSheet();
+            this.setGridAsParentInitialValues();
             this.container.appendChild(this.gridContainerAsParent.build());
         } else {
             this.resetFlex();
@@ -198,7 +182,7 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
             )
     }
 
-    private setFlexAsChildrenInitialValues() {
+    private setFlexAsParentInitialValues() {
         this.flexDirectionSelector.setValue(this.domElementStyleSheet['flex-direction'] || '');
         this.flexWrapSelector.setValue(this.domElementStyleSheet['flex-wrap'] || '');
         this.alignItemsSelector.setValue(this.domElementStyleSheet['align-items'] || '');
@@ -270,8 +254,12 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
             EventTypeEnum.change);
 
         this.gridColumnGapInput = new InputAndUnitsSelectorComponent(this.domElementStyleSheet, 'column-gap', 'Grid Column Gap')
+            .setMinValue(0)
+            .setZeroValue(0)
 
         this.gridRowGapInput = new InputAndUnitsSelectorComponent(this.domElementStyleSheet, 'row-gap', 'Grid Row Gap')
+            .setMinValue(0)
+            .setZeroValue(0)
 
         return new ContainerBuilder()
             .appendChild(new ContainerBuilder()
@@ -303,7 +291,7 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
             )
     }
 
-    private setGridAsChildrenInitialValues() {
+    private setGridAsParentInitialValues() {
         this.gridTemplateColumnsInput.setValue(this.domElementStyleSheet['grid-template-columns'] || '');
         this.gridTemplateRowsInput.setValue(this.domElementStyleSheet['grid-template-rows'] || '');
         this.gridAutoColumnsInput.setValue(this.domElementStyleSheet['grid-auto-columns'] || '');
@@ -376,36 +364,29 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
         const currentProperties = this.getCurrentProperties('display');
         this.displaySelector.value = currentProperties;
 
-        // TODO: el if que sigue deberia estar unificado con el que hay arriba... ver que se puede hacer...
+        this.setComponentAccordingToSelector();
+    }
 
-        if (currentProperties === DisplayTypesEnum.flex || currentProperties === DisplayTypesEnum['inline-flex']) {
-            this.flexDirectionSelector.updateStyleSheet(this.domElementStyleSheet);
-            this.flexWrapSelector.updateStyleSheet(this.domElementStyleSheet);
-            this.alignItemsSelector.updateStyleSheet(this.domElementStyleSheet);
-            this.justifyContentSelector.updateStyleSheet(this.domElementStyleSheet);
-            this.alignContentSelector.updateStyleSheet(this.domElementStyleSheet);
+    private updateFlexComponentsStyleSheet() {
+        this.flexDirectionSelector.updateStyleSheet(this.domElementStyleSheet);
+        this.flexWrapSelector.updateStyleSheet(this.domElementStyleSheet);
+        this.alignItemsSelector.updateStyleSheet(this.domElementStyleSheet);
+        this.justifyContentSelector.updateStyleSheet(this.domElementStyleSheet);
+        this.alignContentSelector.updateStyleSheet(this.domElementStyleSheet);
+    }
 
-            this.setFlexAsChildrenInitialValues();
-            this.resetGrid();
-        } else if (currentProperties === DisplayTypesEnum.grid || currentProperties === DisplayTypesEnum['inline-grid']) {
-            this.gridTemplateColumnsInput.updateStyleSheet(this.domElementStyleSheet);
-            this.gridTemplateRowsInput.updateStyleSheet(this.domElementStyleSheet);
-            this.gridAutoColumnsInput.updateStyleSheet(this.domElementStyleSheet);
-            this.gridAutoRowsInput.updateStyleSheet(this.domElementStyleSheet);
-            this.gridTemplateAreasTextarea.updateStyleSheet(this.domElementStyleSheet);
-            this.gridJustifyItemsSelector.updateStyleSheet(this.domElementStyleSheet);
-            this.gridAlignItemsSelector.updateStyleSheet(this.domElementStyleSheet);
-            this.gridJustifyContentSelector.updateStyleSheet(this.domElementStyleSheet);
-            this.gridAlignContentSelector.updateStyleSheet(this.domElementStyleSheet);
-            this.gridAutoFlowSelector.updateStyleSheet(this.domElementStyleSheet);
-            this.gridColumnGapInput.updateStyleSheet(this.domElementStyleSheet);
-            this.gridRowGapInput.updateStyleSheet(this.domElementStyleSheet);
-
-            this.setGridAsChildrenInitialValues();
-            this.resetFlex();
-        } else {
-            this.resetFlex();
-            this.resetGrid();
-        }
+    private updateGridComponentsStyleSheet() {
+        this.gridTemplateColumnsInput.updateStyleSheet(this.domElementStyleSheet);
+        this.gridTemplateRowsInput.updateStyleSheet(this.domElementStyleSheet);
+        this.gridAutoColumnsInput.updateStyleSheet(this.domElementStyleSheet);
+        this.gridAutoRowsInput.updateStyleSheet(this.domElementStyleSheet);
+        this.gridTemplateAreasTextarea.updateStyleSheet(this.domElementStyleSheet);
+        this.gridJustifyItemsSelector.updateStyleSheet(this.domElementStyleSheet);
+        this.gridAlignItemsSelector.updateStyleSheet(this.domElementStyleSheet);
+        this.gridJustifyContentSelector.updateStyleSheet(this.domElementStyleSheet);
+        this.gridAlignContentSelector.updateStyleSheet(this.domElementStyleSheet);
+        this.gridAutoFlowSelector.updateStyleSheet(this.domElementStyleSheet);
+        this.gridColumnGapInput.updateStyleSheet(this.domElementStyleSheet);
+        this.gridRowGapInput.updateStyleSheet(this.domElementStyleSheet);
     }
 }

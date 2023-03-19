@@ -40,37 +40,33 @@ export default class DisplayAsChildComponent implements ClassChangeObserverInter
     constructor(domElement: HTMLElement, initialClassName: string) {
         this.domElement = domElement;
         this.domElementStyleSheet = CssStyleSheet.getRuleStyles(initialClassName);
-        this.addComponents();
+
+        this.container = new ContainerBuilder().build();
+
+        this.flexContainerAsChildren = this.createFlexAsChildrenContainer();
+        this.gridContainerAsChildren = this.createGridAsChildrenContainer();
+        this.setComponentAccordingToSelector();
     }
 
     get component() {
         return this.container;
     }
 
-    // TODO: deberia agregar algo mas de flex???. Grid esta completo, pero se puede mejorar...
-
-    // TODO: ver si el grid lo podemos hacer mas user friendly
-    // https://css-tricks.com/snippets/css/complete-guide-grid/#prop-align-items
-    // https://css-tricks.com/almanac/properties/g/grid-auto-columns/
-
-    private addComponents() {
-        this.container = new ContainerBuilder()
-            .build();
-
+    private setComponentAccordingToSelector() {
         if (this.domElement.id !== 'app-container') {
-            const currentProperties = CssStyleSheet.getRuleStyles(this.domElement.parentElement.id)['display']
-            // TODO: esto deberia buscar en todas las clases del elemento padre, y ver cual es el estilo que realmente tiene aplicado...
+            // NOTE: window.getComputedStyle(domElement) return the active style of that dom element.
+            const currentProperties = window.getComputedStyle(this.domElement.parentElement)['display']
 
             if (currentProperties === DisplayTypesEnum.flex || currentProperties === DisplayTypesEnum['inline-flex']) {
-                    this.flexContainerAsChildren = this.createFlexAsChildrenContainer();
-                    this.setFlexAsChildrenInitialValues();
-                    this.container.appendChild(this.flexContainerAsChildren);
-                    this.resetGrid();
+                this.resetGrid();
+                this.updateFlexComponentsStyleSheet();
+                this.setFlexAsChildrenInitialValues();
+                this.container.appendChild(this.flexContainerAsChildren);
             } else if (currentProperties === DisplayTypesEnum.grid || currentProperties === DisplayTypesEnum['inline-grid']) {
-                    this.gridContainerAsChildren = this.createGridAsChildrenContainer();
-                    this.setGridAsChildrenInitialValues();
-                    this.container.appendChild(this.gridContainerAsChildren);
-                    this.resetFlex();
+                this.resetFlex();
+                this.updateGridComponentsStyleSheet();
+            this.setGridAsChildrenInitialValues();
+                this.container.appendChild(this.gridContainerAsChildren);
             } else {
                 this.resetFlex();
                 this.resetGrid();
@@ -97,7 +93,7 @@ export default class DisplayAsChildComponent implements ClassChangeObserverInter
                 .setMin(0)
                 .build(),
             EventTypeEnum.input
-        );
+        ).setZeroValue(0)
 
         this.flexShrinkInput = new GenericCssPropertyMutatorComponent(
             this.domElementStyleSheet,
@@ -108,7 +104,8 @@ export default class DisplayAsChildComponent implements ClassChangeObserverInter
                 .setMin(0)
                 .build(),
             EventTypeEnum.input
-        );
+        ).setZeroValue(0)
+
 
         this.flexBasisInput = new GenericCssPropertyMutatorComponent(
             this.domElementStyleSheet,
@@ -120,7 +117,7 @@ export default class DisplayAsChildComponent implements ClassChangeObserverInter
                 .build(),
             EventTypeEnum.input,
             '%'
-        );
+        ).setZeroValue(0)
 
         return new ContainerBuilder()
             .appendChild(new ContainerBuilder()
@@ -253,36 +250,22 @@ export default class DisplayAsChildComponent implements ClassChangeObserverInter
 
     public classNameUpdated(name: string) {
         this.domElementStyleSheet = CssStyleSheet.getRuleStyles(name);
+        this.setComponentAccordingToSelector();
+    }
 
-        // TODO: este if deberia ser unico, porque es la repeticion del de arriba.
-        if (this.domElement.id !== 'app-container') {
-            const currentProperties = CssStyleSheet.getRuleStyles(this.domElement.parentElement.id)['display']
+    private updateFlexComponentsStyleSheet() {
+        this.alignSelfSelector.updateStyleSheet(this.domElementStyleSheet);
+        this.flexGrowInput.updateStyleSheet(this.domElementStyleSheet);
+        this.flexShrinkInput.updateStyleSheet(this.domElementStyleSheet);
+        this.flexBasisInput.updateStyleSheet(this.domElementStyleSheet);
+    }
 
-            if (currentProperties === DisplayTypesEnum.flex || currentProperties === DisplayTypesEnum['inline-flex']) {
-                this.alignSelfSelector.updateStyleSheet(this.domElementStyleSheet);
-                this.flexGrowInput.updateStyleSheet(this.domElementStyleSheet);
-                this.flexShrinkInput.updateStyleSheet(this.domElementStyleSheet);
-                this.flexBasisInput.updateStyleSheet(this.domElementStyleSheet);
-
-                this.setFlexAsChildrenInitialValues();
-                this.resetGrid();
-            } else if (currentProperties === DisplayTypesEnum.grid || currentProperties === DisplayTypesEnum['inline-grid']) {
-                this.gridColumnStartInput.updateStyleSheet(this.domElementStyleSheet);
-                this.gridColumnEndInput.updateStyleSheet(this.domElementStyleSheet);
-                this.gridRowStartInput.updateStyleSheet(this.domElementStyleSheet);
-                this.gridRowEndInput.updateStyleSheet(this.domElementStyleSheet);
-                this.gridJustifySelf.updateStyleSheet(this.domElementStyleSheet);
-                this.gridAlignSelf.updateStyleSheet(this.domElementStyleSheet);
-
-                this.setGridAsChildrenInitialValues();
-                this.resetFlex();
-            } else {
-                this.resetFlex();
-                this.resetGrid()
-            }
-        }
-        // TODO: si flex grow === 0 => eliminar prop
-        // TODO: si flex shrink === 0 => eliminar prop
-        // TODO: si flex basis === 0 => eliminar prop => ver porque no se muestra en % y si en px...
+    private updateGridComponentsStyleSheet() {
+        this.gridColumnStartInput.updateStyleSheet(this.domElementStyleSheet);
+        this.gridColumnEndInput.updateStyleSheet(this.domElementStyleSheet);
+        this.gridRowStartInput.updateStyleSheet(this.domElementStyleSheet);
+        this.gridRowEndInput.updateStyleSheet(this.domElementStyleSheet);
+        this.gridJustifySelf.updateStyleSheet(this.domElementStyleSheet);
+        this.gridAlignSelf.updateStyleSheet(this.domElementStyleSheet);
     }
 }
