@@ -1,8 +1,6 @@
 import ContainerBuilder from '../models/ContainerBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 
-import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
-
 import { StyleNameEnum } from '../enums/style-name.enum';
 import { EventTypeEnum } from '../enums/event-type.enum';
 import { FlexDirectionEnum } from '../enums/flex-direction.enum';
@@ -10,23 +8,31 @@ import { DisplayTypesEnum } from '../enums/display-types.enum';
 import { AlignFlexItemsEnum } from '../enums/align-flex-items.enum';
 
 export default class GenericCssPropertyMutatorComponent {
-    private domElement: HTMLElement;
     private container: HTMLDivElement;
     private domElementStyleSheet: CSSStyleDeclaration;
 
     private label: string;
     private style: string;
-    private changeElement: HTMLElement;
+    private changeElement: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
     private eventType: EventTypeEnum;
+    private unit: string;
 
+    // TODO: acomodar estructura con prettier y tslinter. Saltar linea cuando muy larga.
 
-    constructor(domElement: HTMLElement, style: string, label: string, changeElement: HTMLElement, eventType: EventTypeEnum) {
-        this.domElement = domElement;
+    constructor(
+        domElementStyleSheet: CSSStyleDeclaration,
+        style: string,
+        label: string,
+        changeElement: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement,
+        eventType: EventTypeEnum,
+        unit = '',
+    ) {
         this.style = style;
         this.label = label;
-        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(this.domElement.id);
+        this.domElementStyleSheet = domElementStyleSheet;
         this.changeElement = changeElement;
         this.eventType = eventType;
+        this.unit = unit;
         this.addComponents();
     }
 
@@ -52,7 +58,15 @@ export default class GenericCssPropertyMutatorComponent {
             .build()
     }
 
+    public setValue(value = 'string') {
+        this.changeElement.value = value;
+    }
+
+    public updateStyleSheet(domElementStyleSheet: CSSStyleDeclaration) {
+        this.domElementStyleSheet = domElementStyleSheet;
+    }
+
     private updateProperty() {
-        this.domElementStyleSheet[this.style] = this.changeElement['value'];
+        this.domElementStyleSheet[this.style] = this.changeElement.value + this.unit;
     }
 }

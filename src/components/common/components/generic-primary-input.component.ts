@@ -1,9 +1,10 @@
-import { InputTypeEnum } from '../enums/input-type.enum';
 import ContainerBuilder from '../models/ContainerBuilder';
 import InputBuilder from '../models/InputBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 import ButtonBuilder from '../models/ButtonBuilder';
+
 import { StyleNameEnum } from '../enums/style-name.enum';
+import { InputTypeEnum } from '../enums/input-type.enum';
 
 export default class GenericPrimaryInputComponent {
     private domElement: HTMLElement;

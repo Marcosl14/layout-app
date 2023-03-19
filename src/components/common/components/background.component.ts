@@ -18,7 +18,6 @@ export default class BackgroundComponent implements ClassChangeObserverInterface
 
     private colorInput: HTMLInputElement;
     private opacitySlider: HTMLInputElement;
-
     private opacityValue: HTMLLabelElement;
 
     constructor(domElement: HTMLElement, initialClassName: string) {
@@ -110,5 +109,8 @@ export default class BackgroundComponent implements ClassChangeObserverInterface
 
     public classNameUpdated(name: string) {
         this.domElementStyleSheet = CssStyleSheet.getRuleStyles(name);
+        this.colorInput.value = this.getCurrentColor();
+        this.opacitySlider.value = this.getCurrentOpacity();
+        this.opacityValue.innerText = `${this.opacitySlider.value}%`;
     }
 }

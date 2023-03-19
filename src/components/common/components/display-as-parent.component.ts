@@ -35,7 +35,25 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
     private displaySelector: HTMLSelectElement;
 
     private flexContainerAsParent: ContainerBuilder;
+    private flexDirectionSelector: GenericCssPropertyMutatorComponent;
+    private flexWrapSelector: GenericCssPropertyMutatorComponent;
+    private alignItemsSelector: GenericCssPropertyMutatorComponent;
+    private justifyContentSelector: GenericCssPropertyMutatorComponent;
+    private alignContentSelector: GenericCssPropertyMutatorComponent;
+
     private gridContainerAsParent: ContainerBuilder;
+    private gridTemplateColumnsInput: GenericCssPropertyMutatorComponent;
+    private gridTemplateRowsInput: GenericCssPropertyMutatorComponent;
+    private gridAutoColumnsInput: GenericCssPropertyMutatorComponent;
+    private gridAutoRowsInput: GenericCssPropertyMutatorComponent;
+    private gridTemplateAreasTextarea: GenericCssPropertyMutatorComponent;
+    private gridJustifyItemsSelector: GenericCssPropertyMutatorComponent;
+    private gridAlignItemsSelector: GenericCssPropertyMutatorComponent;
+    private gridJustifyContentSelector: GenericCssPropertyMutatorComponent;
+    private gridAlignContentSelector: GenericCssPropertyMutatorComponent;
+    private gridAutoFlowSelector: GenericCssPropertyMutatorComponent;
+    private gridColumnGapInput: InputAndUnitsSelectorComponent;
+    private gridRowGapInput: InputAndUnitsSelectorComponent;
 
     constructor(domElement: HTMLElement, initialClassName: string) {
         this.domElement = domElement;
@@ -83,7 +101,6 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
 
     private updateProperty() {
         this.domElementStyleSheet['display'] = this.displaySelector.value;
-
         this.changeComponentAccordingToSelector();
     }
 
@@ -96,9 +113,11 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
 
         if (currentProperties === DisplayTypesEnum.flex || currentProperties === DisplayTypesEnum['inline-flex']) {
             this.flexContainerAsParent = this.createFlexAsParentContainer();
+            this.setFlexAsChildrenInitialValues();
             this.container.appendChild(this.flexContainerAsParent.build());
         } else if (currentProperties === DisplayTypesEnum.grid || currentProperties === DisplayTypesEnum['inline-grid']) {
             this.gridContainerAsParent = this.createGridAsParentContainer();
+            this.setGridAsChildrenInitialValues();
             this.container.appendChild(this.gridContainerAsParent.build());
         }
     }
@@ -121,25 +140,40 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
     }
 
     private createFlexAsParentContainer() {
-        const flexDirectionSelector = new SelectorFromEnumBuilder(FlexDirectionEnum)
-            .selectOption(this.domElementStyleSheet['flex-direction'] || '')
-            .build()
+        this.flexDirectionSelector = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'flex-direction',
+            'Flex Direction',
+            new SelectorFromEnumBuilder(FlexDirectionEnum).build(),
+            EventTypeEnum.change
+            );
 
-        const flexWrapSelector = new SelectorFromEnumBuilder(FlexWrapEnum)
-            .selectOption(this.domElementStyleSheet['flex-wrap'] || '')
-            .build()
+        this.flexWrapSelector = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'flex-wrap',
+            'Flex Wrap',
+            new SelectorFromEnumBuilder(FlexWrapEnum).build(),
+            EventTypeEnum.change
+            );
 
-        const alignItemsSelector = new SelectorFromEnumBuilder(AlignFlexItemsEnum)
-            .selectOption(this.domElementStyleSheet['align-items'] || '')
-            .build()
+        this.alignItemsSelector = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'align-items',
+            'Align Items',
+            new SelectorFromEnumBuilder(AlignFlexItemsEnum).build(),
+            EventTypeEnum.change
+            );
 
-        const justifyContentSelector = new SelectorFromEnumBuilder(JustifyFlexContentEnum)
-            .selectOption(this.domElementStyleSheet['justify-content'] || '')
-            .build()
+        this.justifyContentSelector = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'justify-content',
+            'Justify Content',
+            new SelectorFromEnumBuilder(JustifyFlexContentEnum).build(),
+            EventTypeEnum.change
+            );
 
-        const alignContentSelector = new SelectorFromEnumBuilder(AlignFlexContentEnum)
-            .selectOption(this.domElementStyleSheet['align-content'] || '')
-            .build()
+        this.alignContentSelector = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'align-content',
+            'Align Content',
+            new SelectorFromEnumBuilder(AlignFlexContentEnum).build(),
+            EventTypeEnum.change
+            );
 
         return new ContainerBuilder()
             .appendChild(new ContainerBuilder()
@@ -155,56 +189,89 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
                     )
                     .build()
                 )
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'flex-direction', 'Flex Direction', flexDirectionSelector, EventTypeEnum.change).component)
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'flex-wrap', 'Flex Wrap', flexWrapSelector, EventTypeEnum.change).component)
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'align-items', 'Align Items', alignItemsSelector, EventTypeEnum.change).component)
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'justify-content', 'Justify Content', justifyContentSelector, EventTypeEnum.change).component)
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'align-content', 'Align Content', alignContentSelector, EventTypeEnum.change).component)
+                .appendChild(this.flexDirectionSelector.component)
+                .appendChild(this.flexWrapSelector.component)
+                .appendChild(this.alignItemsSelector.component)
+                .appendChild(this.justifyContentSelector.component)
+                .appendChild(this.alignContentSelector.component)
                 .build()
             )
     }
 
+    private setFlexAsChildrenInitialValues() {
+        this.flexDirectionSelector.setValue(this.domElementStyleSheet['flex-direction'] || '');
+        this.flexWrapSelector.setValue(this.domElementStyleSheet['flex-wrap'] || '');
+        this.alignItemsSelector.setValue(this.domElementStyleSheet['align-items'] || '');
+        this.justifyContentSelector.setValue(this.domElementStyleSheet['justify-content'] || '');
+        this.alignContentSelector.setValue(this.domElementStyleSheet['align-content'] || '');
+    }
+
     private createGridAsParentContainer() {
-        const gridTemplateColumnsInput = new InputBuilder(InputTypeEnum.text)
-            .setValue(this.domElementStyleSheet['grid-template-columns'] || '')
-            .build()
+        this.gridTemplateColumnsInput = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'grid-template-columns',
+            'Grid Template Columns',
+            new InputBuilder(InputTypeEnum.text).build(),
+            EventTypeEnum.input);
 
-        const gridTemplateRowsInput = new InputBuilder(InputTypeEnum.text)
-            .setValue(this.domElementStyleSheet['grid-template-rows'] || '')
-            .build()
+        this.gridTemplateRowsInput = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'grid-template-rows',
+            'Grid Template Rows',
+            new InputBuilder(InputTypeEnum.text).build(),
+            EventTypeEnum.input);
 
-        const gridAutoColumnsInput = new InputBuilder(InputTypeEnum.text)
-            .setValue(this.domElementStyleSheet['grid-auto-columns'] || '')
-            .build()
+        this.gridAutoColumnsInput = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'grid-auto-columns',
+            'Grid Auto Columns',
+            new InputBuilder(InputTypeEnum.text).build(),
+            EventTypeEnum.input);
 
-        const gridAutoRowsInput = new InputBuilder(InputTypeEnum.text)
-            .setValue(this.domElementStyleSheet['grid-auto-rows'] || '')
-            .build()
+        this.gridAutoRowsInput = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'grid-auto-rows',
+            'Grid Auto Rows',
+            new InputBuilder(InputTypeEnum.text).build(),
+            EventTypeEnum.input);
 
-        const gridTemplateAreasTextarea = new TextareaBuilder()
-            .setStyle(StyleNameEnum.resize, 'vertical')
-            .setValue(this.domElementStyleSheet['grid-template-areas'] || '')
-            .build()
+        this.gridTemplateAreasTextarea = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'grid-template-areas',
+            'Grid Template Areas',
+            new TextareaBuilder()
+                .setStyle(StyleNameEnum.resize, 'vertical')
+                .build(),
+            EventTypeEnum.input);
 
-        const gridJustifyItemsSelector = new SelectorFromEnumBuilder(JustifyGridItemsEnum)
-            .selectOption(this.domElementStyleSheet['justify-items'] || '')
-            .build()
+        this.gridJustifyItemsSelector = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'justify-items',
+            'Grid Justify Items',
+            new SelectorFromEnumBuilder(JustifyGridItemsEnum).build(),
+            EventTypeEnum.change);
 
-        const gridAlignItemsSelector = new SelectorFromEnumBuilder(AlignGridItemsEnum)
-            .selectOption(this.domElementStyleSheet['align-items'] || '')
-            .build()
+        this.gridAlignItemsSelector = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'align-items',
+            'Grid Align Items',
+            new SelectorFromEnumBuilder(AlignGridItemsEnum).build(),
+            EventTypeEnum.change);
 
-        const gridJustifyContentSelector = new SelectorFromEnumBuilder(JustifyGridContentEnum)
-            .selectOption(this.domElementStyleSheet['justify-content'] || '')
-            .build()
+        this.gridJustifyContentSelector = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'justify-content',
+            'Grid Justify Content',
+            new SelectorFromEnumBuilder(JustifyGridContentEnum).build(),
+            EventTypeEnum.change);
 
-        const gridAlignContentSelector = new SelectorFromEnumBuilder(AlignGridContentEnum)
-            .selectOption(this.domElementStyleSheet['align-content'] || '')
-            .build()
+        this.gridAlignContentSelector = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'align-content',
+            'Grid Align Content',
+            new SelectorFromEnumBuilder(AlignGridContentEnum).build(),
+            EventTypeEnum.change);
 
-        const gridAutoFlowSelector = new SelectorFromEnumBuilder(GridAutoFlowEnum)
-            .selectOption(this.domElementStyleSheet['grid-auto-flow'] || '')
-            .build()
+        this.gridAutoFlowSelector = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
+            'grid-auto-flow',
+            'Grid Auto Flow',
+            new SelectorFromEnumBuilder(GridAutoFlowEnum).build(),
+            EventTypeEnum.change);
+
+        this.gridColumnGapInput = new InputAndUnitsSelectorComponent(this.domElementStyleSheet, 'column-gap', 'Grid Column Gap')
+
+        this.gridRowGapInput = new InputAndUnitsSelectorComponent(this.domElementStyleSheet, 'row-gap', 'Grid Row Gap')
 
         return new ContainerBuilder()
             .appendChild(new ContainerBuilder()
@@ -220,20 +287,33 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
                     )
                     .build()
                 )
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'grid-template-columns', 'Grid Template Columns', gridTemplateColumnsInput, EventTypeEnum.input).component)
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'grid-template-rows', 'Grid Template Rows', gridTemplateRowsInput, EventTypeEnum.input).component)
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'grid-auto-columns', 'Grid Auto Columns', gridAutoColumnsInput, EventTypeEnum.input).component)
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'grid-auto-rows', 'Grid Auto Rows', gridAutoRowsInput, EventTypeEnum.input).component)
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'grid-template-areas', 'Grid Template Areas', gridTemplateAreasTextarea, EventTypeEnum.input).component)
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'justify-items', 'Grid Justify Items', gridJustifyItemsSelector, EventTypeEnum.change).component)
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'align-items', 'Grid Align Items', gridAlignItemsSelector, EventTypeEnum.change).component)
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'justify-content', 'Grid Justify Content', gridJustifyContentSelector, EventTypeEnum.change).component)
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'align-content', 'Grid Align Content', gridAlignContentSelector, EventTypeEnum.change).component)
-                .appendChild(new GenericCssPropertyMutatorComponent(this.domElement, 'grid-auto-flow', 'Grid Auto Flow', gridAutoFlowSelector, EventTypeEnum.change).component)
-                .appendChild(new InputAndUnitsSelectorComponent(this.domElement, 'column-gap', 'Grid Column Gap').component)
-                .appendChild(new InputAndUnitsSelectorComponent(this.domElement, 'row-gap', 'Grid Row Gap').component)
+                .appendChild(this.gridTemplateColumnsInput.component)
+                .appendChild(this.gridTemplateRowsInput.component)
+                .appendChild(this.gridAutoColumnsInput.component)
+                .appendChild(this.gridAutoRowsInput.component)
+                .appendChild(this.gridTemplateAreasTextarea.component)
+                .appendChild(this.gridJustifyItemsSelector.component)
+                .appendChild(this.gridAlignItemsSelector.component)
+                .appendChild(this.gridJustifyContentSelector.component)
+                .appendChild(this.gridAlignContentSelector.component)
+                .appendChild(this.gridAutoFlowSelector.component)
+                .appendChild(this.gridColumnGapInput.component)
+                .appendChild(this.gridRowGapInput.component)
                 .build()
             )
+    }
+
+    private setGridAsChildrenInitialValues() {
+        this.gridTemplateColumnsInput.setValue(this.domElementStyleSheet['grid-template-columns'] || '');
+        this.gridTemplateRowsInput.setValue(this.domElementStyleSheet['grid-template-rows'] || '');
+        this.gridAutoColumnsInput.setValue(this.domElementStyleSheet['grid-auto-columns'] || '');
+        this.gridAutoRowsInput.setValue(this.domElementStyleSheet['grid-auto-rows'] || '');
+        this.gridTemplateAreasTextarea.setValue(this.domElementStyleSheet['grid-template-areas'] || '');
+        this.gridJustifyItemsSelector.setValue(this.domElementStyleSheet['justify-items'] || '');
+        this.gridAlignItemsSelector.setValue(this.domElementStyleSheet['align-items'] || '');
+        this.gridJustifyContentSelector.setValue(this.domElementStyleSheet['justify-content'] || '');
+        this.gridAlignContentSelector.setValue(this.domElementStyleSheet['align-content'] || '');
+        this.gridAutoFlowSelector.setValue(this.domElementStyleSheet['grid-auto-flow'] || '');
     }
 
     private resetFlex() {
@@ -248,6 +328,7 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
             this.domElementStyleSheet['justify-content'] = '';
             this.domElementStyleSheet['align-content'] = '';
 
+            // NOTE: decision: delete only children styles for classes named as the component id.
             this.domElement.childNodes.forEach((child) => {
                 CssStyleSheet.getRuleStyles(child['id'])['align-self'] = '';
                 CssStyleSheet.getRuleStyles(child['id'])['flex-grow'] = '';
@@ -276,6 +357,8 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
             this.domElementStyleSheet['column-gap'] = '';
             this.domElementStyleSheet['row-gap'] = '';
 
+
+            // NOTE: decision: delete only children styles for classes named as the component id.
             this.domElement.childNodes.forEach((child) => {
                 CssStyleSheet.getRuleStyles(child['id'])['grid-column-start'] = '';
                 CssStyleSheet.getRuleStyles(child['id'])['grid-column-end'] = '';
@@ -289,5 +372,40 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
 
     public classNameUpdated(name: string) {
         this.domElementStyleSheet = CssStyleSheet.getRuleStyles(name);
+
+        const currentProperties = this.getCurrentProperties('display');
+        this.displaySelector.value = currentProperties;
+
+        // TODO: el if que sigue deberia estar unificado con el que hay arriba... ver que se puede hacer...
+
+        if (currentProperties === DisplayTypesEnum.flex || currentProperties === DisplayTypesEnum['inline-flex']) {
+            this.flexDirectionSelector.updateStyleSheet(this.domElementStyleSheet);
+            this.flexWrapSelector.updateStyleSheet(this.domElementStyleSheet);
+            this.alignItemsSelector.updateStyleSheet(this.domElementStyleSheet);
+            this.justifyContentSelector.updateStyleSheet(this.domElementStyleSheet);
+            this.alignContentSelector.updateStyleSheet(this.domElementStyleSheet);
+
+            this.setFlexAsChildrenInitialValues();
+            this.resetGrid();
+        } else if (currentProperties === DisplayTypesEnum.grid || currentProperties === DisplayTypesEnum['inline-grid']) {
+            this.gridTemplateColumnsInput.updateStyleSheet(this.domElementStyleSheet);
+            this.gridTemplateRowsInput.updateStyleSheet(this.domElementStyleSheet);
+            this.gridAutoColumnsInput.updateStyleSheet(this.domElementStyleSheet);
+            this.gridAutoRowsInput.updateStyleSheet(this.domElementStyleSheet);
+            this.gridTemplateAreasTextarea.updateStyleSheet(this.domElementStyleSheet);
+            this.gridJustifyItemsSelector.updateStyleSheet(this.domElementStyleSheet);
+            this.gridAlignItemsSelector.updateStyleSheet(this.domElementStyleSheet);
+            this.gridJustifyContentSelector.updateStyleSheet(this.domElementStyleSheet);
+            this.gridAlignContentSelector.updateStyleSheet(this.domElementStyleSheet);
+            this.gridAutoFlowSelector.updateStyleSheet(this.domElementStyleSheet);
+            this.gridColumnGapInput.updateStyleSheet(this.domElementStyleSheet);
+            this.gridRowGapInput.updateStyleSheet(this.domElementStyleSheet);
+
+            this.setGridAsChildrenInitialValues();
+            this.resetFlex();
+        } else {
+            this.resetFlex();
+            this.resetGrid();
+        }
     }
 }

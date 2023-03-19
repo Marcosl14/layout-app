@@ -37,6 +37,8 @@ export default class MarginOrPaddingComponent implements ClassChangeObserverInte
         this.domElement = domElement;
         this.domElementStyleSheet = CssStyleSheet.getRuleStyles(initialClassName);
         this.addComponents();
+        this.setValuesAccordingToClass();
+        this.updateProperty()
     }
 
     get component() {
@@ -44,18 +46,12 @@ export default class MarginOrPaddingComponent implements ClassChangeObserverInte
     }
 
     private addComponents() {
-        // TODO: deberiamos buscar en todas las clases que tenga asignadas ese elemento, y ver en cual esta el margen?
-        // O no estaria mal pensar en solo modificar la clase que a el le corresponde...???
-        // no deberiamos modificar una clase generada en otro lado?????
-
-        // habria que hacer componentes en base a cada clase que tenga definida un componente???
-        // y agregar componentes con un selector??????
-
         // TODO: falta agregar el !important y quizas los inherit y no se si habra mas propiedades
+        // quizas todo eso deba estar en el selector de la unidad...
+
         this.updateProperty = this.updateProperty.bind(this);
 
         this.selectAllCheckBox = new InputBuilder(InputTypeEnum.checkbox)
-            .checked()
             .addEventListener('change', this.updateProperty)
             .build()
 
@@ -67,44 +63,34 @@ export default class MarginOrPaddingComponent implements ClassChangeObserverInte
             .appendChild(this.selectAllCheckBox)
             .build()
 
-        const [top, right, bottom, left] = this.getCurrentProperties();
-
         this.topPropertyValueInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(top)}`)
             .addEventListener('input', this.updateProperty)
             .build();
         this.rigthPropertyValueInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(right)}`)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('input', this.updateProperty)
             .build();
         this.bottomPropertyValueInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(bottom)}`)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('input', this.updateProperty)
             .build();
         this.leftPropertyValueInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(left)}`)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('input', this.updateProperty)
             .build();
 
         this.topUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(top))
             .addEventListener('change', this.updateProperty)
             .build()
         this.bottomUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(bottom))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateProperty)
             .build()
         this.rightUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(right))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateProperty)
             .build()
         this.leftUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(left))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateProperty)
             .build()
@@ -157,7 +143,7 @@ export default class MarginOrPaddingComponent implements ClassChangeObserverInte
             .setStyle(StyleNameEnum.padding, '3px')
             .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new LabelBuilder()
-                .setInnerText(`${capitalizeFirstLetters(this.type)} Selector`)
+                .setInnerText(`${capitalizeFirstLetters(this.type, ' ', ' ')} Selector`)
                 .build()
             )
             .appendChild(selectAllContainer)
@@ -166,7 +152,7 @@ export default class MarginOrPaddingComponent implements ClassChangeObserverInte
     }
 
     private updateProperty() {
-        let [top, right, bottom, left] = this.getCurrentProperties();
+        let {top, right, bottom, left} = this.getCurrentProperties();
 
         if(this.selectAllCheckBox.checked){
             this.rigthPropertyValueInput.disabled = true;
@@ -190,6 +176,11 @@ export default class MarginOrPaddingComponent implements ClassChangeObserverInte
                 this.rightUnitSelector.value = this.topUnitSelector.value;
                 this.bottomUnitSelector.value = this.topUnitSelector.value;
                 this.leftUnitSelector.value = this.topUnitSelector.value;
+
+                this.topPropertyValueInput.value = '';
+                this.rigthPropertyValueInput.value = '';
+                this.bottomPropertyValueInput.value = '';
+                this.leftPropertyValueInput.value = '';
             } else {
                 this.topPropertyValueInput.disabled = false;
                 top = `${this.topPropertyValueInput.value}${this.topUnitSelector.value}`;
@@ -200,6 +191,11 @@ export default class MarginOrPaddingComponent implements ClassChangeObserverInte
                 this.rigthPropertyValueInput.value = this.topPropertyValueInput.value;
                 this.bottomPropertyValueInput.value = this.topPropertyValueInput.value;
                 this.leftPropertyValueInput.value = this.topPropertyValueInput.value;
+
+                if(parseInt(this.topPropertyValueInput.value) === 0){
+                    this.domElementStyleSheet[this.type] = '';
+                    return;
+                }
             }
         } else {
             this.rightUnitSelector.disabled = false;
@@ -240,45 +236,51 @@ export default class MarginOrPaddingComponent implements ClassChangeObserverInte
             }
         }
 
-        this.domElementStyleSheet[this.type] = [top, right, bottom, left].join(' ')
+        this.domElementStyleSheet[this.type] = [top, right, bottom, left].join(' ');
     }
 
-    private getCurrentProperties(): string[] {
-        const properties: string[] = this.domElementStyleSheet[this.type].split(' ')
-        let top, right, bottom, left;
+    private setValuesAccordingToClass() {
+        const {top, right, bottom, left, allEqual} = this.getCurrentProperties();
 
-        if (properties.length === 1) {
-            top = properties[0];
-            right = properties[0];
-            bottom = properties[0];
-            left = properties[0];
-        }
+        this.selectAllCheckBox.checked = allEqual;
 
-        if (properties.length === 2) {
-            top = properties[0];
-            right = properties[1];
-            bottom = properties[0];
-            left = properties[1];
-        }
+        this.topPropertyValueInput.value = `${parseInt(top)}`;
+        this.rigthPropertyValueInput.value = `${parseInt(right)}`;
+        this.bottomPropertyValueInput.value = `${parseInt(bottom)}`;
+        this.leftPropertyValueInput.value = `${parseInt(left)}`;
 
-        if (properties.length === 3) {
-            top = properties[0];
-            right = properties[1];
-            bottom = properties[2];
-            left = properties[1];
-        }
+        this.topUnitSelector.value = getUnit(top);
+        this.bottomUnitSelector.value = getUnit(bottom);
+        this.rightUnitSelector.value = getUnit(right);
+        this.leftUnitSelector.value = getUnit(left);
+    }
 
-        if (properties.length === 4) {
-            top = properties[0];
-            right = properties[1];
-            bottom = properties[2];
-            left = properties[3];
-        }
+    private getCurrentProperties(): StylesReturnObjectInterface {
+        const top = this.domElementStyleSheet[`${this.type}-top`];
+        const right = this.domElementStyleSheet[`${this.type}-right`];
+        const bottom = this.domElementStyleSheet[`${this.type}-bottom`];
+        const left = this.domElementStyleSheet[`${this.type}-left`];
 
-        return [top ? top : '0px', right ? right : '0px', bottom ? bottom : '0px', left ? left : '0px'];
+        return {
+            top: top ? top : '0px',
+            right: right ? right : '0px',
+            bottom: bottom ? bottom : '0px',
+            left: left ? left : '0px',
+            allEqual: top === right && top === bottom && top === left,
+        };
     }
 
     public classNameUpdated(name: string) {
         this.domElementStyleSheet = CssStyleSheet.getRuleStyles(name);
+        this.setValuesAccordingToClass();
+        this.updateProperty();
     }
+}
+
+interface StylesReturnObjectInterface {
+    top: string,
+    right: string,
+    bottom: string,
+    left: string,
+    allEqual: boolean,
 }

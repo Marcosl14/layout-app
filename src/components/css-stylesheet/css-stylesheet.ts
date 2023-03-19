@@ -1,5 +1,5 @@
 export default class CssStyleSheet {
-    public static styleSheet = document.styleSheets[1];
+    private static styleSheet = document.styleSheets[1];
 
     /*
     CSSStyleSheetDocumentation:
@@ -55,5 +55,9 @@ export default class CssStyleSheet {
 
     static removeRuleByIndex(index: number): void {
         CssStyleSheet.styleSheet.deleteRule(index);
+    }
+
+    static insertRule(rule: string) {
+        CssStyleSheet.styleSheet.insertRule(rule);
     }
 }

@@ -7,6 +7,10 @@ export default class InputBuilder extends RawBuilder<HTMLInputElement>{
         this.element.type = type;
     }
 
+    public getValue() {
+        return this.element.value;
+    }
+
     public setValue(value: string) {
         this.element.value = value;
         return this;

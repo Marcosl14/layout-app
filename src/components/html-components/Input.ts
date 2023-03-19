@@ -15,7 +15,7 @@ export default class Input extends RawHTMLConponent {
     constructor() {
         const id = defineElementId(`input${Input.iterator++}`, RawHTMLConponent.instances);
 
-        CssStyleSheet.styleSheet.insertRule(`.${id} {
+        CssStyleSheet.insertRule(`.${id} {
             margin: 10px;
             padding: 10px;
             border: 1px solid #ccc;
@@ -23,7 +23,7 @@ export default class Input extends RawHTMLConponent {
             box-shadow: inset 0 1px 3px #ddd;
         }`);
 
-        CssStyleSheet.styleSheet.insertRule(`.${id}:hover {
+        CssStyleSheet.insertRule(`.${id}:hover {
             border: 1px solid red;
         }`);
 
@@ -49,6 +49,8 @@ export default class Input extends RawHTMLConponent {
 
     protected openElementConfigs(event) {
         event.stopPropagation();
+
+        // TODO: ver forma de remover el borde original del input. No es la misma propiedad que el border
 
         this.stylesComponents = new StylesComponentsBuilder()
             .appendChild(this.addIdDefinitionComponent())
