@@ -8,3 +8,5 @@ new InitAppContainer();
 // CssStyleSheet.print();
 
 // Deberiamos ver como almacenar y deshacer cambios....
+
+    // TODO: acomodar estructuras con prettier y tslinter. Saltar linea cuando muy larga.

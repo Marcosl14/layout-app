@@ -22,6 +22,8 @@ export default class InputAndUnitsSelectorComponent {
     private propertyValueInput: InputBuilder;
     private unitsSelectorInput: SelectorFromEnumBuilder;
 
+    private zeroValue: number;
+
     constructor(domElementStyleSheet: CSSStyleDeclaration, style: string, label: string) {
         this.style = style;
         this.label = label;
@@ -67,11 +69,25 @@ export default class InputAndUnitsSelectorComponent {
     }
 
     private updateProperty() {
+        if(parseInt(this.propertyValueInput.getValue()) === this.zeroValue){
+            this.domElementStyleSheet[this.style] = '';
+            return;
+        }
         this.domElementStyleSheet[this.style] = `${this.propertyValueInput.getValue()}${this.unitsSelectorInput.getValue()}`
     }
 
     public updateStyleSheet(domElementStyleSheet: CSSStyleDeclaration) {
         this.domElementStyleSheet = domElementStyleSheet;
         this.setInitialValues();
+    }
+
+    public setMinValue(value: number) {
+        this.propertyValueInput.setMin(value);
+        return this;
+    }
+
+    public setZeroValue(value: number) {
+        this.zeroValue = value;
+        return this;
     }
 }
