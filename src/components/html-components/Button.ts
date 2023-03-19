@@ -16,7 +16,7 @@ export default class Button extends RawHTMLConponent {
 
         // TODO habria que reemplazar todos los caracteres especiales por guiones o algo asi...
 
-        CssStyleSheet.styleSheet.insertRule(`.${id} {
+        CssStyleSheet.insertRule(`.${id} {
             margin: 10px;
             padding: 10px;
             background-color: #4CAF50;
@@ -27,7 +27,7 @@ export default class Button extends RawHTMLConponent {
             text-align: center;
         }`);
 
-        CssStyleSheet.styleSheet.insertRule(`.${id}:hover {opacity: 0.6}`);
+        CssStyleSheet.insertRule(`.${id}:hover {opacity: 0.6}`);
 
         const element = new ButtonBuilder()
             .setId(id)

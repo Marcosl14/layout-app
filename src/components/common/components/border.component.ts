@@ -16,7 +16,7 @@ import { StyleNameEnum } from '../enums/style-name.enum';
 import { DisplayTypesEnum } from '../enums/display-types.enum';
 
 export default class BorderComponent implements ClassChangeObserverInterface {
-    private domElement: HTMLElement;
+    private domElement: HTMLElement; // TODO: definir si lo eliminamos, o lo dejamos
     private container: HTMLDivElement;
     private domElementStyleSheet: CSSStyleDeclaration;
 
@@ -25,10 +25,10 @@ export default class BorderComponent implements ClassChangeObserverInterface {
     private bottomBorderColorInput: HTMLInputElement;
     private leftBorderColorInput: HTMLInputElement;
 
-    private topStyleSelector: HTMLSelectElement;
-    private rightStyleSelector: HTMLSelectElement;
-    private bottomStyleSelector: HTMLSelectElement;
-    private leftStyleSelector: HTMLSelectElement;
+    private topBorderStyleSelector: HTMLSelectElement;
+    private rightBorderStyleSelector: HTMLSelectElement;
+    private bottomBorderStyleSelector: HTMLSelectElement;
+    private leftBorderStyleSelector: HTMLSelectElement;
 
     private topBorderWidthInput: HTMLInputElement;
     private rightBorderWidthInput: HTMLInputElement;
@@ -63,17 +63,16 @@ export default class BorderComponent implements ClassChangeObserverInterface {
     }
 
     private addComponents() {
+        this.changeComponentsStatus = this.changeComponentsStatus.bind(this);
+
         this.updateBorderStyleProperty = this.updateBorderStyleProperty.bind(this);
         this.updateBorderColor = this.updateBorderColor.bind(this);
         this.updateBorderWidth = this.updateBorderWidth.bind(this);
         this.updateBorderRadius = this.updateBorderRadius.bind(this);
 
         this.selectAllCheckBox = new InputBuilder(InputTypeEnum.checkbox)
-            .checked()
-            .addEventListener('change', this.updateBorderStyleProperty)
-            .addEventListener('change', this.updateBorderColor)
-            .addEventListener('change', this.updateBorderWidth)
-            .addEventListener('change', this.updateBorderRadius)
+            .addEventListener('change', this.changeComponentsStatus)
+            .checked(this.unifiedBorderProperties())
             .build()
 
         const selectAllContainer = new ContainerBuilder()
@@ -84,12 +83,9 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             .appendChild(this.selectAllCheckBox)
             .build()
 
-        this.buildColorInputs();
-        this.buildStyleSelectors();
-        this.buildBorderWidthInputs();
-        this.buildBorderWidthUnitsSelectors();
-        this.buildBorderRadiusInputs()
-        this.buildBorderRadiusUnitsSelectors();
+
+        this.buildAllComponents();
+        this.setBorderValuesAccordingToClass();
 
         const topContainer = new ContainerBuilder()
             .appendChild(new ContainerBuilder()
@@ -105,7 +101,7 @@ export default class BorderComponent implements ClassChangeObserverInterface {
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.topBorderColorInput)
-                .appendChild(this.topStyleSelector)
+                .appendChild(this.topBorderStyleSelector)
                 .build()
             )
             .appendChild(new ContainerBuilder()
@@ -156,7 +152,7 @@ export default class BorderComponent implements ClassChangeObserverInterface {
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.rightBorderColorInput)
-                .appendChild(this.rightStyleSelector)
+                .appendChild(this.rightBorderStyleSelector)
                 .build()
             )
             .appendChild(new ContainerBuilder()
@@ -207,7 +203,7 @@ export default class BorderComponent implements ClassChangeObserverInterface {
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.bottomBorderColorInput)
-                .appendChild(this.bottomStyleSelector)
+                .appendChild(this.bottomBorderStyleSelector)
                 .build()
             )
             .appendChild(new ContainerBuilder()
@@ -258,7 +254,7 @@ export default class BorderComponent implements ClassChangeObserverInterface {
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.leftBorderColorInput)
-                .appendChild(this.leftStyleSelector)
+                .appendChild(this.leftBorderStyleSelector)
                 .build()
             )
             .appendChild(new ContainerBuilder()
@@ -315,76 +311,67 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             .build()
     }
 
-    private buildColorInputs() {
-        const [top, right, bottom, left] = this.getCurrentBorderColor();
+    private buildAllComponents() {
+        this.buildColorInputs();
+        this.buildStyleSelectors();
+        this.buildBorderWidthInputs();
+        this.buildBorderWidthUnitsSelectors();
+        this.buildBorderRadiusInputs()
+        this.buildBorderRadiusUnitsSelectors();
+    }
 
+    private buildColorInputs() {
         this.topBorderColorInput = new InputBuilder(InputTypeEnum.color)
-            .setValue(top)
             .addEventListener('input', this.updateBorderColor)
             .build();
         this.rightBorderColorInput = new InputBuilder(InputTypeEnum.color)
-            .setValue(right)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('input', this.updateBorderColor)
             .build();
         this.bottomBorderColorInput = new InputBuilder(InputTypeEnum.color)
-            .setValue(bottom)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('input', this.updateBorderColor)
             .build();
         this.leftBorderColorInput = new InputBuilder(InputTypeEnum.color)
-            .setValue(left)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('input', this.updateBorderColor)
             .build();
     }
 
     private buildStyleSelectors() {
-        const [top, right, bottom, left] = this.getCurrentBorderStyle();
-
-        this.topStyleSelector = new SelectorFromEnumBuilder(BorderStyleEnum)
-            .selectOption(top)
+        this.topBorderStyleSelector = new SelectorFromEnumBuilder(BorderStyleEnum)
             .addEventListener('change', this.updateBorderStyleProperty)
             .build()
-        this.rightStyleSelector = new SelectorFromEnumBuilder(BorderStyleEnum)
-            .selectOption(right)
+        this.rightBorderStyleSelector = new SelectorFromEnumBuilder(BorderStyleEnum)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderStyleProperty)
             .build()
-        this.bottomStyleSelector = new SelectorFromEnumBuilder(BorderStyleEnum)
-            .selectOption(bottom)
+        this.bottomBorderStyleSelector = new SelectorFromEnumBuilder(BorderStyleEnum)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderStyleProperty)
             .build()
-        this.leftStyleSelector = new SelectorFromEnumBuilder(BorderStyleEnum)
-            .selectOption(left)
+        this.leftBorderStyleSelector = new SelectorFromEnumBuilder(BorderStyleEnum)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderStyleProperty)
             .build()
     }
 
     private buildBorderWidthInputs() {
-        const [top, right, bottom, left] = this.getCurrentBorderWidth();
-
         this.topBorderWidthInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(top)}`)
             .setMin(0)
             .addEventListener('input', this.updateBorderWidth)
             .build();
         this.rightBorderWidthInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(right)}`)
             .setMin(0)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderWidth)
             .build()
         this.bottomBorderWidthInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(bottom)}`)
             .setMin(0)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderWidth)
             .build()
         this.leftBorderWidthInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(left)}`)
             .setMin(0)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderWidth)
@@ -392,51 +379,39 @@ export default class BorderComponent implements ClassChangeObserverInterface {
     }
 
     private buildBorderWidthUnitsSelectors() {
-        const [top, right, bottom, left] = this.getCurrentBorderWidth();
-
         this.topBorderWidthUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(top))
             .addEventListener('change', this.updateBorderWidth)
             .build()
         this.rightBorderWidthUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(right))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderWidth)
             .build()
         this.bottomBorderWidthUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(bottom))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderWidth)
             .build()
         this.leftBorderWidthUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(left))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderWidth)
             .build()
     }
 
     private buildBorderRadiusInputs() {
-        const [top, right, bottom, left] = this.getCurrentBorderRadius();
-
         this.topBorderRadiusInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(top)}`)
             .setMin(0)
             .addEventListener('input', this.updateBorderRadius)
             .build();
         this.rightBorderRadiusInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(right)}`)
             .setMin(0)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderRadius)
             .build()
         this.bottomBorderRadiusInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(bottom)}`)
             .setMin(0)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderRadius)
             .build()
         this.leftBorderRadiusInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(left)}`)
             .setMin(0)
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderRadius)
@@ -444,68 +419,183 @@ export default class BorderComponent implements ClassChangeObserverInterface {
     }
 
     private buildBorderRadiusUnitsSelectors() {
-        const [top, right, bottom, left] = this.getCurrentBorderRadius();
-
         this.topBorderRadiusUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(top))
             .addEventListener('change', this.updateBorderRadius)
             .build()
         this.rightBorderRadiusUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(right))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderRadius)
             .build()
         this.bottomBorderRadiusUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(bottom))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderRadius)
             .build()
         this.leftBorderRadiusUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(left))
             .disabled(this.selectAllCheckBox.checked)
             .addEventListener('change', this.updateBorderRadius)
             .build()
     }
 
+    private changeComponentsStatus () {
+        if (this.selectAllCheckBox.checked) {
+            this.rightBorderStyleSelector.disabled = true;
+            this.bottomBorderStyleSelector.disabled = true;
+            this.leftBorderStyleSelector.disabled = true;
+
+            this.rightBorderColorInput.disabled = true;
+            this.bottomBorderColorInput.disabled = true;
+            this.leftBorderColorInput.disabled = true;
+
+            this.rightBorderWidthInput.disabled = true;
+            this.bottomBorderWidthInput.disabled = true;
+            this.leftBorderWidthInput.disabled = true;
+
+            this.rightBorderWidthUnitSelector.disabled = true;
+            this.bottomBorderWidthUnitSelector.disabled = true;
+            this.leftBorderWidthUnitSelector.disabled = true;
+
+            this.rightBorderRadiusInput.disabled = true;
+            this.bottomBorderRadiusInput.disabled = true;
+            this.leftBorderRadiusInput.disabled = true;
+
+            this.rightBorderRadiusUnitSelector.disabled = true;
+            this.bottomBorderRadiusUnitSelector.disabled = true;
+            this.leftBorderRadiusUnitSelector.disabled = true;
+        } else {
+            this.rightBorderStyleSelector.disabled = false;
+            this.bottomBorderStyleSelector.disabled = false;
+            this.leftBorderStyleSelector.disabled = false;
+
+            this.rightBorderColorInput.disabled = false;
+            this.bottomBorderColorInput.disabled = false;
+            this.leftBorderColorInput.disabled = false;
+
+            this.rightBorderWidthInput.disabled = false;
+            this.bottomBorderWidthInput.disabled = false;
+            this.leftBorderWidthInput.disabled = false;
+
+            this.rightBorderWidthUnitSelector.disabled = false;
+            this.bottomBorderWidthUnitSelector.disabled = false;
+            this.leftBorderWidthUnitSelector.disabled = false;
+
+            this.rightBorderRadiusInput.disabled = false;
+            this.bottomBorderRadiusInput.disabled = false;
+            this.leftBorderRadiusInput.disabled = false;
+
+            this.rightBorderRadiusUnitSelector.disabled = false;
+            this.bottomBorderRadiusUnitSelector.disabled = false;
+            this.leftBorderRadiusUnitSelector.disabled = false;
+        }
+    }
+
+    private setBorderValuesAccordingToClass() {
+        this.setBorderColorValuesAccordingToClass();
+        this.setBorderStyleValuesAccordingToClass();
+        this.setBorderWidthValuesAccordingToClass();
+        this.setBorderRadiusValuesAccordingToClass();
+    }
+
+    private setBorderColorValuesAccordingToClass() {
+        const {top, right, bottom, left} = this.getCurrentBorderColor();
+        this.topBorderColorInput.value = top;
+        this.rightBorderColorInput.value = right;
+        this.bottomBorderColorInput.value = bottom;
+        this.leftBorderColorInput.value = left;
+    }
+
+    private setBorderStyleValuesAccordingToClass() {
+        const {top, right, bottom, left} = this.getCurrentBorderStyle();
+        this.topBorderStyleSelector.value = top;
+        this.rightBorderStyleSelector.value = right;
+        this.bottomBorderStyleSelector.value = bottom;
+        this.leftBorderStyleSelector.value = left;
+    }
+
+    private setBorderWidthValuesAccordingToClass() {
+        const {top, right, bottom, left} = this.getCurrentBorderWidth();
+        this.topBorderWidthInput.value = `${parseInt(top)}`;
+        this.rightBorderWidthInput.value = `${parseInt(right)}`;
+        this.bottomBorderWidthInput.value = `${parseInt(bottom)}`;
+        this.leftBorderWidthInput.value = `${parseInt(left)}`;
+
+        this.topBorderWidthUnitSelector.value = getUnit(top);
+        this.rightBorderWidthUnitSelector.value = getUnit(right);
+        this.bottomBorderWidthUnitSelector.value = getUnit(bottom);
+        this.leftBorderWidthUnitSelector.value = getUnit(left);
+    }
+
+    private setBorderRadiusValuesAccordingToClass() {
+        const {top, right, bottom, left} = this.getCurrentBorderRadius();
+        this.topBorderRadiusInput.value = `${parseInt(top)}`;
+        this.rightBorderRadiusInput.value = `${parseInt(right)}`;
+        this.bottomBorderRadiusInput.value = `${parseInt(bottom)}`;
+        this.leftBorderRadiusInput.value = `${parseInt(left)}`;
+
+        this.topBorderRadiusUnitSelector.value = getUnit(top);
+        this.rightBorderRadiusUnitSelector.value = getUnit(right);
+        this.bottomBorderRadiusUnitSelector.value = getUnit(bottom);
+        this.leftBorderRadiusUnitSelector.value = getUnit(left);
+    }
+
     private updateBorderStyleProperty() {
-        // TODO si el border style es none, deberia eliminar los border-colors y el border-width
-        let [top, right, bottom, left] = this.getCurrentBorderStyle();
+        let {top, right, bottom, left} = this.getCurrentBorderStyle();
 
         if (this.selectAllCheckBox.checked) {
-            this.rightStyleSelector.disabled = true;
-            this.bottomStyleSelector.disabled = true;
-            this.leftStyleSelector.disabled = true;
-
-            top = this.topStyleSelector.value;
+            top = this.topBorderStyleSelector.value;
             right = top;
             bottom = top;
             left = top;
 
-            this.rightStyleSelector.value = this.topStyleSelector.value;
-            this.bottomStyleSelector.value = this.topStyleSelector.value;
-            this.leftStyleSelector.value = this.topStyleSelector.value;
-        } else {
-            this.rightStyleSelector.disabled = false;
-            this.bottomStyleSelector.disabled = false;
-            this.leftStyleSelector.disabled = false;
+            this.rightBorderStyleSelector.value = this.topBorderStyleSelector.value;
+            this.bottomBorderStyleSelector.value = this.topBorderStyleSelector.value;
+            this.leftBorderStyleSelector.value = this.topBorderStyleSelector.value;
 
-            top = this.topStyleSelector.value;
-            right = this.rightStyleSelector.value;
-            bottom = this.bottomStyleSelector.value;
-            left = this.leftStyleSelector.value;
+            if(top === BorderStyleEnum.none) {
+                this.resetBorderProperty('border-style', 'all');
+                this.resetBorderProperty('border-color', 'all');
+                this.resetBorderProperty('border-width', 'all');
+                this.resetBorderProperty('border-radius', 'all');
+                this.resetBorderProperty('border-image', 'all');
+                return;
+            }
+        } else {
+            top = this.topBorderStyleSelector.value;
+            right = this.rightBorderStyleSelector.value;
+            bottom = this.bottomBorderStyleSelector.value;
+            left = this.leftBorderStyleSelector.value;
         }
 
         this.domElementStyleSheet['border-style'] = [top, right, bottom, left].join(' ')
     }
 
+    private resetBorderProperty(
+        property: 'border-style' | 'border-color' | 'border-width' | 'border-radius' | 'border-image',
+        position: 'top' | 'right' | 'bottom' | 'left' | 'all'
+    ) {
+        const style = position === 'all' ? property : `${property}-${position}`;
+        this.domElementStyleSheet[style] = '';
+
+        if(property === 'border-style') {
+            this.setBorderStyleValuesAccordingToClass();
+        }
+
+        if(property === 'border-color') {
+            this.setBorderColorValuesAccordingToClass();
+        }
+
+        if(property === 'border-width') {
+            this.setBorderWidthValuesAccordingToClass();
+        }
+
+        if(property === 'border-radius') {
+            this.setBorderRadiusValuesAccordingToClass();
+        }
+    }
+
     private updateBorderColor() {
-        let [top, right, bottom, left] = this.getCurrentBorderColor();
+        let {top, right, bottom, left} = this.getCurrentBorderColor();
 
         if (this.selectAllCheckBox.checked) {
-            this.rightBorderColorInput.disabled = true;
-            this.bottomBorderColorInput.disabled = true;
-            this.leftBorderColorInput.disabled = true;
-
             top = this.topBorderColorInput.value;
             right = top;
             bottom = top;
@@ -515,10 +605,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             this.bottomBorderColorInput.value = this.topBorderColorInput.value;
             this.leftBorderColorInput.value = this.topBorderColorInput.value;
         } else {
-            this.rightBorderColorInput.disabled = false;
-            this.bottomBorderColorInput.disabled = false;
-            this.leftBorderColorInput.disabled = false;
-
             top = this.topBorderColorInput.value;
             right = this.rightBorderColorInput.value;
             bottom = this.bottomBorderColorInput.value;
@@ -529,16 +615,13 @@ export default class BorderComponent implements ClassChangeObserverInterface {
     }
 
     private updateBorderWidth() {
-        let [top, right, bottom, left] = this.getCurrentBorderWidth();
+        let {top, right, bottom, left} = this.getCurrentBorderWidth();
 
         if (this.selectAllCheckBox.checked) {
-            this.rightBorderWidthInput.disabled = true;
-            this.bottomBorderWidthInput.disabled = true;
-            this.leftBorderWidthInput.disabled = true;
-
-            this.rightBorderWidthUnitSelector.disabled = true;
-            this.bottomBorderWidthUnitSelector.disabled = true;
-            this.leftBorderWidthUnitSelector.disabled = true;
+            if(parseInt(this.topBorderWidthInput.value) === 0) {
+                this.resetBorderProperty('border-width', 'all');
+                return;
+            }
 
             top = `${this.topBorderWidthInput.value}${this.topBorderWidthUnitSelector.value}`;
             right = top;
@@ -553,14 +636,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             this.bottomBorderWidthUnitSelector.value = this.topBorderWidthUnitSelector.value;
             this.leftBorderWidthUnitSelector.value = this.topBorderWidthUnitSelector.value;
         } else {
-            this.rightBorderWidthInput.disabled = false;
-            this.bottomBorderWidthInput.disabled = false;
-            this.leftBorderWidthInput.disabled = false;
-
-            this.rightBorderWidthUnitSelector.disabled = false;
-            this.bottomBorderWidthUnitSelector.disabled = false;
-            this.leftBorderWidthUnitSelector.disabled = false;
-
             top = `${this.topBorderWidthInput.value}${this.topBorderWidthUnitSelector.value}`;
             right = `${this.rightBorderWidthInput.value}${this.rightBorderWidthUnitSelector.value}`;
             bottom = `${this.bottomBorderWidthInput.value}${this.bottomBorderWidthUnitSelector.value}`;
@@ -570,16 +645,13 @@ export default class BorderComponent implements ClassChangeObserverInterface {
     }
 
     private updateBorderRadius() {
-        let [top, right, bottom, left] = this.getCurrentBorderRadius();
+        let {top, right, bottom, left} = this.getCurrentBorderRadius();
 
         if (this.selectAllCheckBox.checked) {
-            this.rightBorderRadiusInput.disabled = true;
-            this.bottomBorderRadiusInput.disabled = true;
-            this.leftBorderRadiusInput.disabled = true;
-
-            this.rightBorderRadiusUnitSelector.disabled = true;
-            this.bottomBorderRadiusUnitSelector.disabled = true;
-            this.leftBorderRadiusUnitSelector.disabled = true;
+            if(parseInt(this.topBorderRadiusInput.value) === 0) {
+                this.resetBorderProperty('border-radius', 'all');
+                return;
+            }
 
             top = `${this.topBorderRadiusInput.value}${this.topBorderRadiusUnitSelector.value}`;
             right = top;
@@ -594,14 +666,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             this.bottomBorderRadiusUnitSelector.value = this.topBorderRadiusUnitSelector.value;
             this.leftBorderRadiusUnitSelector.value = this.topBorderRadiusUnitSelector.value;
         } else {
-            this.rightBorderRadiusInput.disabled = false;
-            this.bottomBorderRadiusInput.disabled = false;
-            this.leftBorderRadiusInput.disabled = false;
-
-            this.rightBorderRadiusUnitSelector.disabled = false;
-            this.bottomBorderRadiusUnitSelector.disabled = false;
-            this.leftBorderRadiusUnitSelector.disabled = false;
-
             top = `${this.topBorderRadiusInput.value}${this.topBorderRadiusUnitSelector.value}`;
             right = `${this.rightBorderRadiusInput.value}${this.rightBorderRadiusUnitSelector.value}`;
             bottom = `${this.bottomBorderRadiusInput.value}${this.bottomBorderRadiusUnitSelector.value}`;
@@ -610,43 +674,95 @@ export default class BorderComponent implements ClassChangeObserverInterface {
         this.domElementStyleSheet['border-radius'] = [top, right, bottom, left].join(' ')
     }
 
-    private getCurrentBorderStyle(): string[] {
+    private unifiedBorderProperties() : boolean {
+        const allEqual = [];
+        allEqual.push(this.getCurrentBorderStyle().allEqual)
+        allEqual.push(this.getCurrentBorderColor().allEqual)
+        allEqual.push(this.getCurrentBorderRadius().allEqual)
+        allEqual.push(this.getCurrentBorderStyle().allEqual)
+        allEqual.push(this.getCurrentBorderWidth().allEqual)
+
+        if(allEqual.find((el) => el === false) === undefined){
+            return true;
+        }
+        return false;
+    }
+
+    private getCurrentBorderStyle(): StylesReturnObjectInterface {
         const top = this.domElementStyleSheet['border-top-style'];
         const right = this.domElementStyleSheet['border-right-style'];
         const bottom = this.domElementStyleSheet['border-bottom-style'];
         const left = this.domElementStyleSheet['border-left-style'];
 
-        return [top ? top : 'none', right ? right : 'none', bottom ? bottom : 'none', left ? left : 'none'];
+        return {
+            top: top ? top : 'none',
+            right: right ? right : 'none',
+            bottom: bottom ? bottom : 'none',
+            left: left ? left : 'none',
+            allEqual: top === right && top === bottom && top === left,
+        };
     }
 
-    private getCurrentBorderColor(): string[] {
+    private getCurrentBorderColor(): StylesReturnObjectInterface {
         const top = this.domElementStyleSheet['border-top-color'];
         const right = this.domElementStyleSheet['border-right-color'];
         const bottom = this.domElementStyleSheet['border-bottom-color'];
         const left = this.domElementStyleSheet['border-left-color'];
 
-        return [rgbToHex(top), rgbToHex(right), rgbToHex(bottom), rgbToHex(left)];
+        // TODO: ver que pasa si el color no viene como rgb... deberiamos poder detectar que color viene...
+        // TODO: colores standard de css: https://www.w3.org/wiki/CSS/Properties/color/keywords
+
+        return {
+            top: rgbToHex(top),
+            right: rgbToHex(right),
+            bottom: rgbToHex(bottom),
+            left: rgbToHex(left),
+            allEqual: top === right && top === bottom && top === left,
+        };
     }
 
-    private getCurrentBorderWidth(): string[] {
+    private getCurrentBorderWidth(): StylesReturnObjectInterface {
         const top = this.domElementStyleSheet['border-top-width'];
         const right = this.domElementStyleSheet['border-right-width'];
         const bottom = this.domElementStyleSheet['border-bottom-width'];
         const left = this.domElementStyleSheet['border-left-width'];
 
-        return [top ? top : '0px', right ? right : '0px', bottom ? bottom : '0px', left ? left : '0px'];
+        return {
+            top: top ? top : '0px',
+            right: right ? right : '0px',
+            bottom: bottom ? bottom : '0px',
+            left: left ? left : '0px',
+            allEqual: top === right && top === bottom && top === left,
+        };
     }
 
-    private getCurrentBorderRadius(): string[] {
+    private getCurrentBorderRadius(): StylesReturnObjectInterface {
         const top = this.domElementStyleSheet['border-top-left-radius'];
         const right = this.domElementStyleSheet['border-top-right-radius'];
         const bottom = this.domElementStyleSheet['border-bottom-right-radius'];
         const left = this.domElementStyleSheet['border-bottom-left-radius'];
 
-        return [top ? top : '0px', right ? right : '0px', bottom ? bottom : '0px', left ? left : '0px'];
+        return {
+            top: top ? top : '0px',
+            right: right ? right : '0px',
+            bottom: bottom ? bottom : '0px',
+            left: left ? left : '0px',
+            allEqual: top === right && top === bottom && top === left,
+        };
     }
 
     public classNameUpdated(name: string) {
         this.domElementStyleSheet = CssStyleSheet.getRuleStyles(name);
+        this.selectAllCheckBox.checked = this.unifiedBorderProperties();
+        this.changeComponentsStatus();
+        this.setBorderValuesAccordingToClass();
     }
+}
+
+interface StylesReturnObjectInterface {
+    top: string,
+    right: string,
+    bottom: string,
+    left: string,
+    allEqual: boolean,
 }

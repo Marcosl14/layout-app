@@ -28,7 +28,6 @@ export default abstract class RawHTMLConponent {
     protected stylesComponents: HTMLDivElement;
 
     public static instances: HTMLElement[] = [];
-    private classNames: ArraySelectorBodyInterface[];
     private initialClassName: string;
 
     protected publisher: ClassChangePublisher;
@@ -38,7 +37,7 @@ export default abstract class RawHTMLConponent {
 
         RawHTMLConponent.instances.push(this._domElement);
 
-        this.populateClassesList();
+        this.initialClassName = this.domElement.classList[0]
 
         this.publisher = new ClassChangePublisher();
 
@@ -49,31 +48,8 @@ export default abstract class RawHTMLConponent {
         return this._domElement;
     }
 
-    private populateClassesList() {
-        const classNames = []
-
-        this.domElement.classList.forEach((c, index) => {
-            classNames.push({
-                text: c,
-                value: c,
-            })
-        });
-
-        this.classNames = classNames;
-
-        this.initialClassName = this.classNames[0].value
-    }
-
     protected dragStartWithTargetId(event: any) {
         event.dataTransfer.setData('text/plain', event.target.id);
-    }
-
-    protected removeElement() {
-        if (confirm('Are you sure to remove this component')) {
-            const parent = this._domElement.parentNode;
-            parent.removeChild(this._domElement);
-            this.stylesComponents.remove();
-        }
     }
 
     protected addIdDefinitionComponent() {
@@ -81,7 +57,7 @@ export default abstract class RawHTMLConponent {
     }
 
     protected addClassNameDefinitionComponent() {
-        return new ClassManagementComponent(this._domElement ,this.classNames, this.initialClassName, this.publisher).component;
+        return new ClassManagementComponent(this._domElement, this.initialClassName, this.publisher).component;
     }
 
     protected addMarginStyleComponent() {
@@ -98,36 +74,6 @@ export default abstract class RawHTMLConponent {
 
     protected addInnerTextChangeComponent() {
         return new GenericPrimaryInputComponent(this._domElement, 'innerText', 'Inner Text').component;
-    }
-
-    protected addActionsComponents() {
-        return new ContainerBuilder()
-            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-            .setStyle(StyleNameEnum.padding, '3px')
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-            .appendChild(new ContainerBuilder()
-                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-                .appendChild(new LabelBuilder()
-                    .setInnerText('Available Actions')
-                    .build()
-                )
-                .build()
-            )
-            .appendChild(new ContainerBuilder()
-                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-                .appendChild(this.addRemoveElementComponent())
-                .build()
-            )
-            .build()
-    }
-
-    private addRemoveElementComponent() {
-        return new ButtonBuilder()
-            .setInnerText('Remove Element')
-            .addEventListener('click', this.removeElement)
-            .build();
     }
 
     protected addInputTypeSelectorComponent() {
@@ -170,6 +116,46 @@ export default abstract class RawHTMLConponent {
         return component.component;
     }
 
+    // TODO: aqui falta la accion de duplicar un componente, es decir, de un componente existente, duplicar la config...
+    // no se si es tan necesario, porque si a un componente le asignamos una clase de otro componente, seria similar a duplicarlo...
+
+    protected addActionsComponents() {
+        return new ContainerBuilder()
+            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
+            .setStyle(StyleNameEnum.padding, '3px')
+            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Available Actions')
+                    .build()
+                )
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(this.addRemoveElementComponent())
+                .build()
+            )
+            .build()
+    }
+
+    private addRemoveElementComponent() {
+        return new ButtonBuilder()
+            .setInnerText('Remove Element')
+            .addEventListener('click', this.removeElement)
+            .build();
+    }
+
+    protected removeElement() {
+        if (confirm('Are you sure to remove this component')) {
+            const parent = this._domElement.parentNode;
+            parent.removeChild(this._domElement);
+            this.stylesComponents.remove();
+        }
+    }
 
     protected dragLeave(event: any) {
         event.stopPropagation();

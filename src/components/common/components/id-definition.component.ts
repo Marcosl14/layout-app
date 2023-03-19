@@ -1,11 +1,13 @@
-import { InputTypeEnum } from '../enums/input-type.enum';
-import defineElementId from '../functions/define-element-id';
 import ContainerBuilder from '../models/ContainerBuilder';
 import InputBuilder from '../models/InputBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 import ButtonBuilder from '../models/ButtonBuilder';
 import RawHTMLConponent from '../../html-components/RawHTMLComponent';
+
+import defineElementId from '../functions/define-element-id';
+
 import { StyleNameEnum } from '../enums/style-name.enum';
+import { InputTypeEnum } from '../enums/input-type.enum';
 
 export default class IdDefinitionComponent {
     private domElement: HTMLElement;
@@ -15,6 +17,10 @@ export default class IdDefinitionComponent {
     private propertyValueInput: HTMLInputElement;
 
     constructor(domElement: HTMLElement) {
+        // TODO: si el id es '', entonces deberiamos eliminar dicha propiedad del elemento...
+        // TODO: ver si es necesario almacenar un id como propiedad...
+        // TODO: si la clase solo la utiliza ese unico componente, quizas el nombre de la clase css deberia ir con # y no con punto...
+
         this.domElement = domElement;
         IdDefinitionComponent.instances = RawHTMLConponent.instances;
         this.addComponents();

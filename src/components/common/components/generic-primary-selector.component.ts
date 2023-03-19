@@ -1,8 +1,8 @@
-import { StyleNameEnum } from '../enums/style-name.enum';
 import ContainerBuilder from '../models/ContainerBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 import SelectorFromEnumBuilder from '../models/SelectorFromEnumBuilder';
 
+import { StyleNameEnum } from '../enums/style-name.enum';
 export default class GenericPrimarySelectorComponent {
     private domElement: HTMLElement;
     private container: HTMLDivElement;

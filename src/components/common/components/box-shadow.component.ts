@@ -59,6 +59,7 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
         this.domElementStyleSheet = CssStyleSheet.getRuleStyles(initialClassName);
         this.getInitialValues();
         this.addComponents();
+        this.setBoxShadowValuesAccordingToClass();
     }
 
     get component() {
@@ -126,7 +127,6 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
         this.updateBasicProperty = this.updateBasicProperty.bind(this);
 
         this.colorInput = new InputBuilder(InputTypeEnum.color)
-            .setValue(rgbToHex(this.getInitialValues().color))
             .addEventListener('input', this.updateBasicProperty)
             .build()
 
@@ -134,48 +134,37 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
             .addEventListener('input', this.updateBasicProperty)
             .build()
 
-        if (this.getInitialValues().inset !== undefined) {
-            this.insetSelector.checked = true;
-        }
-
         this.horizontalOffsetInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(this.getInitialValues().horizontalOffset) || 0}`)
             .addEventListener('input', this.updateBasicProperty)
             .build()
 
         this.horizontalOffsetUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(this.getInitialValues().horizontalOffset))
             .addEventListener('change', this.updateBasicProperty)
             .build()
 
         this.verticalOffsetInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(this.getInitialValues().verticalOffset) || 0}`)
             .addEventListener('input', this.updateBasicProperty)
             .build()
 
         this.verticalOffsetUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(this.getInitialValues().verticalOffset))
             .addEventListener('change', this.updateBasicProperty)
             .build()
 
         this.blurRadiusInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(this.getInitialValues().blurRadius) || 0}`)
             .setMin(0)
             .addEventListener('input', this.updateBasicProperty)
             .build()
 
         this.blurRadiusUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(this.getInitialValues().blurRadius))
             .addEventListener('change', this.updateBasicProperty)
             .build()
 
         this.spreadRadiusInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(this.getInitialValues().spreadRadius) || 0}`)
+            .setMin(0)
             .addEventListener('input', this.updateBasicProperty)
             .build()
 
         this.spreadRadiusUnitSelector = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(this.getInitialValues().spreadRadius))
             .addEventListener('change', this.updateBasicProperty)
             .build()
 
@@ -307,7 +296,6 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
         this.updateAdvancedProperty = this.updateAdvancedProperty.bind(this);
 
         this.advancedShadowBoxTextArea = new TextareaBuilder()
-            .setValue(this.domElementStyleSheet['box-shadow'])
             .setStyle(StyleNameEnum.resize, 'vertical')
             .addEventListener('input', this.updateAdvancedProperty)
             .build()
@@ -329,6 +317,26 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
                 .build()
             )
             .build()
+    }
+
+    private setBoxShadowValuesAccordingToClass() {
+        const initialValues = this.getInitialValues();
+
+        if (initialValues.inset !== undefined) {
+            this.insetSelector.checked = true;
+        }
+
+        this.colorInput.value = rgbToHex(initialValues.color);
+        this.horizontalOffsetInput.value = `${parseInt(initialValues.horizontalOffset) || 0}`;
+        this.horizontalOffsetUnitSelector.value = getUnit(initialValues.horizontalOffset);
+        this.verticalOffsetInput.value = `${parseInt(initialValues.verticalOffset) || 0}`;
+        this.verticalOffsetUnitSelector.value = getUnit(initialValues.verticalOffset);
+        this.blurRadiusInput.value = `${parseInt(initialValues.blurRadius) || 0}`;
+        this.blurRadiusUnitSelector.value = getUnit(initialValues.blurRadius);
+        this.spreadRadiusInput.value = `${parseInt(initialValues.spreadRadius) || 0}`;
+        this.spreadRadiusUnitSelector.value = getUnit(initialValues.spreadRadius);
+
+        this.advancedShadowBoxTextArea.value = this.domElementStyleSheet['box-shadow'];
     }
 
     private updateBasicProperty() {
@@ -419,5 +427,7 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
 
     public classNameUpdated(name: string) {
         this.domElementStyleSheet = CssStyleSheet.getRuleStyles(name);
+        this.getInitialValues();
+        this.setBoxShadowValuesAccordingToClass();
     }
 }

@@ -17,13 +17,13 @@ export default class Container extends RawHTMLConponent {
     constructor() {
         const id = defineElementId(`container${Container.iterator++}`, RawHTMLConponent.instances);
 
-        CssStyleSheet.styleSheet.insertRule(`.${id} {
+        CssStyleSheet.insertRule(`.${id} {
             margin: 10px;
             padding: 10px;
             display: ${DisplayTypesEnum.flex};
             flex-direction: column;
             background-color: rgb(255,255,255);
-            border: 1px dashed black;
+            border: 1px dashed rgb(0,0,0);
         }`);
 
         const element = new ContainerBuilder()
@@ -88,6 +88,9 @@ export default class Container extends RawHTMLConponent {
 
     protected openElementConfigs(event) {
         event.stopPropagation();
+
+        // TODO: falta todo lo que es position... Absolute, relative, etc... No recuerdo bien como es eso...
+        // inluso, el z index, que podria estar en el mismo componente.
 
         this.stylesComponents = new StylesComponentsBuilder()
             .appendChild(this.addIdDefinitionComponent())

@@ -3,7 +3,6 @@ import LabelBuilder from '../models/LabelBuilder';
 import InputBuilder from '../models/InputBuilder';
 import SelectorFromEnumBuilder from '../models/SelectorFromEnumBuilder';
 
-import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
 import getUnit from '../functions/get-css-unit';
 
 import { StyleNameEnum } from '../enums/style-name.enum';
@@ -14,23 +13,21 @@ import { FlexDirectionEnum } from '../enums/flex-direction.enum';
 import { AlignFlexItemsEnum } from '../enums/align-flex-items.enum';
 
 export default class InputAndUnitsSelectorComponent {
-    private domElement: HTMLElement;
     private container: HTMLDivElement;
     private domElementStyleSheet: CSSStyleDeclaration;
 
     private label: string;
     private style: string;
 
-    private propertyValueInput: HTMLInputElement;
-    private unitsSelectorInput: HTMLSelectElement;
+    private propertyValueInput: InputBuilder;
+    private unitsSelectorInput: SelectorFromEnumBuilder;
 
-
-    constructor(domElement: HTMLElement, style: string, label: string) {
-        this.domElement = domElement;
+    constructor(domElementStyleSheet: CSSStyleDeclaration, style: string, label: string) {
         this.style = style;
         this.label = label;
-        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(this.domElement.id);
+        this.domElementStyleSheet = domElementStyleSheet;
         this.addComponents();
+        this.setInitialValues();
     }
 
     get component() {
@@ -41,18 +38,14 @@ export default class InputAndUnitsSelectorComponent {
         this.updateProperty = this.updateProperty.bind(this);
 
         this.unitsSelectorInput = new SelectorFromEnumBuilder(UnitsEnum)
-            .selectOption(getUnit(this.domElementStyleSheet[this.style]))
             .addEventListener('change', this.updateProperty)
-            .build()
 
         this.propertyValueInput = new InputBuilder(InputTypeEnum.number)
-            .setValue(`${parseInt(this.domElementStyleSheet[this.style]) || 0}`)
             .addEventListener('input', this.updateProperty)
-            .build()
 
         const innerContainer = new ContainerBuilder()
-            .appendChild(this.propertyValueInput)
-            .appendChild(this.unitsSelectorInput)
+            .appendChild(this.propertyValueInput.build())
+            .appendChild(this.unitsSelectorInput.build())
             .build()
 
         this.container = new ContainerBuilder()
@@ -68,7 +61,17 @@ export default class InputAndUnitsSelectorComponent {
             .build()
     }
 
+    private setInitialValues() {
+        this.propertyValueInput.setValue(`${parseInt(this.domElementStyleSheet[this.style]) || 0}`)
+        this.unitsSelectorInput.selectOption(getUnit(this.domElementStyleSheet[this.style]))
+    }
+
     private updateProperty() {
-        this.domElementStyleSheet[this.style] = `${this.propertyValueInput.value}${this.unitsSelectorInput.value}`
+        this.domElementStyleSheet[this.style] = `${this.propertyValueInput.getValue()}${this.unitsSelectorInput.getValue()}`
+    }
+
+    public updateStyleSheet(domElementStyleSheet: CSSStyleDeclaration) {
+        this.domElementStyleSheet = domElementStyleSheet;
+        this.setInitialValues();
     }
 }
