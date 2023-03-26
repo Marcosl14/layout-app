@@ -19,12 +19,17 @@ import { GeneralPseudoclassEnum } from '../enums/general-pseudoclass.enum';
 
 
 // TODO: ver estilos especificos para los ancor elements (links):
+// eslint-disable-next-line max-len
 // https://www.aprenderaprogramar.com/index.php?option=com_content&view=article&id=752:pseudoclases-css-link-visited-focus-hover-y-active-estilos-y-efectos-en-links-propiedad-outline-cu01047d&catid=75&Itemid=203
 
 // TODO: falta el append class. Es decir, tomar la clase de otro componente...
 // TODO: falta el delete class from component. Es decir, eliminar una clase del componente seleccionado...
-// TODO: falta el delete class definetly. Es decir, eliminar una clase del CSS. Esto deberia eliminarla de todos los componentes que la utilizan...
-// TODO: falta el duplicate class from component. Es decir, crear una nueva clase tomando como template una ya existente...
+
+// TODO: falta el delete class definetly. Es decir, eliminar una clase del CSS.
+// Esto deberia eliminarla de todos los componentes que la utilizan...
+
+// TODO: falta el duplicate class from component.
+// Es decir, crear una nueva clase tomando como template una ya existente...
 
 /*
 if (confirm('Are you sure to remove this component')) {
@@ -175,7 +180,7 @@ export default class ClassManagementComponent {
         this.publisher.notifyClassName(this.classesSelector.value);
     }
 
-    private createNewClassName(event: any) {
+    private createNewClassName() {
         const className: string = this.newClassNameInput.value;
         const pseudoclass = this.newPseudoclassSelector.value;
         const completeCssName: string = this.newClassNameInput.value + (pseudoclass !== '' ? `:${pseudoclass}` : '');

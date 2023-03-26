@@ -73,7 +73,8 @@ export default class InputAndUnitsSelectorComponent {
             this.domElementStyleSheet[this.style] = '';
             return;
         }
-        this.domElementStyleSheet[this.style] = `${this.propertyValueInput.getValue()}${this.unitsSelectorInput.getValue()}`
+        this.domElementStyleSheet[this.style] =
+            `${this.propertyValueInput.getValue()}${this.unitsSelectorInput.getValue()}`
     }
 
     public updateStyleSheet(domElementStyleSheet: CSSStyleDeclaration) {

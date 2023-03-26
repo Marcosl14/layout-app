@@ -112,7 +112,10 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
             this.updateFlexComponentsStyleSheet();
             this.setFlexAsParentInitialValues();
             this.container.appendChild(this.flexContainerAsParent.build());
-        } else if (currentProperties === DisplayTypesEnum.grid || currentProperties === DisplayTypesEnum['inline-grid']) {
+        } else if (
+            currentProperties === DisplayTypesEnum.grid
+            || currentProperties === DisplayTypesEnum['inline-grid']
+        ) {
             this.resetFlex();
             this.updateGridComponentsStyleSheet();
             this.setGridAsParentInitialValues();
@@ -129,35 +132,35 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
             'Flex Direction',
             new SelectorFromEnumBuilder(FlexDirectionEnum).build(),
             EventTypeEnum.change
-            );
+        );
 
         this.flexWrapSelector = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
             'flex-wrap',
             'Flex Wrap',
             new SelectorFromEnumBuilder(FlexWrapEnum).build(),
             EventTypeEnum.change
-            );
+        );
 
         this.alignItemsSelector = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
             'align-items',
             'Align Items',
             new SelectorFromEnumBuilder(AlignFlexItemsEnum).build(),
             EventTypeEnum.change
-            );
+        );
 
         this.justifyContentSelector = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
             'justify-content',
             'Justify Content',
             new SelectorFromEnumBuilder(JustifyFlexContentEnum).build(),
             EventTypeEnum.change
-            );
+        );
 
         this.alignContentSelector = new GenericCssPropertyMutatorComponent(this.domElementStyleSheet,
             'align-content',
             'Align Content',
             new SelectorFromEnumBuilder(AlignFlexContentEnum).build(),
             EventTypeEnum.change
-            );
+        );
 
         return new ContainerBuilder()
             .appendChild(new ContainerBuilder()
@@ -253,7 +256,11 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
             new SelectorFromEnumBuilder(GridAutoFlowEnum).build(),
             EventTypeEnum.change);
 
-        this.gridColumnGapInput = new InputAndUnitsSelectorComponent(this.domElementStyleSheet, 'column-gap', 'Grid Column Gap')
+        this.gridColumnGapInput = new InputAndUnitsSelectorComponent(
+            this.domElementStyleSheet,
+            'column-gap',
+            'Grid Column Gap'
+        )
             .setMinValue(0)
             .setZeroValue(0)
 

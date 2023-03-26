@@ -59,14 +59,14 @@ export default class Container extends RawHTMLConponent {
         return this._domElement;
     }
 
-    private dragEnter(event: any) {
+    private dragEnter(event: DragEvent) {
         event.stopPropagation();
 
         this.domElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
         this.domElement.parentElement.style.backgroundColor = '';
     }
 
-    private dragLeaveForThisElement(event: any) {
+    private dragLeaveForThisElement(event: DragEvent) {
         event.stopPropagation();
 
         this.domElement.style.backgroundColor = '';

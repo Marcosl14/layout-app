@@ -62,7 +62,10 @@ export default class DisplayAsChildComponent implements ClassChangeObserverInter
                 this.updateFlexComponentsStyleSheet();
                 this.setFlexAsChildrenInitialValues();
                 this.container.appendChild(this.flexContainerAsChildren);
-            } else if (currentProperties === DisplayTypesEnum.grid || currentProperties === DisplayTypesEnum['inline-grid']) {
+            } else if (
+                currentProperties === DisplayTypesEnum.grid
+                || currentProperties === DisplayTypesEnum['inline-grid']
+            ) {
                 this.resetFlex();
                 this.updateGridComponentsStyleSheet();
             this.setGridAsChildrenInitialValues();

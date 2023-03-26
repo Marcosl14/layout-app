@@ -55,8 +55,11 @@ export default class GenericPrimaryInputComponent {
             .build()
     }
 
-    private updateProperty(event: any) {
-        if ( event.type === 'click' || event.key === 'Enter' || event.keyCode === 13 ) {
+    private updateProperty(event: MouseEvent | KeyboardEvent) {
+        if ( event.type === 'click'
+            || (event as KeyboardEvent).key === 'Enter'
+            || (event as KeyboardEvent).code === '13'
+        ) {
             this.domElement[this.style] = this.propertyValueInput.value;
         }
     }
