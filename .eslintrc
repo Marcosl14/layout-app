@@ -29,7 +29,7 @@
         "property": "only"
       }
     ],
-    "max-depth": "error",
+    "max-depth": ["error", 5],
     "max-nested-callbacks": "error",
     "max-params": ["warn", 6],
     "n/no-missing-import": 0,

@@ -1,11 +1,10 @@
 import InputBuilder from '../common/models/InputBuilder';
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
-
 import RawHTMLConponent from './RawHTMLComponent';
 
+import defineElementName from '../common/functions/define-element-name';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
-import defineElementId from '../common/functions/define-element-id';
 
 import { InputTypeEnum } from '../common/enums/input-type.enum';
 
@@ -13,9 +12,9 @@ export default class Input extends RawHTMLConponent {
     private static iterator = 0;
 
     constructor() {
-        const id = defineElementId(`input${Input.iterator++}`, RawHTMLConponent.instances);
+        const name = defineElementName(`input${Input.iterator++}`, RawHTMLConponent.instances);
 
-        CssStyleSheet.insertRule(`.${id} {
+        CssStyleSheet.insertRule(`.${name} {
             margin: 10px;
             padding: 10px;
             border: 1px solid #ccc;
@@ -23,13 +22,14 @@ export default class Input extends RawHTMLConponent {
             box-shadow: inset 0 1px 3px #ddd;
         }`);
 
-        CssStyleSheet.insertRule(`.${id}:hover {
+        CssStyleSheet.insertRule(`.${name}:hover {
             border: 1px solid red;
         }`);
 
         const element = new InputBuilder(InputTypeEnum.text)
-            .setId(id)
-            .addCssClassName(id)
+            .setName(name)
+            .setId(name)
+            .addCssClassName(name)
             .draggable()
             .build();
 
@@ -50,7 +50,7 @@ export default class Input extends RawHTMLConponent {
     protected openElementConfigs(event) {
         event.stopPropagation();
 
-        // TODO: ver forma de remover el borde original del input. No es la misma propiedad que el border
+        // TODO: ver forma de remover el borde original del input. No es la misma propiedad que el border...
 
         this.stylesComponents = new StylesComponentsBuilder()
             .appendChild(this.addIdDefinitionComponent())

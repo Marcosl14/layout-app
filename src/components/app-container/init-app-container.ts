@@ -17,7 +17,7 @@ export default class InitAppContainer {
     protected backgroundColor: string;
     protected fatherBackgroundColor: string;
 
-    // TODO falta propiedad scrollable
+    // TODO: falta propiedad scrollable
 
     constructor() {
         this.appContainer = document.querySelector('#app-container');

@@ -1,22 +1,22 @@
 import ButtonBuilder from '../common/models/ButtonBuilder';
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
-
 import RawHTMLConponent from './RawHTMLComponent';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
-import defineElementId from '../common/functions/define-element-id';
+
+import defineElementName from '../common/functions/define-element-name';
 
 export default class Button extends RawHTMLConponent {
     private static iterator = 0;
 
     constructor() {
-        // TODO cuando creo un nombre futuro, y justo creo un elemento con ese nombre futuro, tira error... por eso yo le pasaba el iterator... ver como solucionar...
+        // TODO: cuando creo un nombre futuro, y justo creo un elemento con ese nombre futuro, tira error... por eso yo le pasaba el iterator... ver como solucionar...
 
-        const id = defineElementId(`button${Button.iterator++}`, RawHTMLConponent.instances);
+        const name = defineElementName(`button${Button.iterator++}`, RawHTMLConponent.instances);
 
-        // TODO habria que reemplazar todos los caracteres especiales por guiones o algo asi...
+        // TODO: habria que reemplazar todos los caracteres especiales por guiones o algo asi...
 
-        CssStyleSheet.insertRule(`.${id} {
+        CssStyleSheet.insertRule(`.${name} {
             margin: 10px;
             padding: 10px;
             background-color: #4CAF50;
@@ -27,11 +27,12 @@ export default class Button extends RawHTMLConponent {
             text-align: center;
         }`);
 
-        CssStyleSheet.insertRule(`.${id}:hover {opacity: 0.6}`);
+        CssStyleSheet.insertRule(`.${name}:hover {opacity: 0.6}`);
 
         const element = new ButtonBuilder()
-            .setId(id)
-            .addCssClassName(id)
+            .setName(name)
+            .setId(name)
+            .addCssClassName(name)
             .setInnerText('New Button')
             .draggable()
             .build();
