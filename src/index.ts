@@ -9,4 +9,6 @@ new InitAppContainer();
 
 // Deberiamos ver como almacenar y deshacer cambios....
 
-    // TODO: acomodar estructuras con prettier y tslinter. Saltar linea cuando muy larga.
+// TODO: acomodar estructuras con prettier y tslinter. Saltar linea cuando muy larga.
+
+// TODO: falta el color del texto, color tipografia y la tipografia...

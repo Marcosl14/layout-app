@@ -318,10 +318,10 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
 
             // NOTE: decision: delete only children styles for classes named as the component id.
             this.domElement.childNodes.forEach((child) => {
-                CssStyleSheet.getRuleStyles(child['id'])['align-self'] = '';
-                CssStyleSheet.getRuleStyles(child['id'])['flex-grow'] = '';
-                CssStyleSheet.getRuleStyles(child['id'])['flex-shrink'] = '';
-                CssStyleSheet.getRuleStyles(child['id'])['flex-basis'] = '';
+                CssStyleSheet.getRuleStyles(child['name'])['align-self'] = '';
+                CssStyleSheet.getRuleStyles(child['name'])['flex-grow'] = '';
+                CssStyleSheet.getRuleStyles(child['name'])['flex-shrink'] = '';
+                CssStyleSheet.getRuleStyles(child['name'])['flex-basis'] = '';
             })
         }
     }
@@ -348,12 +348,12 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
 
             // NOTE: decision: delete only children styles for classes named as the component id.
             this.domElement.childNodes.forEach((child) => {
-                CssStyleSheet.getRuleStyles(child['id'])['grid-column-start'] = '';
-                CssStyleSheet.getRuleStyles(child['id'])['grid-column-end'] = '';
-                CssStyleSheet.getRuleStyles(child['id'])['grid-row-start'] = '';
-                CssStyleSheet.getRuleStyles(child['id'])['grid-row-end'] = '';
-                CssStyleSheet.getRuleStyles(child['id'])['justify-self'] = '';
-                CssStyleSheet.getRuleStyles(child['id'])['align-self'] = '';
+                CssStyleSheet.getRuleStyles(child['name'])['grid-column-start'] = '';
+                CssStyleSheet.getRuleStyles(child['name'])['grid-column-end'] = '';
+                CssStyleSheet.getRuleStyles(child['name'])['grid-row-start'] = '';
+                CssStyleSheet.getRuleStyles(child['name'])['grid-row-end'] = '';
+                CssStyleSheet.getRuleStyles(child['name'])['justify-self'] = '';
+                CssStyleSheet.getRuleStyles(child['name'])['align-self'] = '';
             })
         }
     }

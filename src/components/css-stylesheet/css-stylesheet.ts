@@ -32,15 +32,36 @@ export default class CssStyleSheet {
         console.log(cssFileOutput);
     }
 
-    static getRule(id: string) {
+    static getRule(id: string): CSSRule {
         const index = this.getRuleIndex(id);
         return CssStyleSheet.styleSheet.cssRules[index];
     }
 
     static getRuleIndex(id: string): number {
-        return parseInt(Object.keys(CssStyleSheet.styleSheet.cssRules).find(key => {
-            return CssStyleSheet.styleSheet.cssRules[parseInt(key)]['selectorText'] === `.${id}`
-        }));
+        const index = parseInt(Object.keys(CssStyleSheet.styleSheet.cssRules).find(key => {
+            const className = CssStyleSheet.styleSheet.cssRules[parseInt(key)]['selectorText']
+            return className === `.${id}`
+        }))
+
+        if(isNaN(index)){
+            return -1;
+        }
+
+        return index;
+    }
+
+    static getRules(id: string): CSSRule[] {
+        const indexes = this.getRulesIndexes(id);
+        return indexes.map((index) => CssStyleSheet.styleSheet.cssRules[index]);
+    }
+
+    static getRulesIndexes(id: string): number[] {
+        return Object.keys(CssStyleSheet.styleSheet.cssRules)
+            .filter(key => {
+                const className = CssStyleSheet.styleSheet.cssRules[parseInt(key)]['selectorText']
+                return className === `.${id}` || className.includes(`.${id}:`)
+            })
+            .map((index) => parseInt(index));
     }
 
     static getRuleStyles(id: string): CSSStyleDeclaration {

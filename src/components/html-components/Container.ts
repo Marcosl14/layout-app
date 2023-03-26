@@ -1,13 +1,13 @@
 import ContainerBuilder from '../common/models/ContainerBuilder';
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
-
 import RawHTMLConponent from './RawHTMLComponent';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 import constants from '../common/constants/constants';
-import defineElementId from '../common/functions/define-element-id';
+import defineElementName from '../common/functions/define-element-name';
 
 import { DisplayTypesEnum } from '../common/enums/display-types.enum';
+
 
 export default class Container extends RawHTMLConponent {
     private static iterator = 0;
@@ -15,9 +15,9 @@ export default class Container extends RawHTMLConponent {
     // TODO falta propiedad scrollable
 
     constructor() {
-        const id = defineElementId(`container${Container.iterator++}`, RawHTMLConponent.instances);
+        const name = defineElementName(`container${Container.iterator++}`, RawHTMLConponent.instances);
 
-        CssStyleSheet.insertRule(`.${id} {
+        CssStyleSheet.insertRule(`.${name} {
             margin: 10px;
             padding: 10px;
             display: ${DisplayTypesEnum.flex};
@@ -27,8 +27,9 @@ export default class Container extends RawHTMLConponent {
         }`);
 
         const element = new ContainerBuilder()
-            .addCssClassName(id)
-            .setId(id)
+            .setName(name)
+            .setId(name)
+            .addCssClassName(name)
             .draggable()
             .build();
 
@@ -54,7 +55,7 @@ export default class Container extends RawHTMLConponent {
         this._domElement.addEventListener('click', this.openElementConfigs);
     }
 
-    get domElement(){
+    get domElement() {
         return this._domElement;
     }
 
@@ -77,13 +78,39 @@ export default class Container extends RawHTMLConponent {
     }
 
     private mouseOver() {
-        this._domElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
-        this._domElement.parentElement.style.backgroundColor = '';
+        // TODO: ver si esto tambien es necesario para active y focus
+        let hoverExists = false;
+        this._domElement.classList.forEach((classname: string) => {
+            try {
+                CssStyleSheet.getRule(`${classname}:hover`);
+                hoverExists = true;
+            } catch (err) {
+                return;
+            }
+        })
+
+        if (!hoverExists) {
+            this._domElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
+            this._domElement.parentElement.style.backgroundColor = '';
+        }
     }
 
     private mouseLeave() {
-        this._domElement.style.backgroundColor = '';
-        this._domElement.parentElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
+        // TODO: ver si esto tambien es necesario para active y focus
+        let hoverExists = false;
+        this._domElement.classList.forEach((classname: string) => {
+            try {
+                CssStyleSheet.getRule(`${classname}:hover`);
+                hoverExists = true;
+            } catch (err) {
+                return;
+            }
+        })
+
+        if (!hoverExists) {
+            this._domElement.style.backgroundColor = '';
+            this._domElement.parentElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
+        }
     }
 
     protected openElementConfigs(event) {

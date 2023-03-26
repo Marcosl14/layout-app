@@ -7,7 +7,7 @@ import InputBuilder from '../models/InputBuilder';
 
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
 import getUnit from '../functions/get-css-unit';
-import rgbToHex from '../functions/rgb-to-hex';
+import colorToHex from '../functions/rgb-to-hex';
 import TextareaBuilder from '../models/TextareaBuilder';
 
 import { StyleNameEnum } from '../enums/style-name.enum';
@@ -326,7 +326,7 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
             this.insetSelector.checked = true;
         }
 
-        this.colorInput.value = rgbToHex(initialValues.color);
+        this.colorInput.value = colorToHex(initialValues.color);
         this.horizontalOffsetInput.value = `${parseInt(initialValues.horizontalOffset) || 0}`;
         this.horizontalOffsetUnitSelector.value = getUnit(initialValues.horizontalOffset);
         this.verticalOffsetInput.value = `${parseInt(initialValues.verticalOffset) || 0}`;

@@ -11,6 +11,11 @@ export default abstract class RawBuilder<T extends HTMLElement>{
         return this;
     }
 
+    public setName(name : string) {
+        this.element['name'] = name;
+        return this;
+    }
+
     public setStyle(styleName: StyleNameEnum, value: string) {
         this.element.style[styleName] = value;
         return this;

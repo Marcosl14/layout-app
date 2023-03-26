@@ -9,16 +9,17 @@ import LabelBuilder from '../models/LabelBuilder';
 import SelectorFromArrayBuilder from '../models/SelectorFromArrayBuilder';
 import InputBuilder from '../models/InputBuilder';
 import ButtonBuilder from '../models/ButtonBuilder';
+import SelectorFromEnumBuilder from '../models/SelectorFromEnumBuilder';
 
 import { StyleNameEnum } from '../enums/style-name.enum';
 import { DisplayTypesEnum } from '../enums/display-types.enum';
 import { FlexDirectionEnum } from '../enums/flex-direction.enum';
 import { InputTypeEnum } from '../enums/input-type.enum';
+import { GeneralPseudoclassEnum } from '../enums/general-pseudoclass.enum';
 
 
-// TODO: y si agregamos un selector al lado de la creacion de una nueva clase, donde podamos elegir entre :hover, etc???.
-// o lo dejamos sujeto a que manden lo que quiera... es que mandando lo que quiera, no funca, porque agrega :hover al nombre de la clase del elemento html
-// deberiamos crear otro input que sea un insert decorator, o un selector, o ver que otras opciones tenemos.
+// TODO: ver estilos especificos para los ancor elements (links):
+// https://www.aprenderaprogramar.com/index.php?option=com_content&view=article&id=752:pseudoclases-css-link-visited-focus-hover-y-active-estilos-y-efectos-en-links-propiedad-outline-cu01047d&catid=75&Itemid=203
 
 // TODO: falta el append class. Es decir, tomar la clase de otro componente...
 // TODO: falta el delete class from component. Es decir, eliminar una clase del componente seleccionado...
@@ -35,6 +36,7 @@ export default class ClassManagementComponent {
     private initialClassName: string;
 
     private newClassNameInput: HTMLInputElement;
+    private newPseudoclassSelector: HTMLSelectElement;
 
     private publisher: ClassChangePublisher;
 
@@ -57,10 +59,20 @@ export default class ClassManagementComponent {
     private populateClassesList() {
         const classNames = []
 
-        this.domElement.classList.forEach((c, index) => {
-            classNames.push({
-                text: c,
-                value: c,
+        this.domElement.classList.forEach((classElementName) => {
+            const rules = CssStyleSheet.getRules(classElementName);
+
+            rules.forEach((rule) => {
+                const ruleName = rule['selectorText']
+                let value: string;
+                if(ruleName[0] === '.' || ruleName[0] === '#') {
+                    value = ruleName.substring(1)
+                }
+
+                classNames.push({
+                    text: ruleName,
+                    value,
+                })
             })
         });
 
@@ -78,6 +90,10 @@ export default class ClassManagementComponent {
 
         this.newClassNameInput = new InputBuilder(InputTypeEnum.text)
             .addEventListener('keyup', this.createNewClassName)
+            .build()
+
+        this.newPseudoclassSelector = new SelectorFromEnumBuilder(GeneralPseudoclassEnum)
+            .selectOption(GeneralPseudoclassEnum.none)
             .build()
 
         const selectedClassContainer = new ContainerBuilder()
@@ -101,6 +117,7 @@ export default class ClassManagementComponent {
             )
             .appendChild(new ContainerBuilder()
                 .appendChild(this.newClassNameInput)
+                .appendChild(this.newPseudoclassSelector)
                 .appendChild(new ButtonBuilder()
                     .setInnerText('Create')
                     .addEventListener('click', this.createNewClassName)
@@ -129,22 +146,41 @@ export default class ClassManagementComponent {
 
     private createNewClassName(event: any) {
         if ( event.type === 'click' || event.key === 'Enter' || event.keyCode === 13 ) {
-            const newClassName: string = this.newClassNameInput.value;
+            const className: string = this.newClassNameInput.value;
+            const pseudoclass = this.newPseudoclassSelector.value;
+            const completeCssName: string = this.newClassNameInput.value + (pseudoclass !== '' ? `:${pseudoclass}` : '');
 
             try {
-                if(!isNaN(parseInt(newClassName[0]))) {
+                if(!isNaN(parseInt(className[0]))) {
                     throw new Error('Class name must start with a letter');
                 }
-                if(!isNaN(CssStyleSheet.getRuleIndex(newClassName))) {
-                    throw new Error('Class name already exists');
+
+                const foundBaseRule = CssStyleSheet.getRuleIndex(className);
+                const foundRuleWithPseudoclass = CssStyleSheet.getRuleIndex(completeCssName);
+
+                let classNameNotFoundForThisElement = true;
+                this.domElement.classList.forEach((cn) => {
+                    if(cn === className) {
+                        classNameNotFoundForThisElement = false;
+                    }
+                })
+
+                if(foundBaseRule >= 0) {
+                    if(classNameNotFoundForThisElement){
+                        throw new Error('Class name already exists for another element');
+                    } else {
+                        if(foundRuleWithPseudoclass >= 0) {
+                            throw new Error('Class name already exists');
+                        }
+                    }
                 }
 
-                this.domElement.classList.add(newClassName);
-                CssStyleSheet.insertRule(`.${newClassName} {}`);
+                this.domElement.classList.add(className);
+                CssStyleSheet.insertRule(`.${completeCssName} {}`);
 
                 const newOption = document.createElement('option');
-                newOption.text = newClassName;
-                newOption.value = newClassName;
+                newOption.text = `.${completeCssName}`;
+                newOption.value = completeCssName;
 
                 this.classesSelector.appendChild(newOption);
 

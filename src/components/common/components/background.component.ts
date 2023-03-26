@@ -3,9 +3,10 @@ import ClassChangeObserverInterface from '../interfaces/class-change-observer.in
 import ContainerBuilder from '../models/ContainerBuilder';
 import InputBuilder from '../models/InputBuilder';
 import LabelBuilder from '../models/LabelBuilder';
+import ButtonBuilder from '../models/ButtonBuilder';
 
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
-import rgbToHex from '../functions/rgb-to-hex';
+import colorToHex from '../functions/rgb-to-hex';
 
 import { InputTypeEnum } from '../enums/input-type.enum';
 import { StyleNameEnum } from '../enums/style-name.enum';
@@ -39,6 +40,11 @@ export default class BackgroundComponent implements ClassChangeObserverInterface
             .addEventListener('input', this.updateColor)
             .build()
 
+        const removeColor = new ButtonBuilder()
+            .setInnerText('Remove Color')
+            .addEventListener('click', this.updateColor)
+            .build()
+
         this.opacitySlider = new InputBuilder(InputTypeEnum.range)
             .setValue(this.getCurrentOpacity())
             .setMin(0)
@@ -68,6 +74,12 @@ export default class BackgroundComponent implements ClassChangeObserverInterface
                 .appendChild(this.opacityValue)
                 .build()
             )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(removeColor)
+                .build()
+            )
             .build()
 
         this.container = new ContainerBuilder()
@@ -83,7 +95,7 @@ export default class BackgroundComponent implements ClassChangeObserverInterface
     }
 
     private getCurrentColor(): string {
-        return rgbToHex(this.domElementStyleSheet['background-color']);
+        return colorToHex(this.domElementStyleSheet['background-color']);
     }
 
     private getCurrentOpacity(): string {
@@ -91,7 +103,12 @@ export default class BackgroundComponent implements ClassChangeObserverInterface
         return isNaN(opacity) ? '100' : Math.round(opacity).toString();
     }
 
-    private updateColor() {
+    private updateColor(event: Event) {
+        if ( event.type === 'click'){
+            this.domElementStyleSheet['background-color'] = '';
+            return;
+        }
+
         this.domElementStyleSheet['background-color'] = this.colorInput.value;
     }
 

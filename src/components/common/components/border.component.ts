@@ -6,7 +6,7 @@ import LabelBuilder from '../models/LabelBuilder';
 import SelectorFromEnumBuilder from '../models/SelectorFromEnumBuilder';
 
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
-import rgbToHex from '../functions/rgb-to-hex';
+import colorToHex from '../functions/rgb-to-hex';
 import getUnit from '../functions/get-css-unit';
 
 import { InputTypeEnum } from '../enums/input-type.enum';
@@ -16,7 +16,7 @@ import { StyleNameEnum } from '../enums/style-name.enum';
 import { DisplayTypesEnum } from '../enums/display-types.enum';
 
 export default class BorderComponent implements ClassChangeObserverInterface {
-    private domElement: HTMLElement; // TODO: definir si lo eliminamos, o lo dejamos
+    private domElement: HTMLElement;
     private container: HTMLDivElement;
     private domElementStyleSheet: CSSStyleDeclaration;
 
@@ -709,14 +709,11 @@ export default class BorderComponent implements ClassChangeObserverInterface {
         const bottom = this.domElementStyleSheet['border-bottom-color'];
         const left = this.domElementStyleSheet['border-left-color'];
 
-        // TODO: ver que pasa si el color no viene como rgb... deberiamos poder detectar que color viene...
-        // TODO: colores standard de css: https://www.w3.org/wiki/CSS/Properties/color/keywords
-
         return {
-            top: rgbToHex(top),
-            right: rgbToHex(right),
-            bottom: rgbToHex(bottom),
-            left: rgbToHex(left),
+            top: colorToHex(top),
+            right: colorToHex(right),
+            bottom: colorToHex(bottom),
+            left: colorToHex(left),
             allEqual: top === right && top === bottom && top === left,
         };
     }

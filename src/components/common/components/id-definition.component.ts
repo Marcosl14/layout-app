@@ -17,8 +17,6 @@ export default class IdDefinitionComponent {
     private propertyValueInput: HTMLInputElement;
 
     constructor(domElement: HTMLElement) {
-        // TODO: si el id es '', entonces deberiamos eliminar dicha propiedad del elemento...
-        // TODO: ver si es necesario almacenar un id como propiedad...
         // TODO: si la clase solo la utiliza ese unico componente, quizas el nombre de la clase css deberia ir con # y no con punto...
 
         this.domElement = domElement;
@@ -65,7 +63,13 @@ export default class IdDefinitionComponent {
             && ( event.type === 'click' || event.key === 'Enter' || event.keyCode === 13 )
         ) {
             try {
-                this.domElement.id = defineElementId(this.propertyValueInput.value, IdDefinitionComponent.instances);
+                const id = defineElementId(this.propertyValueInput.value, IdDefinitionComponent.instances);
+
+                if(id === ''){
+                    this.domElement.removeAttribute('id');
+                } else {
+                    this.domElement.id = id;
+                }
             } catch {
                 this.propertyValueInput.value = this.domElement.id;
             }
