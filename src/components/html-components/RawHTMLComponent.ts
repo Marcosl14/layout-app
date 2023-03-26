@@ -1,5 +1,3 @@
-import ArraySelectorBodyInterface from '../common/interfaces/selector-from-array-body.interface';
-
 import ClassChangePublisher from '../common/publishers/ClassChangePublisher';
 
 import ButtonBuilder from '../common/models/ButtonBuilder';
