@@ -17,7 +17,8 @@ export default class IdDefinitionComponent {
     private propertyValueInput: HTMLInputElement;
 
     constructor(domElement: HTMLElement) {
-        // TODO: si la clase solo la utiliza ese unico componente, quizas el nombre de la clase css deberia ir con # y no con punto...
+        // TODO: si la clase solo la utiliza ese unico componente,
+        // quizas el nombre de la clase css deberia ir con # y no con punto...
 
         this.domElement = domElement;
         IdDefinitionComponent.instances = RawHTMLConponent.instances;
@@ -58,9 +59,12 @@ export default class IdDefinitionComponent {
             .build()
     }
 
-    private updateProperty(event: any) {
+    private updateProperty(event: MouseEvent | KeyboardEvent) {
         if ( this.propertyValueInput.value !== this.domElement.id
-            && ( event.type === 'click' || event.key === 'Enter' || event.keyCode === 13 )
+            && ( event.type === 'click'
+            || (event as KeyboardEvent).key === 'Enter'
+            || (event as KeyboardEvent).code === '13'
+            )
         ) {
             try {
                 const id = defineElementId(this.propertyValueInput.value, IdDefinitionComponent.instances);

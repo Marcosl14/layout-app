@@ -50,13 +50,13 @@ export default class InitAppContainer {
         this.onResize(this.appContainer, this.changeSize);
     }
 
-    private dragEnter(event: any) {
+    private dragEnter(event: DragEvent) {
         event.preventDefault();
         this.backgroundColor = CssStyleSheet.getRuleStyles(this.appContainer.id)['background-color'];
         this.appContainer.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
     }
 
-    private dragOver(event: any) {
+    private dragOver(event: DragEvent) {
         event.preventDefault();
     }
 
@@ -64,10 +64,12 @@ export default class InitAppContainer {
         this.appContainer.style.backgroundColor = '';
     }
 
-    private drop(event: any) {
+    private drop(event: DragEvent) {
         this.appContainer.style.backgroundColor = '';
 
-        if (event.target.nodeName !== 'DIV') {
+        const targetElement = event.target as HTMLElement;
+
+        if (targetElement.nodeName !== 'DIV') {
             return;
         }
 
@@ -79,19 +81,25 @@ export default class InitAppContainer {
 
         if (elementExists) {
             const draggable = document.getElementById(tipoDeElemento);
-            event.target.appendChild(draggable);
+            targetElement.appendChild(draggable);
             return;
         }
 
-        event.target.appendChild(newDomElement);
+        targetElement.appendChild(newDomElement);
     }
 
-    private openElementConfigs(event) {
+    private openElementConfigs(event: MouseEvent) {
         event.stopPropagation();
 
         this.stylesComponents = new StylesComponentsBuilder()
-            .appendChild(new MarginOrPaddingComponent(this.appContainer, this.appContainer.id, StyleNameEnum.margin).component)
-            .appendChild(new MarginOrPaddingComponent(this.appContainer, this.appContainer.id, StyleNameEnum.padding).component)
+            .appendChild(new MarginOrPaddingComponent(
+                this.appContainer,
+                this.appContainer.id,
+                StyleNameEnum.margin).component)
+            .appendChild(new MarginOrPaddingComponent(
+                this.appContainer,
+                this.appContainer.id,
+                StyleNameEnum.padding).component)
             .appendChild(new BackgroundComponent(this.appContainer, this.appContainer.id).component)
             .appendChild(new DisplayComponent(this.appContainer, this.appContainer.id).component)
             .build();

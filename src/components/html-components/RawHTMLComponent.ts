@@ -1,5 +1,3 @@
-import ArraySelectorBodyInterface from '../common/interfaces/selector-from-array-body.interface';
-
 import ClassChangePublisher from '../common/publishers/ClassChangePublisher';
 
 import ButtonBuilder from '../common/models/ButtonBuilder';
@@ -48,8 +46,8 @@ export default abstract class RawHTMLConponent {
         return this._domElement;
     }
 
-    protected dragStartWithTargetId(event: any) {
-        event.dataTransfer.setData('text/plain', event.target.id);
+    protected dragStartWithTargetId(event: DragEvent) {
+        event.dataTransfer.setData('text/plain', (event.target as HTMLElement).id);
     }
 
     protected addIdDefinitionComponent() {
@@ -77,7 +75,12 @@ export default abstract class RawHTMLConponent {
     }
 
     protected addInputTypeSelectorComponent() {
-        return new GenericPrimarySelectorComponent(this._domElement, 'type', 'Input Type Selector', InputTypeEnum).component;
+        return new GenericPrimarySelectorComponent(
+            this._domElement,
+            'type',
+            'Input Type Selector',
+            InputTypeEnum
+        ).component;
     }
 
     protected addLabelComponent(label: string) {
@@ -117,7 +120,8 @@ export default abstract class RawHTMLConponent {
     }
 
     // TODO: aqui falta la accion de duplicar un componente, es decir, de un componente existente, duplicar la config...
-    // no se si es tan necesario, porque si a un componente le asignamos una clase de otro componente, seria similar a duplicarlo...
+    // no se si es tan necesario, porque si a un componente le asignamos una clase de otro componente,
+    // seria similar a duplicarlo...
     // si, es necesario, porque es mucho mas facil...
 
     protected addActionsComponents() {
@@ -158,7 +162,7 @@ export default abstract class RawHTMLConponent {
         }
     }
 
-    protected dragLeave(event: any) {
+    protected dragLeave(event: DragEvent) {
         event.stopPropagation();
         if(this._domElement.parentElement.tagName === 'DIV') {
             this._domElement.parentElement.style.backgroundColor = contants.INVERTED_BACKGROUND_COLOR;

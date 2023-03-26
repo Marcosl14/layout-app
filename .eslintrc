@@ -31,6 +31,7 @@
     ],
     "max-depth": ["error", 5],
     "max-nested-callbacks": "error",
+    "max-len": ["error", { "code": 120 }],
     "max-params": ["warn", 6],
     "n/no-missing-import": 0,
     "n/no-unpublished-import": 0,

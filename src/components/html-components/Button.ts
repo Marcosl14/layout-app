@@ -10,7 +10,8 @@ export default class Button extends RawHTMLConponent {
     private static iterator = 0;
 
     constructor() {
-        // TODO: cuando creo un nombre futuro, y justo creo un elemento con ese nombre futuro, tira error... por eso yo le pasaba el iterator... ver como solucionar...
+        // TODO: cuando creo un nombre futuro, y justo creo un elemento con ese nombre futuro, tira error...
+        // por eso yo le pasaba el iterator... ver como solucionar...
 
         const name = defineElementName(`button${Button.iterator++}`, RawHTMLConponent.instances);
 

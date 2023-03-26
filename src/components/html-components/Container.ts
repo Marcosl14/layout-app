@@ -59,14 +59,14 @@ export default class Container extends RawHTMLConponent {
         return this._domElement;
     }
 
-    private dragEnter(event: any) {
+    private dragEnter(event: DragEvent) {
         event.stopPropagation();
 
         this.domElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
         this.domElement.parentElement.style.backgroundColor = '';
     }
 
-    private dragLeaveForThisElement(event: any) {
+    private dragLeaveForThisElement(event: DragEvent) {
         event.stopPropagation();
 
         this.domElement.style.backgroundColor = '';
@@ -77,37 +77,25 @@ export default class Container extends RawHTMLConponent {
         this.domElement.parentElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
     }
 
-    private mouseOver() {
-        // TODO: ver si esto tambien es necesario para active y focus
+    private hoverExists(): boolean {
         let hoverExists = false;
         this._domElement.classList.forEach((classname: string) => {
-            try {
-                CssStyleSheet.getRule(`${classname}:hover`);
+            if(CssStyleSheet.getRuleIndex(`${classname}:hover`) !== -1) {
                 hoverExists = true;
-            } catch (err) {
-                return;
             }
         })
+        return hoverExists;
+    }
 
-        if (!hoverExists) {
+    private mouseOver() {
+        if (!this.hoverExists()) {
             this._domElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
             this._domElement.parentElement.style.backgroundColor = '';
         }
     }
 
     private mouseLeave() {
-        // TODO: ver si esto tambien es necesario para active y focus
-        let hoverExists = false;
-        this._domElement.classList.forEach((classname: string) => {
-            try {
-                CssStyleSheet.getRule(`${classname}:hover`);
-                hoverExists = true;
-            } catch (err) {
-                return;
-            }
-        })
-
-        if (!hoverExists) {
+        if (!this.hoverExists()) {
             this._domElement.style.backgroundColor = '';
             this._domElement.parentElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
         }
