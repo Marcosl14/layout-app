@@ -26,6 +26,13 @@ import { GeneralPseudoclassEnum } from '../enums/general-pseudoclass.enum';
 // TODO: falta el delete class definetly. Es decir, eliminar una clase del CSS. Esto deberia eliminarla de todos los componentes que la utilizan...
 // TODO: falta el duplicate class from component. Es decir, crear una nueva clase tomando como template una ya existente...
 
+/*
+if (confirm('Are you sure to remove this component')) {
+            const parent = this._domElement.parentNode;
+            parent.removeChild(this._domElement);
+            this.stylesComponents.remove();
+        }
+*/
 
 export default class ClassManagementComponent {
     private container: HTMLDivElement;
@@ -65,7 +72,7 @@ export default class ClassManagementComponent {
             rules.forEach((rule) => {
                 const ruleName = rule['selectorText']
                 let value: string;
-                if(ruleName[0] === '.' || ruleName[0] === '#') {
+                if (ruleName[0] === '.' || ruleName[0] === '#') {
                     value = ruleName.substring(1)
                 }
 
@@ -82,18 +89,12 @@ export default class ClassManagementComponent {
     private addComponents() {
         this.updateClassName = this.updateClassName.bind(this);
         this.createNewClassName = this.createNewClassName.bind(this);
+        this.removeClass = this.removeClass.bind(this);
 
+        // Class selector
         this.classesSelector = new SelectorFromArrayBuilder(this.classNames)
             .selectOption(this.initialClassName)
             .addEventListener('change', this.updateClassName)
-            .build()
-
-        this.newClassNameInput = new InputBuilder(InputTypeEnum.text)
-            .addEventListener('keyup', this.createNewClassName)
-            .build()
-
-        this.newPseudoclassSelector = new SelectorFromEnumBuilder(GeneralPseudoclassEnum)
-            .selectOption(GeneralPseudoclassEnum.none)
             .build()
 
         const selectedClassContainer = new ContainerBuilder()
@@ -107,6 +108,19 @@ export default class ClassManagementComponent {
             .appendChild(this.classesSelector)
             .build()
 
+        // Create
+        this.newClassNameInput = new InputBuilder(InputTypeEnum.text)
+            .build()
+
+        this.newPseudoclassSelector = new SelectorFromEnumBuilder(GeneralPseudoclassEnum)
+            .selectOption(GeneralPseudoclassEnum.none)
+            .build()
+
+        const createClassButton = new ButtonBuilder()
+            .setInnerText('Create')
+            .addEventListener('click', this.createNewClassName)
+            .build()
+
         const newClassContainer = new ContainerBuilder()
             .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
             .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
@@ -118,11 +132,27 @@ export default class ClassManagementComponent {
             .appendChild(new ContainerBuilder()
                 .appendChild(this.newClassNameInput)
                 .appendChild(this.newPseudoclassSelector)
-                .appendChild(new ButtonBuilder()
-                    .setInnerText('Create')
-                    .addEventListener('click', this.createNewClassName)
-                    .build()
-                )
+                .appendChild(createClassButton)
+                .build()
+            )
+            .build()
+
+        // Remove
+        const removeClassButton = new ButtonBuilder()
+            .setInnerText('Remove Class')
+            .addEventListener('click', this.removeClass)
+            .build()
+
+        const removeClassContainer = new ContainerBuilder()
+            .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+            .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
+            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+            .appendChild(new LabelBuilder()
+                .setInnerText('Create New Class Name')
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .appendChild(removeClassButton)
                 .build()
             )
             .build()
@@ -137,6 +167,7 @@ export default class ClassManagementComponent {
             )
             .appendChild(selectedClassContainer)
             .appendChild(newClassContainer)
+            .appendChild(removeClassContainer)
             .build()
     }
 
@@ -145,58 +176,70 @@ export default class ClassManagementComponent {
     }
 
     private createNewClassName(event: any) {
-        if ( event.type === 'click' || event.key === 'Enter' || event.keyCode === 13 ) {
-            const className: string = this.newClassNameInput.value;
-            const pseudoclass = this.newPseudoclassSelector.value;
-            const completeCssName: string = this.newClassNameInput.value + (pseudoclass !== '' ? `:${pseudoclass}` : '');
+        const className: string = this.newClassNameInput.value;
+        const pseudoclass = this.newPseudoclassSelector.value;
+        const completeCssName: string = this.newClassNameInput.value + (pseudoclass !== '' ? `:${pseudoclass}` : '');
 
-            try {
-                if(!isNaN(parseInt(className[0]))) {
-                    throw new Error('Class name must start with a letter');
-                }
-
-                const foundBaseRule = CssStyleSheet.getRuleIndex(className);
-                const foundRuleWithPseudoclass = CssStyleSheet.getRuleIndex(completeCssName);
-
-                let classNameNotFoundForThisElement = true;
-                this.domElement.classList.forEach((cn) => {
-                    if(cn === className) {
-                        classNameNotFoundForThisElement = false;
-                    }
-                })
-
-                if(foundBaseRule >= 0) {
-                    if(classNameNotFoundForThisElement){
-                        throw new Error('Class name already exists for another element');
-                    } else {
-                        if(foundRuleWithPseudoclass >= 0) {
-                            throw new Error('Class name already exists');
-                        }
-                    }
-                }
-
-                this.domElement.classList.add(className);
-                CssStyleSheet.insertRule(`.${completeCssName} {}`);
-
-                const newOption = document.createElement('option');
-                newOption.text = `.${completeCssName}`;
-                newOption.value = completeCssName;
-
-                this.classesSelector.appendChild(newOption);
-
-                let index = 0;
-                this.classesSelector.childNodes.forEach((child: HTMLOptionElement, i) => {
-                    if(child.value === newOption.value){
-                        index = i;
-                    }
-                });
-
-                this.newClassNameInput.value = '';
-                this.classesSelector.selectedIndex = index;
-                this.updateClassName();
-            } catch (error) {
-                alert(error.message);
+        try {
+            if(className === ''){
+                throw new Error('Class name can not be an empty string');
             }
+
+            if (!isNaN(parseInt(className[0]))) {
+                throw new Error('Class name must start with a letter');
+            }
+
+            const foundBaseRule = CssStyleSheet.getRuleIndex(className);
+            const foundRuleWithPseudoclass = CssStyleSheet.getRuleIndex(completeCssName);
+
+            let classNameNotFoundForThisElement = true;
+            this.domElement.classList.forEach((cn) => {
+                if (cn === className) {
+                    classNameNotFoundForThisElement = false;
+                }
+            })
+
+            if (foundBaseRule >= 0) {
+                if (classNameNotFoundForThisElement) {
+                    throw new Error('Class name already exists for another element');
+                } else {
+                    if (foundRuleWithPseudoclass >= 0) {
+                        throw new Error('Class name already exists');
+                    }
+                }
+            }
+
+            this.domElement.classList.add(className);
+            CssStyleSheet.insertRule(`.${completeCssName} {}`);
+
+            const newOption = document.createElement('option');
+            newOption.text = `.${completeCssName}`;
+            newOption.value = completeCssName;
+
+            this.classesSelector.appendChild(newOption);
+
+            let index = 0;
+            this.classesSelector.childNodes.forEach((child: HTMLOptionElement, i) => {
+                if (child.value === newOption.value) {
+                    index = i;
+                }
+            });
+
+            this.newClassNameInput.value = '';
+            this.classesSelector.selectedIndex = index;
+            this.updateClassName();
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    private removeClass() {
+        this.domElement.classList.remove(`${this.classesSelector.value}`);
+        CssStyleSheet.removeRule(`${this.classesSelector.value}`);
+        this.classesSelector.options.remove(this.classesSelector.selectedIndex);
+
+        if(this.domElement.classList.value === ''){
+            this.domElement.removeAttribute('class');
         }
     }
 }

@@ -4,6 +4,3 @@ export enum GeneralPseudoclassEnum {
     active = 'active',
     none = ''
 }
-
-
-
