@@ -22,45 +22,41 @@ import { GeneralPseudoclassEnum } from '../enums/general-pseudoclass.enum';
 // eslint-disable-next-line max-len
 // https://www.aprenderaprogramar.com/index.php?option=com_content&view=article&id=752:pseudoclases-css-link-visited-focus-hover-y-active-estilos-y-efectos-en-links-propiedad-outline-cu01047d&catid=75&Itemid=203
 
-// TODO: falta el append class. Es decir, tomar la clase de otro componente...
-// TODO: falta el delete class from component. Es decir, eliminar una clase del componente seleccionado...
-
 // TODO: falta el delete class definetly. Es decir, eliminar una clase del CSS.
 // Esto deberia eliminarla de todos los componentes que la utilizan...
 
 // TODO: falta el duplicate class from component.
 // Es decir, crear una nueva clase tomando como template una ya existente...
 
-/*
-if (confirm('Are you sure to remove this component')) {
-            const parent = this._domElement.parentNode;
-            parent.removeChild(this._domElement);
-            this.stylesComponents.remove();
-        }
-*/
+// TODO: falta el rename class, y esa clase deberia renombrarse en todos los hijos que la tengan incluida...
+
+// TODO: mejorar estilos de los botones, input, etc...
 
 export default class ClassManagementComponent {
     private container: HTMLDivElement;
     private domElement: HTMLElement;
 
     private classNames: ArraySelectorBodyInterface[];
+    private appendableClassNames: ArraySelectorBodyInterface[];
     private classesSelector: HTMLSelectElement;
     private initialClassName: string;
 
     private newClassNameInput: HTMLInputElement;
     private newPseudoclassSelector: HTMLSelectElement;
+    private appendClassSelector: HTMLSelectElement;
+    private renameClassInput: HTMLInputElement;
 
     private publisher: ClassChangePublisher;
 
     constructor(
         domElement: HTMLElement,
-        initialClassName: string,
         publisher: ClassChangePublisher
     ) {
         this.publisher = publisher;
-        this.initialClassName = initialClassName;
         this.domElement = domElement;
+        this.initialClassName = this.domElement.classList[0];
         this.populateClassesList();
+        this.populateAppendableClassList();
         this.addComponents();
     }
 
@@ -91,47 +87,105 @@ export default class ClassManagementComponent {
         this.classNames = classNames;
     }
 
+    private populateAppendableClassList() {
+        const appendableClassNames = []
+
+        const rules = CssStyleSheet.getAllRules();
+
+        // TODO: adjuntamos las clases que tienen el this.domElement.name o solo las clases creadas a mano???
+
+        rules.forEach((rule) => {
+            const ruleName = rule['selectorText']
+            let value: string;
+            if (ruleName[0] === '.' || ruleName[0] === '#') {
+                value = ruleName.substring(1)
+            }
+
+            if (value !== 'app-container' && !this.domElement.classList.contains(value)) {
+                appendableClassNames.push({
+                    text: ruleName,
+                    value,
+                })
+            }
+        })
+
+        this.appendableClassNames = appendableClassNames;
+    }
+
     private addComponents() {
         this.updateClassName = this.updateClassName.bind(this);
         this.createNewClassName = this.createNewClassName.bind(this);
         this.removeClass = this.removeClass.bind(this);
+        this.changeClassName = this.changeClassName.bind(this);
+        this.appendClass = this.appendClass.bind(this);
 
-        // Class selector
+        // Class selector and remove class
         this.classesSelector = new SelectorFromArrayBuilder(this.classNames)
             .selectOption(this.initialClassName)
             .addEventListener('change', this.updateClassName)
             .build()
 
+        const removeClassButton = new ButtonBuilder()
+            .setInnerText('Remove Class')
+            .addEventListener('click', this.removeClass)
+            .build();
+
         const selectedClassContainer = new ContainerBuilder()
             .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
             .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
             .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-            .appendChild(new LabelBuilder()
-                .setInnerText('Selected Class')
+            .appendChild(new ContainerBuilder()
+                .appendChild(this.classesSelector)
+                .appendChild(removeClassButton)
                 .build()
             )
-            .appendChild(this.classesSelector)
-            .build()
+            .build();
 
-        // Create
+        // Rename Class
+        this.renameClassInput = new InputBuilder(InputTypeEnum.text)
+            .build();
+
+        const renameClassButton = new ButtonBuilder()
+            .setInnerText('Change')
+            .addEventListener('click', this.changeClassName)
+            .build();
+
+        const renameClassContainer = new ContainerBuilder()
+            .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+            .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
+            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+            .appendChild(new LabelBuilder()
+                .setInnerText('Change Class Name')
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+                .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.row)
+                .appendChild(this.renameClassInput)
+                .appendChild(renameClassButton)
+                .build()
+            )
+            .build();
+
+        // Create Class
         this.newClassNameInput = new InputBuilder(InputTypeEnum.text)
-            .build()
+            .build();
 
         this.newPseudoclassSelector = new SelectorFromEnumBuilder(GeneralPseudoclassEnum)
             .selectOption(GeneralPseudoclassEnum.none)
-            .build()
+            .build();
 
         const createClassButton = new ButtonBuilder()
             .setInnerText('Create')
             .addEventListener('click', this.createNewClassName)
-            .build()
+            .build();
 
         const newClassContainer = new ContainerBuilder()
             .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
             .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
             .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new LabelBuilder()
-                .setInnerText('Create New Class Name')
+                .setInnerText('Create New Class')
                 .build()
             )
             .appendChild(new ContainerBuilder()
@@ -140,28 +194,40 @@ export default class ClassManagementComponent {
                 .appendChild(createClassButton)
                 .build()
             )
-            .build()
+            .build();
 
-        // Remove
-        const removeClassButton = new ButtonBuilder()
-            .setInnerText('Remove Class')
-            .addEventListener('click', this.removeClass)
-            .build()
-
-        const removeClassContainer = new ContainerBuilder()
-            .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-            .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-            .appendChild(new LabelBuilder()
-                .setInnerText('Create New Class Name')
+        // Append class
+        let appendClassContainer: HTMLDivElement;
+        if (this.appendableClassNames.length > 0) {
+            this.appendClassSelector = new SelectorFromArrayBuilder(this.appendableClassNames)
+                .selectOption(this.appendableClassNames[0].value)
                 .build()
-            )
-            .appendChild(new ContainerBuilder()
-                .appendChild(removeClassButton)
-                .build()
-            )
-            .build()
 
+            const appendClassButton = new ButtonBuilder()
+                .setInnerText('Append Class')
+                .addEventListener('click', this.appendClass)
+                .build()
+
+            appendClassContainer = new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+                .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Append Class Name')
+                    .build()
+                )
+                .appendChild(new ContainerBuilder()
+                    .appendChild(this.appendClassSelector)
+                    .build()
+                )
+                .appendChild(new ContainerBuilder()
+                    .appendChild(appendClassButton)
+                    .build()
+                )
+                .build()
+        }
+
+        // Main container
         this.container = new ContainerBuilder()
             .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
             .setStyle(StyleNameEnum.padding, '3px')
@@ -171,8 +237,9 @@ export default class ClassManagementComponent {
                 .build()
             )
             .appendChild(selectedClassContainer)
+            .appendChild(renameClassContainer)
             .appendChild(newClassContainer)
-            .appendChild(removeClassContainer)
+            .appendChildIfDefined(appendClassContainer)
             .build()
     }
 
@@ -186,7 +253,7 @@ export default class ClassManagementComponent {
         const completeCssName: string = this.newClassNameInput.value + (pseudoclass !== '' ? `:${pseudoclass}` : '');
 
         try {
-            if(className === ''){
+            if (className === '') {
                 throw new Error('Class name can not be an empty string');
             }
 
@@ -243,8 +310,32 @@ export default class ClassManagementComponent {
         CssStyleSheet.removeRule(`${this.classesSelector.value}`);
         this.classesSelector.options.remove(this.classesSelector.selectedIndex);
 
-        if(this.domElement.classList.value === ''){
+        if (this.domElement.classList.value === '') {
             this.domElement.removeAttribute('class');
         }
+    }
+
+    private changeClassName() {
+        this.domElement.classList.replace(this.classesSelector.value, this.renameClassInput.value);
+        CssStyleSheet.changeRuleName(this.classesSelector.value, this.renameClassInput.value);
+        this.populateClassesList();
+        this.classesSelector.remove(this.classesSelector.selectedIndex);
+
+        const option = document.createElement('option');
+        option.value = this.renameClassInput.value;
+        option.text = `.${this.renameClassInput.value}`;
+
+        this.classesSelector.appendChild(option);
+
+        this.classesSelector.selectedIndex = this.classesSelector.options.length - 1;
+
+        this.renameClassInput.value = '';
+    }
+
+    private appendClass() {
+        this.domElement.classList.add(this.appendClassSelector.value);
+        this.appendClassSelector.options.remove(this.appendClassSelector.selectedIndex);
+
+        // TODO: si el selector queda vacio, entonces hay que eliminarlo...
     }
 }

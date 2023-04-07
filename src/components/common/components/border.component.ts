@@ -52,9 +52,9 @@ export default class BorderComponent implements ClassChangeObserverInterface {
 
     private selectAllCheckBox: HTMLInputElement;
 
-    constructor(domElement: HTMLElement, initialClassName: string) {
+    constructor(domElement: HTMLElement) {
         this.domElement = domElement;
-        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(initialClassName);
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(this.domElement.classList[0]);
         this.addComponents();
     }
 

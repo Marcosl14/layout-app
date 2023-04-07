@@ -9,4 +9,11 @@ export default class ContainerBuilder extends RawBuilder<HTMLDivElement>{
         this.element.appendChild(element);
         return this;
     }
+
+    public appendChildIfDefined(element: HTMLElement){
+        if(element !== undefined){
+            this.element.appendChild(element);
+        }
+        return this;
+    }
 }

@@ -37,9 +37,9 @@ export default class DisplayAsChildComponent implements ClassChangeObserverInter
     private gridJustifySelf: GenericCssPropertyMutatorComponent;
     private gridAlignSelf: GenericCssPropertyMutatorComponent;
 
-    constructor(domElement: HTMLElement, initialClassName: string) {
+    constructor(domElement: HTMLElement) {
         this.domElement = domElement;
-        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(initialClassName);
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(this.domElement.classList[0]);
 
         this.container = new ContainerBuilder().build();
 

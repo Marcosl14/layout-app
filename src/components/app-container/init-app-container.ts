@@ -12,6 +12,7 @@ export default class InitAppContainer {
     private appContainer: HTMLDivElement;
     private appContainerHeightInput: HTMLInputElement;
     private appContainerWidthInput: HTMLInputElement;
+    private printCssFileButton: HTMLButtonElement;
     protected stylesComponents: HTMLDivElement;
 
     protected backgroundColor: string;
@@ -31,6 +32,11 @@ export default class InitAppContainer {
         this.changeAppContainerWidth = this.changeAppContainerWidth.bind(this);
         this.appContainerWidthInput.value = `${parseInt(this.getCurrentWidth())}`;
         this.appContainerWidthInput.addEventListener('input', this.changeAppContainerWidth);
+
+        this.printCssFileButton = document.querySelector('#print-css-file');
+        this.printCssFile = this.printCssFile.bind(this);
+        this.printCssFileButton.addEventListener('click', this.printCssFile);
+
 
         this.dragEnter = this.dragEnter.bind(this);
         this.dragOver = this.dragOver.bind(this);
@@ -94,14 +100,12 @@ export default class InitAppContainer {
         this.stylesComponents = new StylesComponentsBuilder()
             .appendChild(new MarginOrPaddingComponent(
                 this.appContainer,
-                this.appContainer.id,
                 StyleNameEnum.margin).component)
             .appendChild(new MarginOrPaddingComponent(
                 this.appContainer,
-                this.appContainer.id,
                 StyleNameEnum.padding).component)
-            .appendChild(new BackgroundComponent(this.appContainer, this.appContainer.id).component)
-            .appendChild(new DisplayComponent(this.appContainer, this.appContainer.id).component)
+            .appendChild(new BackgroundComponent(this.appContainer).component)
+            .appendChild(new DisplayComponent(this.appContainer).component)
             .build();
     }
 
@@ -140,5 +144,9 @@ export default class InitAppContainer {
 
     private getCurrentWidth() {
         return CssStyleSheet.getRuleStyles(this.appContainer.id)['width']
+    }
+
+    private printCssFile() {
+        return CssStyleSheet.print();
     }
 }
