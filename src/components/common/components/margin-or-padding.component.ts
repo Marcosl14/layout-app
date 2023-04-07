@@ -32,10 +32,10 @@ export default class MarginOrPaddingComponent implements ClassChangeObserverInte
 
     private selectAllCheckBox: HTMLInputElement;
 
-    constructor(domElement: HTMLElement, initialClassName: string,  type: 'margin' | 'padding', ) {
+    constructor(domElement: HTMLElement, type: 'margin' | 'padding', ) {
         this.type = type;
         this.domElement = domElement;
-        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(initialClassName);
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(this.domElement.classList[0])
         this.addComponents();
         this.setValuesAccordingToClass();
         this.updateProperty()

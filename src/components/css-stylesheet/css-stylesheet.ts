@@ -1,3 +1,5 @@
+import RawHTMLConponent from '../html-components/RawHTMLComponent';
+
 export default class CssStyleSheet {
     private static styleSheet = document.styleSheets[1];
 
@@ -30,6 +32,9 @@ export default class CssStyleSheet {
         });
 
         console.log(cssFileOutput);
+
+        // TODO: el print deberia modificar app-container por body...
+        // ver si hay que eliminar algo del app-container... algun atributo...
     }
 
     static getRule(id: string): CSSRule {
@@ -55,6 +60,10 @@ export default class CssStyleSheet {
         return indexes.map((index) => CssStyleSheet.styleSheet.cssRules[index]);
     }
 
+    static getAllRules(): CSSRule[] {
+        return Object.values(CssStyleSheet.styleSheet.cssRules);
+    }
+
     static getRulesIndexes(id: string): number[] {
         return Object.keys(CssStyleSheet.styleSheet.cssRules)
             .filter(key => {
@@ -71,7 +80,17 @@ export default class CssStyleSheet {
 
     static removeRule(id: string): void {
         const index = this.getRuleIndex(id);
-        CssStyleSheet.styleSheet.deleteRule(index);
+        let existsRuleForAnotherComponent = false;
+
+        RawHTMLConponent.instances.forEach((instance) => {
+            if(instance.classList.contains(id)) {
+                existsRuleForAnotherComponent = true;
+            }
+        })
+
+        if(!existsRuleForAnotherComponent) {
+            CssStyleSheet.styleSheet.deleteRule(index);
+        }
     }
 
     static removeRuleByIndex(index: number): void {
@@ -80,5 +99,12 @@ export default class CssStyleSheet {
 
     static insertRule(rule: string) {
         CssStyleSheet.styleSheet.insertRule(rule);
+    }
+
+    static changeRuleName(currentRule: string, newRuleName: string) {
+        const currentRuleIndex = this.getRuleIndex(currentRule);
+        const newRule = CssStyleSheet.styleSheet.cssRules[currentRuleIndex].cssText.replace(currentRule, newRuleName);
+        this.removeRuleByIndex(currentRuleIndex);
+        this.insertRule(newRule);
     }
 }

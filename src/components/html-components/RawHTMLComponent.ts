@@ -26,7 +26,6 @@ export default abstract class RawHTMLConponent {
     protected stylesComponents: HTMLDivElement;
 
     public static instances: HTMLElement[] = [];
-    private initialClassName: string;
 
     protected publisher: ClassChangePublisher;
 
@@ -34,8 +33,6 @@ export default abstract class RawHTMLConponent {
         this._domElement = domElement
 
         RawHTMLConponent.instances.push(this._domElement);
-
-        this.initialClassName = this.domElement.classList[0]
 
         this.publisher = new ClassChangePublisher();
 
@@ -55,17 +52,17 @@ export default abstract class RawHTMLConponent {
     }
 
     protected addClassNameDefinitionComponent() {
-        return new ClassManagementComponent(this._domElement, this.initialClassName, this.publisher).component;
+        return new ClassManagementComponent(this._domElement, this.publisher).component;
     }
 
     protected addMarginStyleComponent() {
-        const component = new MarginOrPaddingComponent(this._domElement, this.initialClassName, StyleNameEnum.margin);
+        const component = new MarginOrPaddingComponent(this._domElement, StyleNameEnum.margin);
         this.publisher.attach(component);
         return component.component;
     }
 
     protected addPaddingStyleComponent() {
-        const component = new MarginOrPaddingComponent(this._domElement, this.initialClassName, StyleNameEnum.padding);
+        const component = new MarginOrPaddingComponent(this._domElement, StyleNameEnum.padding);
         this.publisher.attach(component);
         return component.component;
     }
@@ -90,31 +87,31 @@ export default abstract class RawHTMLConponent {
     }
 
     protected addDisplayAsParentComponent() {
-        const component = new DisplayAsParentComponent(this._domElement, this.initialClassName);
+        const component = new DisplayAsParentComponent(this._domElement);
         this.publisher.attach(component);
         return component.component;
     }
 
     protected addDisplayAsChildComponent() {
-        const component = new DisplayAsChildComponent(this._domElement, this.initialClassName);
+        const component = new DisplayAsChildComponent(this._domElement);
         this.publisher.attach(component);
         return component.component;
     }
 
     protected addBorderSettingsComponent() {
-        const component = new BorderComponent(this._domElement, this.initialClassName);
+        const component = new BorderComponent(this._domElement);
         this.publisher.attach(component);
         return component.component;
     }
 
     protected addBackgroundSettingsComponent() {
-        const component = new BackgroundComponent(this._domElement, this.initialClassName);
+        const component = new BackgroundComponent(this._domElement);
         this.publisher.attach(component);
         return component.component;
     }
 
     protected addBoxShadowComponent() {
-        const component = new BoxShadowComponent(this._domElement, this.initialClassName);
+        const component = new BoxShadowComponent(this._domElement);
         this.publisher.attach(component);
         return component.component;
     }

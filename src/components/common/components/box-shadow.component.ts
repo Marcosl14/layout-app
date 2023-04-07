@@ -54,9 +54,9 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
     private advancedShadowBoxContainer: HTMLDivElement;
 
 
-    constructor(domElement: HTMLElement, initialClassName: string) {
+    constructor(domElement: HTMLElement) {
         this.domElement = domElement;
-        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(initialClassName);
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(this.domElement.classList[0]);
         this.getInitialValues();
         this.addComponents();
         this.setBoxShadowValuesAccordingToClass();

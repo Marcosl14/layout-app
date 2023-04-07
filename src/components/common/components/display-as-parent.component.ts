@@ -55,9 +55,9 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
     private gridColumnGapInput: InputAndUnitsSelectorComponent;
     private gridRowGapInput: InputAndUnitsSelectorComponent;
 
-    constructor(domElement: HTMLElement, initialClassName: string) {
+    constructor(domElement: HTMLElement) {
         this.domElement = domElement;
-        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(initialClassName);
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(this.domElement.classList[0]);
         this.addComponents();
     }
 

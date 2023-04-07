@@ -14,3 +14,8 @@ new InitAppContainer();
 // TODO: acomodar estructuras con prettier y tslinter. Saltar linea cuando muy larga.
 
 // TODO: falta el color del texto, color tipografia y la tipografia...
+
+// TODO: hay que meterle drag enter al app-container-fixed para que le saque el background color al app-container...
+
+// TODO: insertar rules para el media query : https://davidwalsh.name/add-rules-stylesheets
+// https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
