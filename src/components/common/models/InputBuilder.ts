@@ -21,6 +21,11 @@ export default class InputBuilder extends RawBuilder<HTMLInputElement>{
         return this;
     }
 
+    public setPlaceholder(placeholder: string) {
+        this.element.placeholder = placeholder;
+        return this;
+    }
+
     public checked(checked = true) {
         this.element.checked = checked;
         return this;

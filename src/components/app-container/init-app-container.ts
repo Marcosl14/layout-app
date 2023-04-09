@@ -10,6 +10,7 @@ import constants from '../common/constants/constants';
 
 export default class InitAppContainer {
     private appContainer: HTMLDivElement;
+    private appContainerClassName = 'body';
     private appContainerHeightInput: HTMLInputElement;
     private appContainerWidthInput: HTMLInputElement;
     private printCssFileButton: HTMLButtonElement;
@@ -58,7 +59,7 @@ export default class InitAppContainer {
 
     private dragEnter(event: DragEvent) {
         event.preventDefault();
-        this.backgroundColor = CssStyleSheet.getRuleStyles(this.appContainer.id)['background-color'];
+        this.backgroundColor = CssStyleSheet.getRuleStyles(this.appContainerClassName)['background-color'];
         this.appContainer.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
     }
 
@@ -120,30 +121,30 @@ export default class InitAppContainer {
 
         if(height) {
             this.appContainerHeightInput.value = `${parseInt(height)}`;
-            CssStyleSheet.getRuleStyles(this.appContainer.id)['height'] = height;
+            CssStyleSheet.getRuleStyles(this.appContainerClassName)['height'] = height;
             this.appContainer.style['height'] = '';
         }
         if(width) {
             this.appContainerWidthInput.value = `${parseInt(width)}`;
-            CssStyleSheet.getRuleStyles(this.appContainer.id)['width'] = width;
+            CssStyleSheet.getRuleStyles(this.appContainerClassName)['width'] = width;
             this.appContainer.style['width'] = '';
         }
     }
 
     private changeAppContainerHeight() {
-        CssStyleSheet.getRuleStyles(this.appContainer.id)['height'] = `${this.appContainerHeightInput.value}px`
+        CssStyleSheet.getRuleStyles(this.appContainerClassName)['height'] = `${this.appContainerHeightInput.value}px`
     }
 
     private changeAppContainerWidth() {
-        CssStyleSheet.getRuleStyles(this.appContainer.id)['width'] = `${this.appContainerWidthInput.value}px`
+        CssStyleSheet.getRuleStyles(this.appContainerClassName)['width'] = `${this.appContainerWidthInput.value}px`
     }
 
     private getCurrentHeight() {
-        return CssStyleSheet.getRuleStyles(this.appContainer.id)['height']
+        return CssStyleSheet.getRuleStyles(this.appContainerClassName)['height']
     }
 
     private getCurrentWidth() {
-        return CssStyleSheet.getRuleStyles(this.appContainer.id)['width']
+        return CssStyleSheet.getRuleStyles(this.appContainerClassName)['width']
     }
 
     private printCssFile() {

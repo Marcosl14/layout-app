@@ -1,8 +1,8 @@
 import ArraySelectorBodyInterface from '../interfaces/selector-from-array-body.interface';
 
 import ClassChangePublisher from '../publishers/ClassChangePublisher';
-
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
+import RawHTMLConponent from '../../html-components/RawHTMLComponent';
 
 import ContainerBuilder from '../models/ContainerBuilder';
 import LabelBuilder from '../models/LabelBuilder';
@@ -17,7 +17,6 @@ import { FlexDirectionEnum } from '../enums/flex-direction.enum';
 import { InputTypeEnum } from '../enums/input-type.enum';
 import { GeneralPseudoclassEnum } from '../enums/general-pseudoclass.enum';
 
-
 // TODO: ver estilos especificos para los ancor elements (links):
 // eslint-disable-next-line max-len
 // https://www.aprenderaprogramar.com/index.php?option=com_content&view=article&id=752:pseudoclases-css-link-visited-focus-hover-y-active-estilos-y-efectos-en-links-propiedad-outline-cu01047d&catid=75&Itemid=203
@@ -25,12 +24,9 @@ import { GeneralPseudoclassEnum } from '../enums/general-pseudoclass.enum';
 // TODO: falta el delete class definetly. Es decir, eliminar una clase del CSS.
 // Esto deberia eliminarla de todos los componentes que la utilizan...
 
-// TODO: falta el duplicate class from component.
-// Es decir, crear una nueva clase tomando como template una ya existente...
-
-// TODO: falta el rename class, y esa clase deberia renombrarse en todos los hijos que la tengan incluida...
-
 // TODO: mejorar estilos de los botones, input, etc...
+
+// TODO: Seguir con el selector de todas las instancias de Raw Element...
 
 export default class ClassManagementComponent {
     private container: HTMLDivElement;
@@ -43,8 +39,15 @@ export default class ClassManagementComponent {
 
     private newClassNameInput: HTMLInputElement;
     private newPseudoclassSelector: HTMLSelectElement;
+    private duplicableClassSelector: HTMLSelectElement;
     private appendClassSelector: HTMLSelectElement;
     private renameClassInput: HTMLInputElement;
+
+    private duplicableClassNames: ArraySelectorBodyInterface[];
+    private newDuplicadedClassNameInput: HTMLInputElement;
+
+    private classesSelectorContainer: HTMLDivElement;
+    private appendClassContainer: HTMLDivElement;
 
     private publisher: ClassChangePublisher;
 
@@ -57,6 +60,7 @@ export default class ClassManagementComponent {
         this.initialClassName = this.domElement.classList[0];
         this.populateClassesList();
         this.populateAppendableClassList();
+        this.populateDuplicableClassList();
         this.addComponents();
     }
 
@@ -87,6 +91,31 @@ export default class ClassManagementComponent {
         this.classNames = classNames;
     }
 
+    private populateDuplicableClassList() {
+        const duplicableClassNames = []
+
+        const rules = CssStyleSheet.getAllRules();
+
+        // TODO: adjuntamos las clases que tienen el this.domElement.name o solo las clases creadas a mano???
+
+        rules.forEach((rule) => {
+            const ruleName = rule['selectorText']
+            let value: string;
+            if (ruleName[0] === '.' || ruleName[0] === '#') {
+                value = ruleName.substring(1)
+            }
+
+            if (value !== 'body') {
+                duplicableClassNames.push({
+                    text: ruleName,
+                    value,
+                })
+            }
+        })
+
+        this.duplicableClassNames = duplicableClassNames;
+    }
+
     private populateAppendableClassList() {
         const appendableClassNames = []
 
@@ -101,7 +130,7 @@ export default class ClassManagementComponent {
                 value = ruleName.substring(1)
             }
 
-            if (value !== 'app-container' && !this.domElement.classList.contains(value)) {
+            if (value !== 'body' && !this.domElement.classList.contains(value)) {
                 appendableClassNames.push({
                     text: ruleName,
                     value,
@@ -118,6 +147,7 @@ export default class ClassManagementComponent {
         this.removeClass = this.removeClass.bind(this);
         this.changeClassName = this.changeClassName.bind(this);
         this.appendClass = this.appendClass.bind(this);
+        this.duplicateClass = this.duplicateClass.bind(this);
 
         // Class selector and remove class
         this.classesSelector = new SelectorFromArrayBuilder(this.classNames)
@@ -126,11 +156,11 @@ export default class ClassManagementComponent {
             .build()
 
         const removeClassButton = new ButtonBuilder()
-            .setInnerText('Remove Class')
+            .setInnerText('Remove')
             .addEventListener('click', this.removeClass)
             .build();
 
-        const selectedClassContainer = new ContainerBuilder()
+        this.classesSelectorContainer = new ContainerBuilder()
             .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
             .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
             .setStyle(StyleNameEnum.margin, '0px 0px 10px')
@@ -143,6 +173,7 @@ export default class ClassManagementComponent {
 
         // Rename Class
         this.renameClassInput = new InputBuilder(InputTypeEnum.text)
+            .setPlaceholder('New class name')
             .build();
 
         const renameClassButton = new ButtonBuilder()
@@ -169,6 +200,7 @@ export default class ClassManagementComponent {
 
         // Create Class
         this.newClassNameInput = new InputBuilder(InputTypeEnum.text)
+            .setPlaceholder('Class name')
             .build();
 
         this.newPseudoclassSelector = new SelectorFromEnumBuilder(GeneralPseudoclassEnum)
@@ -196,33 +228,71 @@ export default class ClassManagementComponent {
             )
             .build();
 
+        // Duplicate class
+        this.duplicableClassSelector = new SelectorFromArrayBuilder(this.duplicableClassNames)
+            .selectOption(this.duplicableClassNames[0].value)
+            .build()
+
+        this.newDuplicadedClassNameInput = new InputBuilder(InputTypeEnum.text)
+            .setPlaceholder('Duplicated class name')
+            .build();
+
+        const duplicateClassButton = new ButtonBuilder()
+            .setInnerText('Duplicate')
+            .addEventListener('click', this.duplicateClass)
+            .build()
+
+        const duplicateClassContainer = new ContainerBuilder()
+            .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+            .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
+            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+            .appendChild(new LabelBuilder()
+                .setInnerText('Duplicate Class')
+                .build()
+            )
+            .appendChild(
+                new ContainerBuilder()
+                    .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+                    .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.row)
+                    .appendChild(this.duplicableClassSelector)
+                    .build()
+            )
+            .appendChild(
+                new ContainerBuilder()
+                    .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+                    .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.row)
+                    .appendChild(this.newDuplicadedClassNameInput)
+                    .appendChild(duplicateClassButton)
+                    .build()
+            )
+            .build()
+
         // Append class
-        let appendClassContainer: HTMLDivElement;
         if (this.appendableClassNames.length > 0) {
             this.appendClassSelector = new SelectorFromArrayBuilder(this.appendableClassNames)
                 .selectOption(this.appendableClassNames[0].value)
                 .build()
 
             const appendClassButton = new ButtonBuilder()
-                .setInnerText('Append Class')
+                .setInnerText('Append')
                 .addEventListener('click', this.appendClass)
                 .build()
 
-            appendClassContainer = new ContainerBuilder()
+            this.appendClassContainer = new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                 .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
-                    .setInnerText('Append Class Name')
+                    .setInnerText('Append Class')
                     .build()
                 )
-                .appendChild(new ContainerBuilder()
-                    .appendChild(this.appendClassSelector)
-                    .build()
-                )
-                .appendChild(new ContainerBuilder()
-                    .appendChild(appendClassButton)
-                    .build()
+                .appendChild(
+                    new ContainerBuilder()
+                        .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+                        .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.row)
+                        .appendChild(this.appendClassSelector)
+                        .appendChild(appendClassButton)
+                        .build()
                 )
                 .build()
         }
@@ -236,10 +306,11 @@ export default class ClassManagementComponent {
                 .setInnerText('Classes Management')
                 .build()
             )
-            .appendChild(selectedClassContainer)
+            .appendChild(this.classesSelectorContainer)
             .appendChild(renameClassContainer)
             .appendChild(newClassContainer)
-            .appendChildIfDefined(appendClassContainer)
+            .appendChild(duplicateClassContainer)
+            .appendChildIfDefined(this.appendClassContainer)
             .build()
     }
 
@@ -310,32 +381,56 @@ export default class ClassManagementComponent {
         CssStyleSheet.removeRule(`${this.classesSelector.value}`);
         this.classesSelector.options.remove(this.classesSelector.selectedIndex);
 
+        if(this.classesSelector.options.length === 0) {
+            this.classesSelectorContainer.style.display = 'none';
+        }
+
         if (this.domElement.classList.value === '') {
             this.domElement.removeAttribute('class');
         }
     }
 
     private changeClassName() {
-        this.domElement.classList.replace(this.classesSelector.value, this.renameClassInput.value);
+        RawHTMLConponent.instances.forEach((instance) => {
+            instance.classList.replace(this.classesSelector.value, this.renameClassInput.value);
+        })
+
         CssStyleSheet.changeRuleName(this.classesSelector.value, this.renameClassInput.value);
         this.populateClassesList();
         this.classesSelector.remove(this.classesSelector.selectedIndex);
 
-        const option = document.createElement('option');
-        option.value = this.renameClassInput.value;
-        option.text = `.${this.renameClassInput.value}`;
-
-        this.classesSelector.appendChild(option);
-
-        this.classesSelector.selectedIndex = this.classesSelector.options.length - 1;
+        this.appendNewOptionElement(this.renameClassInput.value, this.classesSelector);
 
         this.renameClassInput.value = '';
     }
 
     private appendClass() {
         this.domElement.classList.add(this.appendClassSelector.value);
+
+        this.appendNewOptionElement(this.appendClassSelector.value, this.classesSelector);
+
         this.appendClassSelector.options.remove(this.appendClassSelector.selectedIndex);
 
-        // TODO: si el selector queda vacio, entonces hay que eliminarlo...
+        if(this.appendClassSelector.options.length === 0) {
+            this.appendClassContainer.style.display = 'none';
+        }
+    }
+
+    private appendNewOptionElement(optionValue: string, selector: HTMLSelectElement) {
+        const option = document.createElement('option');
+        option.value = optionValue;
+        option.text = `.${optionValue}`;
+
+        selector.appendChild(option);
+        selector.selectedIndex = selector.options.length - 1;
+    }
+
+    private duplicateClass() {
+        this.domElement.classList.add(this.newDuplicadedClassNameInput.value);
+
+        CssStyleSheet.duplicateRule(this.duplicableClassSelector.value, this.newDuplicadedClassNameInput.value);
+
+        this.appendNewOptionElement(this.newDuplicadedClassNameInput.value, this.classesSelector);
+        this.appendNewOptionElement(this.newDuplicadedClassNameInput.value, this.duplicableClassSelector);
     }
 }

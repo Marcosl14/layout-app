@@ -33,8 +33,7 @@ export default class CssStyleSheet {
 
         console.log(cssFileOutput);
 
-        // TODO: el print deberia modificar app-container por body...
-        // ver si hay que eliminar algo del app-container... algun atributo...
+        // TODO: ver si hay que eliminar algo del app-container... algun atributo...
     }
 
     static getRule(id: string): CSSRule {
@@ -105,6 +104,13 @@ export default class CssStyleSheet {
         const currentRuleIndex = this.getRuleIndex(currentRule);
         const newRule = CssStyleSheet.styleSheet.cssRules[currentRuleIndex].cssText.replace(currentRule, newRuleName);
         this.removeRuleByIndex(currentRuleIndex);
+        this.insertRule(newRule);
+    }
+
+    static duplicateRule(ruleToDuplicate: string, newName: string) {
+        const ruleToDuplicateIndex = this.getRuleIndex(ruleToDuplicate);
+        const newRule =
+            CssStyleSheet.styleSheet.cssRules[ruleToDuplicateIndex].cssText.replace(ruleToDuplicate, newName);
         this.insertRule(newRule);
     }
 }

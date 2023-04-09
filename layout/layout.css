@@ -1,4 +1,4 @@
-.app-container {  /* TODO: ésta clase se deberia exportar como body */
+.body {  /* TODO: ésta clase se deberia exportar como body */
     display: flex;
     flex-direction: column;
     background-color: rgb(255,255,255);
