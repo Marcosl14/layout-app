@@ -23,8 +23,10 @@ export default class InitAppContainer {
     protected backgroundColor: string;
     protected fatherBackgroundColor: string;
 
-    private componentSelector : HTMLSelectElement = document.querySelector('#select-item');
+    private componentSelector: HTMLSelectElement = document.querySelector('#select-item');
     private componentChangePublisher: ComponentChangePublisher;
+
+    private printHtmlButton: HTMLButtonElement = document.querySelector('#print-html-file');
 
     // TODO: falta propiedad scrollable
 
@@ -64,7 +66,9 @@ export default class InitAppContainer {
 
         this.sendComponentName = this.sendComponentName.bind(this);
         this.componentChangePublisher = new ComponentChangePublisher();
-        this.componentSelector.addEventListener('change', this.sendComponentName)
+        this.componentSelector.addEventListener('change', this.sendComponentName);
+
+        this.printHtmlButton.addEventListener('click', this.printHtmlFile);
     }
 
     private dragEnter(event: DragEvent) {
@@ -161,6 +165,12 @@ export default class InitAppContainer {
 
     private printCssFile() {
         return CssStyleSheet.print();
+    }
+
+    private printHtmlFile() {
+        const mainContainer = document.querySelector('#app-container-fixed').innerHTML;
+        const removeDraggableRegEx = new RegExp(' draggable="true"', 'g');
+        console.log(mainContainer.replace(removeDraggableRegEx, ''));
     }
 
     private sendComponentName() {
