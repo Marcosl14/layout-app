@@ -26,8 +26,6 @@ import { GeneralPseudoclassEnum } from '../enums/general-pseudoclass.enum';
 
 // TODO: mejorar estilos de los botones, input, etc...
 
-// TODO: Seguir con el selector de todas las instancias de Raw Element...
-
 export default class ClassManagementComponent {
     private container: HTMLDivElement;
     private domElement: HTMLElement;
@@ -96,8 +94,6 @@ export default class ClassManagementComponent {
 
         const rules = CssStyleSheet.getAllRules();
 
-        // TODO: adjuntamos las clases que tienen el this.domElement.name o solo las clases creadas a mano???
-
         rules.forEach((rule) => {
             const ruleName = rule['selectorText']
             let value: string;
@@ -120,8 +116,6 @@ export default class ClassManagementComponent {
         const appendableClassNames = []
 
         const rules = CssStyleSheet.getAllRules();
-
-        // TODO: adjuntamos las clases que tienen el this.domElement.name o solo las clases creadas a mano???
 
         rules.forEach((rule) => {
             const ruleName = rule['selectorText']
@@ -432,5 +426,7 @@ export default class ClassManagementComponent {
 
         this.appendNewOptionElement(this.newDuplicadedClassNameInput.value, this.classesSelector);
         this.appendNewOptionElement(this.newDuplicadedClassNameInput.value, this.duplicableClassSelector);
+
+        this.newDuplicadedClassNameInput.value = '';
     }
 }

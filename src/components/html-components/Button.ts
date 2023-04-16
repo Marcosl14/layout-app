@@ -1,3 +1,5 @@
+import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
+
 import ButtonBuilder from '../common/models/ButtonBuilder';
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
@@ -6,7 +8,7 @@ import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 
 import defineElementName from '../common/functions/define-element-name';
 
-export default class Button extends RawHTMLConponent {
+export default class Button extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
 
     constructor() {
@@ -44,8 +46,9 @@ export default class Button extends RawHTMLConponent {
         this.dragLeave = this.dragLeave.bind(this);
 
         this._domElement.addEventListener('dragstart', this.dragStartWithTargetId);
-        this._domElement.addEventListener('click', this.openElementConfigs);
         this._domElement.addEventListener('dragleave', this.dragLeave);
+
+        this._domElement.addEventListener('click', this.openElementConfigs);
     }
 
     get domElement() {
@@ -54,7 +57,19 @@ export default class Button extends RawHTMLConponent {
 
     protected openElementConfigs(event) {
         event.stopPropagation();
+        this.selectorValue();
 
+
+        this.buildElementConfigs();
+    }
+
+    public componentSelected(component) {
+        if(component === this._domElement['name']) {
+            this.buildElementConfigs();
+        }
+    }
+
+    private buildElementConfigs() {
         this.stylesComponents = new StylesComponentsBuilder()
             .appendChild(this.addIdDefinitionComponent())
             .appendChild(this.addClassNameDefinitionComponent())

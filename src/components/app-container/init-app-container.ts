@@ -1,12 +1,16 @@
 import DisplayComponent from '../common/components/display-as-parent.component';
 import MarginOrPaddingComponent from '../common/components/margin-or-padding.component';
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
+import RawHTMLConponent from '../html-components/RawHTMLComponent';
+import BackgroundComponent from '../common/components/background.component';
 import componentsIndex from '../html-components/componentsIndex';
+import constants from '../common/constants/constants';
 
 import { StyleNameEnum } from '../common/enums/style-name.enum';
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
-import BackgroundComponent from '../common/components/background.component';
-import constants from '../common/constants/constants';
+
+import ComponentChangePublisher from '../common/publishers/ComponentChangePublisher';
+
 
 export default class InitAppContainer {
     private appContainer: HTMLDivElement;
@@ -18,6 +22,9 @@ export default class InitAppContainer {
 
     protected backgroundColor: string;
     protected fatherBackgroundColor: string;
+
+    private componentSelector : HTMLSelectElement = document.querySelector('#select-item');
+    private componentChangePublisher: ComponentChangePublisher;
 
     // TODO: falta propiedad scrollable
 
@@ -38,7 +45,6 @@ export default class InitAppContainer {
         this.printCssFile = this.printCssFile.bind(this);
         this.printCssFileButton.addEventListener('click', this.printCssFile);
 
-
         this.dragEnter = this.dragEnter.bind(this);
         this.dragOver = this.dragOver.bind(this);
         this.dragLeave = this.dragLeave.bind(this);
@@ -55,6 +61,10 @@ export default class InitAppContainer {
         this.appContainer.addEventListener('click', this.openElementConfigs);
 
         this.onResize(this.appContainer, this.changeSize);
+
+        this.sendComponentName = this.sendComponentName.bind(this);
+        this.componentChangePublisher = new ComponentChangePublisher();
+        this.componentSelector.addEventListener('change', this.sendComponentName)
     }
 
     private dragEnter(event: DragEvent) {
@@ -80,19 +90,21 @@ export default class InitAppContainer {
             return;
         }
 
-        const tipoDeElemento = event.dataTransfer.getData('text/plain');
+        const elementType = event.dataTransfer.getData('text/plain');
 
-        const newDomElement: HTMLElement = componentsIndex(tipoDeElemento)();
+        const newDomElement: RawHTMLConponent | undefined = componentsIndex(elementType)();
 
         const elementExists = newDomElement ? false : true;
 
         if (elementExists) {
-            const draggable = document.getElementById(tipoDeElemento);
+            const draggable = document.getElementById(elementType);
             targetElement.appendChild(draggable);
             return;
+        } else {
+            this.componentChangePublisher.attach(newDomElement);
         }
 
-        targetElement.appendChild(newDomElement);
+        targetElement.appendChild(newDomElement.domElement);
     }
 
     private openElementConfigs(event: MouseEvent) {
@@ -111,7 +123,7 @@ export default class InitAppContainer {
     }
 
     private onResize(dom_elem, callback) {
-        const resizeObserver = new ResizeObserver(() => callback() );
+        const resizeObserver = new ResizeObserver(() => callback());
         resizeObserver.observe(dom_elem);
     }
 
@@ -119,12 +131,12 @@ export default class InitAppContainer {
         const height = this.appContainer.style['height'];
         const width = this.appContainer.style['width'];
 
-        if(height) {
+        if (height) {
             this.appContainerHeightInput.value = `${parseInt(height)}`;
             CssStyleSheet.getRuleStyles(this.appContainerClassName)['height'] = height;
             this.appContainer.style['height'] = '';
         }
-        if(width) {
+        if (width) {
             this.appContainerWidthInput.value = `${parseInt(width)}`;
             CssStyleSheet.getRuleStyles(this.appContainerClassName)['width'] = width;
             this.appContainer.style['width'] = '';
@@ -149,5 +161,9 @@ export default class InitAppContainer {
 
     private printCssFile() {
         return CssStyleSheet.print();
+    }
+
+    private sendComponentName() {
+        this.componentChangePublisher.notifyComponentName(this.componentSelector.value);
     }
 }
