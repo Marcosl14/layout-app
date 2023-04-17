@@ -1,4 +1,4 @@
-.app-container {  /* TODO: ésta clase se deberia exportar como body */
+.body {  /* TODO: ésta clase se deberia exportar como body */
     display: flex;
     flex-direction: column;
     background-color: rgb(255,255,255);
@@ -9,28 +9,3 @@
     resize: both; /* TODO: no se deberia ver cuando exporte el css en consola... */
     overflow: auto; /* TODO: no se deberia ver cuando exporte el css en consola... */
 }
-
- /* TODO: probar exportar css y html y ver como queda la pagina en la realidad */
-
- /* TODO: hacer analisis de que deberiamos exportar realmente del html */
-
- /* TODO: el html ya deberia salir bien armadito, con:
- 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script type="module" src="../dist/bundle.js" defer></script>
-        <link rel="stylesheet" href="./index.css">
-        <link rel="stylesheet" href="./layout.css">
-        <title>App</title>
-    </head>
-    <body>
-        el html creado en la pagina
-    </body>
-    </html>
- 
- */
-

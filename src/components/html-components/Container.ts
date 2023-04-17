@@ -1,3 +1,5 @@
+import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
+
 import ContainerBuilder from '../common/models/ContainerBuilder';
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
@@ -8,11 +10,10 @@ import defineElementName from '../common/functions/define-element-name';
 
 import { DisplayTypesEnum } from '../common/enums/display-types.enum';
 
-
-export default class Container extends RawHTMLConponent {
+export default class Container extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
 
-    // TODO falta propiedad scrollable
+    // TODO: falta propiedad scrollable
 
     constructor() {
         const name = defineElementName(`container${Container.iterator++}`, RawHTMLConponent.instances);
@@ -70,6 +71,7 @@ export default class Container extends RawHTMLConponent {
         event.stopPropagation();
 
         this.domElement.style.backgroundColor = '';
+        this._domElement.attributes.removeNamedItem('style');
     }
 
     private drop() {
@@ -80,7 +82,7 @@ export default class Container extends RawHTMLConponent {
     private hoverExists(): boolean {
         let hoverExists = false;
         this._domElement.classList.forEach((classname: string) => {
-            if(CssStyleSheet.getRuleIndex(`${classname}:hover`) !== -1) {
+            if (CssStyleSheet.getRuleIndex(`${classname}:hover`) !== -1) {
                 hoverExists = true;
             }
         })
@@ -98,15 +100,27 @@ export default class Container extends RawHTMLConponent {
         if (!this.hoverExists()) {
             this._domElement.style.backgroundColor = '';
             this._domElement.parentElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
+            this._domElement.attributes.removeNamedItem('style');
         }
     }
 
     protected openElementConfigs(event) {
         event.stopPropagation();
+        this.selectorValue();
 
         // TODO: falta todo lo que es position... Absolute, relative, etc... No recuerdo bien como es eso...
-        // inluso, el z index, que podria estar en el mismo componente.
+        // incluso, el z index, que podria estar en el mismo componente.
 
+        this.buildElementConfigs();
+    }
+
+    public componentSelected(component) {
+        if(component === this._domElement['name']) {
+            this.buildElementConfigs();
+        }
+    }
+
+    private buildElementConfigs() {
         this.stylesComponents = new StylesComponentsBuilder()
             .appendChild(this.addIdDefinitionComponent())
             .appendChild(this.addClassNameDefinitionComponent())

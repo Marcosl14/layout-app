@@ -1,22 +1,31 @@
 import DisplayComponent from '../common/components/display-as-parent.component';
 import MarginOrPaddingComponent from '../common/components/margin-or-padding.component';
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
+import RawHTMLConponent from '../html-components/RawHTMLComponent';
+import BackgroundComponent from '../common/components/background.component';
 import componentsIndex from '../html-components/componentsIndex';
+import constants from '../common/constants/constants';
 
 import { StyleNameEnum } from '../common/enums/style-name.enum';
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
-import BackgroundComponent from '../common/components/background.component';
-import constants from '../common/constants/constants';
+
+import ComponentChangePublisher from '../common/publishers/ComponentChangePublisher';
+
 
 export default class InitAppContainer {
     private appContainer: HTMLDivElement;
+    private appContainerClassName = 'body';
     private appContainerHeightInput: HTMLInputElement;
     private appContainerWidthInput: HTMLInputElement;
-    private printCssFileButton: HTMLButtonElement;
     protected stylesComponents: HTMLDivElement;
 
     protected backgroundColor: string;
     protected fatherBackgroundColor: string;
+
+    private componentSelector: HTMLSelectElement = document.querySelector('#select-item');
+    private componentChangePublisher: ComponentChangePublisher;
+
+    private printHtmlButton: HTMLButtonElement = document.querySelector('#print-html-file');
 
     // TODO: falta propiedad scrollable
 
@@ -32,11 +41,6 @@ export default class InitAppContainer {
         this.changeAppContainerWidth = this.changeAppContainerWidth.bind(this);
         this.appContainerWidthInput.value = `${parseInt(this.getCurrentWidth())}`;
         this.appContainerWidthInput.addEventListener('input', this.changeAppContainerWidth);
-
-        this.printCssFileButton = document.querySelector('#print-css-file');
-        this.printCssFile = this.printCssFile.bind(this);
-        this.printCssFileButton.addEventListener('click', this.printCssFile);
-
 
         this.dragEnter = this.dragEnter.bind(this);
         this.dragOver = this.dragOver.bind(this);
@@ -54,11 +58,17 @@ export default class InitAppContainer {
         this.appContainer.addEventListener('click', this.openElementConfigs);
 
         this.onResize(this.appContainer, this.changeSize);
+
+        this.sendComponentName = this.sendComponentName.bind(this);
+        this.componentChangePublisher = new ComponentChangePublisher();
+        this.componentSelector.addEventListener('change', this.sendComponentName);
+
+        this.printHtmlButton.addEventListener('click', this.printHtmlFile);
     }
 
     private dragEnter(event: DragEvent) {
         event.preventDefault();
-        this.backgroundColor = CssStyleSheet.getRuleStyles(this.appContainer.id)['background-color'];
+        this.backgroundColor = CssStyleSheet.getRuleStyles(this.appContainerClassName)['background-color'];
         this.appContainer.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
     }
 
@@ -68,6 +78,7 @@ export default class InitAppContainer {
 
     private dragLeave() {
         this.appContainer.style.backgroundColor = '';
+        this.appContainer.attributes.removeNamedItem('style');
     }
 
     private drop(event: DragEvent) {
@@ -79,19 +90,21 @@ export default class InitAppContainer {
             return;
         }
 
-        const tipoDeElemento = event.dataTransfer.getData('text/plain');
+        const elementType = event.dataTransfer.getData('text/plain');
 
-        const newDomElement: HTMLElement = componentsIndex(tipoDeElemento)();
+        const newDomElement: RawHTMLConponent | undefined = componentsIndex(elementType)();
 
         const elementExists = newDomElement ? false : true;
 
         if (elementExists) {
-            const draggable = document.getElementById(tipoDeElemento);
+            const draggable = document.getElementById(elementType);
             targetElement.appendChild(draggable);
             return;
+        } else {
+            this.componentChangePublisher.attach(newDomElement);
         }
 
-        targetElement.appendChild(newDomElement);
+        targetElement.appendChild(newDomElement.domElement);
     }
 
     private openElementConfigs(event: MouseEvent) {
@@ -110,7 +123,7 @@ export default class InitAppContainer {
     }
 
     private onResize(dom_elem, callback) {
-        const resizeObserver = new ResizeObserver(() => callback() );
+        const resizeObserver = new ResizeObserver(() => callback());
         resizeObserver.observe(dom_elem);
     }
 
@@ -118,35 +131,60 @@ export default class InitAppContainer {
         const height = this.appContainer.style['height'];
         const width = this.appContainer.style['width'];
 
-        if(height) {
+        if (height) {
             this.appContainerHeightInput.value = `${parseInt(height)}`;
-            CssStyleSheet.getRuleStyles(this.appContainer.id)['height'] = height;
+            CssStyleSheet.getRuleStyles(this.appContainerClassName)['height'] = height;
             this.appContainer.style['height'] = '';
         }
-        if(width) {
+        if (width) {
             this.appContainerWidthInput.value = `${parseInt(width)}`;
-            CssStyleSheet.getRuleStyles(this.appContainer.id)['width'] = width;
+            CssStyleSheet.getRuleStyles(this.appContainerClassName)['width'] = width;
             this.appContainer.style['width'] = '';
         }
     }
 
     private changeAppContainerHeight() {
-        CssStyleSheet.getRuleStyles(this.appContainer.id)['height'] = `${this.appContainerHeightInput.value}px`
+        CssStyleSheet.getRuleStyles(this.appContainerClassName)['height'] = `${this.appContainerHeightInput.value}px`
     }
 
     private changeAppContainerWidth() {
-        CssStyleSheet.getRuleStyles(this.appContainer.id)['width'] = `${this.appContainerWidthInput.value}px`
+        CssStyleSheet.getRuleStyles(this.appContainerClassName)['width'] = `${this.appContainerWidthInput.value}px`
     }
 
     private getCurrentHeight() {
-        return CssStyleSheet.getRuleStyles(this.appContainer.id)['height']
+        return CssStyleSheet.getRuleStyles(this.appContainerClassName)['height']
     }
 
     private getCurrentWidth() {
-        return CssStyleSheet.getRuleStyles(this.appContainer.id)['width']
+        return CssStyleSheet.getRuleStyles(this.appContainerClassName)['width']
     }
 
-    private printCssFile() {
-        return CssStyleSheet.print();
+    private printHtmlFile() {
+        const mainContainer = document.querySelector('#app-container').innerHTML;
+        const removeDraggableRegEx = new RegExp(' draggable="true"', 'g');
+        mainContainer.replace(removeDraggableRegEx, '');
+
+        // TODO: ver si deberia ir desplegando el arbol de elementos HTML e ir armando el html aqui.
+        // TODO: ver si es necesario borrar el style y lo que haya dentro....
+
+        const outputHtml = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Document</title>
+        </head>
+        <body id="app-container" class="body">
+            ${mainContainer}
+        </body>
+        </html>`
+
+        console.log(outputHtml);
+    }
+
+    private sendComponentName() {
+        this.componentChangePublisher.notifyComponentName(this.componentSelector.value);
     }
 }

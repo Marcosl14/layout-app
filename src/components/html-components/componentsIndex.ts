@@ -1,13 +1,14 @@
 import Button from './Button';
 import Input from './Input';
 import Container from './Container';
+import RawHTMLConponent from './RawHTMLComponent';
 
 function componentsIndex(index) {
     const componentsIndex = {
-        'BUTTON': () => new Button().domElement,
-        'INPUT': () => new Input().domElement,
-        'DIV': () => new Container().domElement,
-        'default': () => undefined,
+        'BUTTON': () : RawHTMLConponent => new Button(),
+        'INPUT': () : RawHTMLConponent => new Input(),
+        'DIV': () : RawHTMLConponent => new Container(),
+        'default': () : undefined  => undefined,
     }
 
     return componentsIndex[index] || componentsIndex['default'];
