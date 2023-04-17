@@ -124,11 +124,6 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
         return component.component;
     }
 
-    // TODO: aqui falta la accion de duplicar un componente, es decir, de un componente existente, duplicar la config...
-    // si, es necesario, porque es mucho mas facil que asignarle la clase de otro componente...
-    // ver como duplicamos las clases... si le asignamos las clases del otro componente???, como hacemos con su clase???
-    // si duplicamos, no creamos clase propia, solo asignamos las clases del otro componente...
-
     protected addActionsComponents() {
         return new ContainerBuilder()
             .setStyle(StyleNameEnum.border, '1px solid #4CAF50')

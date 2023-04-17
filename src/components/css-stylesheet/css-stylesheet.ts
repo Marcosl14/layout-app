@@ -9,19 +9,9 @@ export default class CssStyleSheet {
     */
 
     static init() {
-        CssStyleSheet.styleSheet.insertRule(`.button-component {
-            margin: 5px;
-        }`);
-
-        CssStyleSheet.styleSheet.insertRule(`.container-component {
-            margin: 5px;
-            padding: 5px;
-            min-height: 20px;
-        }`);
-
-        CssStyleSheet.styleSheet.insertRule(`.input-text-component {
-            margin: 5px;
-        }`);
+        const printCssFileButton: HTMLButtonElement = document.querySelector('#print-css-file');
+        this.print = this.print.bind(this);
+        printCssFileButton.addEventListener('click', this.print);
     }
 
     static print() {

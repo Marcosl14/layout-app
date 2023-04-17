@@ -17,7 +17,7 @@ export default class Button extends RawHTMLConponent implements ComponentChangeO
 
         const name = defineElementName(`button${Button.iterator++}`, RawHTMLConponent.instances);
 
-        // TODO: habria que reemplazar todos los caracteres especiales por guiones o algo asi...
+        // TODO: con el id habria que reemplazar todos los caracteres especiales por guiones o algo asi...
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;

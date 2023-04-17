@@ -17,7 +17,6 @@ export default class InitAppContainer {
     private appContainerClassName = 'body';
     private appContainerHeightInput: HTMLInputElement;
     private appContainerWidthInput: HTMLInputElement;
-    private printCssFileButton: HTMLButtonElement;
     protected stylesComponents: HTMLDivElement;
 
     protected backgroundColor: string;
@@ -42,10 +41,6 @@ export default class InitAppContainer {
         this.changeAppContainerWidth = this.changeAppContainerWidth.bind(this);
         this.appContainerWidthInput.value = `${parseInt(this.getCurrentWidth())}`;
         this.appContainerWidthInput.addEventListener('input', this.changeAppContainerWidth);
-
-        this.printCssFileButton = document.querySelector('#print-css-file');
-        this.printCssFile = this.printCssFile.bind(this);
-        this.printCssFileButton.addEventListener('click', this.printCssFile);
 
         this.dragEnter = this.dragEnter.bind(this);
         this.dragOver = this.dragOver.bind(this);
@@ -83,6 +78,7 @@ export default class InitAppContainer {
 
     private dragLeave() {
         this.appContainer.style.backgroundColor = '';
+        this.appContainer.attributes.removeNamedItem('style');
     }
 
     private drop(event: DragEvent) {
@@ -163,14 +159,29 @@ export default class InitAppContainer {
         return CssStyleSheet.getRuleStyles(this.appContainerClassName)['width']
     }
 
-    private printCssFile() {
-        return CssStyleSheet.print();
-    }
-
     private printHtmlFile() {
-        const mainContainer = document.querySelector('#app-container-fixed').innerHTML;
+        const mainContainer = document.querySelector('#app-container').innerHTML;
         const removeDraggableRegEx = new RegExp(' draggable="true"', 'g');
-        console.log(mainContainer.replace(removeDraggableRegEx, ''));
+        mainContainer.replace(removeDraggableRegEx, '');
+
+        // TODO: ver si deberia ir desplegando el arbol de elementos HTML e ir armando el html aqui.
+        // TODO: ver si es necesario borrar el style y lo que haya dentro....
+
+        const outputHtml = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Document</title>
+        </head>
+        <body id="app-container" class="body">
+            ${mainContainer}
+        </body>
+        </html>`
+
+        console.log(outputHtml);
     }
 
     private sendComponentName() {

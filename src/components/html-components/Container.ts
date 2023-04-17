@@ -13,7 +13,7 @@ import { DisplayTypesEnum } from '../common/enums/display-types.enum';
 export default class Container extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
 
-    // TODO falta propiedad scrollable
+    // TODO: falta propiedad scrollable
 
     constructor() {
         const name = defineElementName(`container${Container.iterator++}`, RawHTMLConponent.instances);
@@ -71,6 +71,7 @@ export default class Container extends RawHTMLConponent implements ComponentChan
         event.stopPropagation();
 
         this.domElement.style.backgroundColor = '';
+        this._domElement.attributes.removeNamedItem('style');
     }
 
     private drop() {
@@ -99,6 +100,7 @@ export default class Container extends RawHTMLConponent implements ComponentChan
         if (!this.hoverExists()) {
             this._domElement.style.backgroundColor = '';
             this._domElement.parentElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
+            this._domElement.attributes.removeNamedItem('style');
         }
     }
 
@@ -107,7 +109,7 @@ export default class Container extends RawHTMLConponent implements ComponentChan
         this.selectorValue();
 
         // TODO: falta todo lo que es position... Absolute, relative, etc... No recuerdo bien como es eso...
-        // inluso, el z index, que podria estar en el mismo componente.
+        // incluso, el z index, que podria estar en el mismo componente.
 
         this.buildElementConfigs();
     }
