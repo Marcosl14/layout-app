@@ -21,6 +21,7 @@ import contants from '../common/constants/constants';
 import { InputTypeEnum } from '../common/enums/input-type.enum';
 import { StyleNameEnum } from '../common/enums/style-name.enum';
 import { DisplayTypesEnum } from '../common/enums/display-types.enum';
+import SizesComponent from '../common/components/sizes.component';
 
 export default abstract class RawHTMLConponent implements ComponentChangeObserverInterface {
     protected _domElement: HTMLElement;
@@ -120,6 +121,12 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
 
     protected addBoxShadowComponent() {
         const component = new BoxShadowComponent(this._domElement);
+        this.classChangePublisher.attach(component);
+        return component.component;
+    }
+
+    protected addSizeComponents() {
+        const component = new SizesComponent(this._domElement);
         this.classChangePublisher.attach(component);
         return component.component;
     }
