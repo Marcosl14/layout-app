@@ -126,6 +126,8 @@ export default class Container extends RawHTMLConponent implements ComponentChan
             .appendChild(this.addClassNameDefinitionComponent())
             .appendChild(this.addMarginStyleComponent())
             .appendChild(this.addPaddingStyleComponent())
+            .appendChild(this.addSizeComponents())
+            .appendChild(this.addFontComponens())
             .appendChild(this.addBackgroundSettingsComponent())
             .appendChild(this.addBorderSettingsComponent())
             .appendChild(this.addBoxShadowComponent())

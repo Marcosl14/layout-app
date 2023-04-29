@@ -26,6 +26,8 @@ import { GeneralPseudoclassEnum } from '../enums/general-pseudoclass.enum';
 
 // TODO: mejorar estilos de los botones, input, etc...
 
+// TODO: el duplicate class tambien deberia tener el newPseudoclassSelector...
+
 export default class ClassManagementComponent {
     private container: HTMLDivElement;
     private domElement: HTMLElement;
@@ -43,6 +45,7 @@ export default class ClassManagementComponent {
 
     private duplicableClassNames: ArraySelectorBodyInterface[];
     private newDuplicadedClassNameInput: HTMLInputElement;
+    private duplicatePseudoclassSelector: HTMLSelectElement;
 
     private classesSelectorContainer: HTMLDivElement;
     private appendClassContainer: HTMLDivElement;
@@ -236,6 +239,10 @@ export default class ClassManagementComponent {
             .addEventListener('click', this.duplicateClass)
             .build()
 
+        this.duplicatePseudoclassSelector = new SelectorFromEnumBuilder(GeneralPseudoclassEnum)
+            .selectOption(GeneralPseudoclassEnum.none)
+            .build();
+
         const duplicateClassContainer = new ContainerBuilder()
             .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
             .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
@@ -249,6 +256,7 @@ export default class ClassManagementComponent {
                     .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                     .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.row)
                     .appendChild(this.duplicableClassSelector)
+                    .appendChild(this.duplicatePseudoclassSelector)
                     .build()
             )
             .appendChild(
@@ -422,11 +430,14 @@ export default class ClassManagementComponent {
     private duplicateClass() {
         this.domElement.classList.add(this.newDuplicadedClassNameInput.value);
 
-        CssStyleSheet.duplicateRule(this.duplicableClassSelector.value, this.newDuplicadedClassNameInput.value);
+        const newClassName = `${this.newDuplicadedClassNameInput.value}:${this.duplicatePseudoclassSelector.value}`;
 
-        this.appendNewOptionElement(this.newDuplicadedClassNameInput.value, this.classesSelector);
-        this.appendNewOptionElement(this.newDuplicadedClassNameInput.value, this.duplicableClassSelector);
+        CssStyleSheet.duplicateRule(this.duplicableClassSelector.value, newClassName);
+
+        this.appendNewOptionElement(newClassName, this.classesSelector);
+        this.appendNewOptionElement(newClassName, this.duplicableClassSelector);
 
         this.newDuplicadedClassNameInput.value = '';
+        this.duplicatePseudoclassSelector.value = GeneralPseudoclassEnum.none;
     }
 }

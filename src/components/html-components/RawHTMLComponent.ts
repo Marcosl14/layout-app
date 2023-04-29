@@ -5,6 +5,12 @@ import ButtonBuilder from '../common/models/ButtonBuilder';
 import LabelBuilder from '../common/models/LabelBuilder';
 import ContainerBuilder from '../common/models/ContainerBuilder';
 
+import contants from '../common/constants/constants';
+
+import { InputTypeEnum } from '../common/enums/input-type.enum';
+import { StyleNameEnum } from '../common/enums/style-name.enum';
+import { DisplayTypesEnum } from '../common/enums/display-types.enum';
+
 import DisplayAsParentComponent from '../common/components/display-as-parent.component';
 import GenericPrimaryInputComponent from '../common/components/generic-primary-input.component';
 import GenericPrimarySelectorComponent from '../common/components/generic-primary-selector.component';
@@ -15,12 +21,8 @@ import BorderComponent from '../common/components/border.component';
 import BackgroundComponent from '../common/components/background.component';
 import BoxShadowComponent from '../common/components/box-shadow.component';
 import ClassManagementComponent from '../common/components/class-management.component';
-
-import contants from '../common/constants/constants';
-
-import { InputTypeEnum } from '../common/enums/input-type.enum';
-import { StyleNameEnum } from '../common/enums/style-name.enum';
-import { DisplayTypesEnum } from '../common/enums/display-types.enum';
+import SizesComponent from '../common/components/sizes.component';
+import FontComponent from '../common/components/font.components';
 
 export default abstract class RawHTMLConponent implements ComponentChangeObserverInterface {
     protected _domElement: HTMLElement;
@@ -120,6 +122,18 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
 
     protected addBoxShadowComponent() {
         const component = new BoxShadowComponent(this._domElement);
+        this.classChangePublisher.attach(component);
+        return component.component;
+    }
+
+    protected addSizeComponents() {
+        const component = new SizesComponent(this._domElement);
+        this.classChangePublisher.attach(component);
+        return component.component;
+    }
+
+    protected addFontComponens() {
+        const component = new FontComponent(this._domElement);
         this.classChangePublisher.attach(component);
         return component.component;
     }
