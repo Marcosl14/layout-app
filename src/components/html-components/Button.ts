@@ -77,6 +77,7 @@ export default class Button extends RawHTMLConponent implements ComponentChangeO
             .appendChild(this.addMarginStyleComponent())
             .appendChild(this.addPaddingStyleComponent())
             .appendChild(this.addSizeComponents())
+            .appendChild(this.addFontComponens())
             .appendChild(this.addBackgroundSettingsComponent())
             .appendChild(this.addBorderSettingsComponent())
             .appendChild(this.addBoxShadowComponent())

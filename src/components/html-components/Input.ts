@@ -73,6 +73,7 @@ export default class Input extends RawHTMLConponent implements ComponentChangeOb
             .appendChild(this.addMarginStyleComponent())
             .appendChild(this.addPaddingStyleComponent())
             .appendChild(this.addSizeComponents())
+            .appendChild(this.addFontComponens())
             .appendChild(this.addBackgroundSettingsComponent())
             .appendChild(this.addBorderSettingsComponent())
             .appendChild(this.addBoxShadowComponent())
