@@ -8,6 +8,7 @@ import ButtonBuilder from '../models/ButtonBuilder';
 
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
 import getUnit from '../functions/get-css-unit';
+import colorToHex from '../functions/rgb-to-hex';
 
 import { InputTypeEnum } from '../enums/input-type.enum';
 import { UnitsEnum } from '../enums/units.enum';
@@ -37,6 +38,7 @@ export default class FontComponent implements ClassChangeObserverInterface {
     private fontStyleSelector: HTMLSelectElement;
     private fontWeightSelector: HTMLSelectElement;
     private fontVariantSelector: HTMLSelectElement;
+    private fontColorInput: HTMLInputElement;
 
     constructor(domElement: HTMLElement) {
         this.domElement = domElement;
@@ -58,6 +60,7 @@ export default class FontComponent implements ClassChangeObserverInterface {
         this.updateFontStyle = this.updateFontStyle.bind(this);
         this.updateFontWeight = this.updateFontWeight.bind(this);
         this.updateFontVarian = this.updateFontVarian.bind(this);
+        this.updateFontColor = this.updateFontColor.bind(this);
 
         this.buildAllComponents();
         this.setInitialValuesAccordingToClass();
@@ -156,6 +159,23 @@ export default class FontComponent implements ClassChangeObserverInterface {
             )
             .build()
 
+        const fontColorContainer = new ContainerBuilder()
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Font Color')
+                    .build()
+                )
+                .build()
+            )
+            .appendChild(new ContainerBuilder()
+                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(this.fontColorInput)
+                .build()
+            )
+            .build()
+
         this.container = new ContainerBuilder()
             .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
             .setStyle(StyleNameEnum.padding, '3px')
@@ -170,6 +190,7 @@ export default class FontComponent implements ClassChangeObserverInterface {
             .appendChild(fontStyleContainer)
             .appendChild(fontWeightContainer)
             .appendChild(fontVariantContainer)
+            .appendChild(fontColorContainer)
             .build()
     }
 
@@ -200,6 +221,10 @@ export default class FontComponent implements ClassChangeObserverInterface {
         this.fontVariantSelector = new SelectorFromEnumBuilder(FontVariantEnum)
             .addEventListener('change', this.updateFontVarian)
             .build();
+
+        this.fontColorInput = new InputBuilder(InputTypeEnum.color)
+            .addEventListener('input', this.updateFontColor)
+            .build()
     }
 
     private setInitialValuesAccordingToClass() {
@@ -210,6 +235,7 @@ export default class FontComponent implements ClassChangeObserverInterface {
         this.setFontStyleValueAccordingToClass();
         this.setFontWeightValueAccordingToClass();
         this.setFontVariantValueAccordingToClass();
+        this.setFontColorValueAccordingToClass();
     }
 
     private setFontFamilyValueAccordingToClass() {
@@ -246,6 +272,11 @@ export default class FontComponent implements ClassChangeObserverInterface {
     private setFontVariantValueAccordingToClass() {
         const fontVariant = this.domElementStyleSheet['font-variant'];
         this.fontVariantSelector.value = fontVariant === '' ? 'normal' : fontVariant;
+    }
+
+    private setFontColorValueAccordingToClass() {
+        const fontColor = this.domElementStyleSheet['color'];
+        this.fontColorInput.value = colorToHex(fontColor);
     }
 
     private fontFamilyComponent(font: string): HTMLDivElement {
@@ -373,6 +404,10 @@ export default class FontComponent implements ClassChangeObserverInterface {
 
     private updateFontVarian() {
         this.domElementStyleSheet['font-variant'] = this.fontVariantSelector.value;
+    }
+
+    private updateFontColor() {
+        this.domElementStyleSheet['color'] = this.fontColorInput.value;
     }
 
     public classNameUpdated(name: string) {

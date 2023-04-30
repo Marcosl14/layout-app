@@ -52,10 +52,6 @@ export default class Input extends RawHTMLConponent implements ComponentChangeOb
     protected openElementConfigs(event) {
         event.stopPropagation();
         this.selectorValue();
-
-        // TODO: ver forma de remover el borde original del input. No es la misma propiedad que el border...
-        // TODO: el borderbox del input viene como advanced... Ver si tenemos que hacerle algo
-
         this.buildElementConfigs();
     }
 

@@ -11,9 +11,8 @@ CssStyleSheet.init();
 
 // TODO: acomodar estructuras con prettier y tslinter. Saltar linea cuando muy larga.
 
-// TODO: falta el color del texto, color tipografia y la tipografia...
-
 // TODO: hay que meterle drag enter al app-container-fixed para que le saque el background color al app-container...
+// o ver que pasa con el drag leave
 
 // TODO: insertar rules para el media query : https://davidwalsh.name/add-rules-stylesheets
 // https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
@@ -30,3 +29,7 @@ CssStyleSheet.init();
 
 // TODO: falta todo lo que es position... Absolute, relative, etc... No recuerdo bien como es eso...
 // incluso, el z index, que podria estar en el mismo componente.
+
+
+// TODO: ver forma de remover el borde original del input. No es la misma propiedad que el border...
+// TODO: el borderbox del input viene como advanced... Ver si tenemos que hacerle algo
