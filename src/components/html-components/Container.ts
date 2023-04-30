@@ -1,7 +1,6 @@
 import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
 
 import ContainerBuilder from '../common/models/ContainerBuilder';
-import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
@@ -12,8 +11,6 @@ import { DisplayTypesEnum } from '../common/enums/display-types.enum';
 
 export default class Container extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
-
-    // TODO: falta propiedad scrollable
 
     constructor() {
         const name = defineElementName(`container${Container.iterator++}`, RawHTMLConponent.instances);

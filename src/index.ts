@@ -33,3 +33,14 @@ CssStyleSheet.init();
 
 // TODO: ver forma de remover el borde original del input. No es la misma propiedad que el border...
 // TODO: el borderbox del input viene como advanced... Ver si tenemos que hacerle algo
+
+// TODO: cuando creo un nombre futuro, y justo creo un elemento con ese nombre futuro, tira error...
+// por eso yo le pasaba el iterator... ver como solucionar...
+
+// TODO: con el id habria que reemplazar todos los caracteres especiales por guiones o algo asi...
+
+// TODO: falta propiedad scrollable en div
+
+// TODO: cualquier elemento debe poder modificar el display settings
+
+// TODO: agregar imagenes

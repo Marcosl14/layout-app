@@ -1,35 +1,27 @@
 import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
 
-import InputBuilder from '../common/models/InputBuilder';
+import LabelBuilder from '../common/models/LabelBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
-
-import defineElementName from '../common/functions/define-element-name';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 
-import { InputTypeEnum } from '../common/enums/input-type.enum';
-export default class Input extends RawHTMLConponent implements ComponentChangeObserverInterface {
+import defineElementName from '../common/functions/define-element-name';
+
+export default class Label extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
 
     constructor() {
-        const name = defineElementName(`input${Input.iterator++}`, RawHTMLConponent.instances);
+        const name = defineElementName(`label${Label.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.insertRule(`.${name} {
-            margin: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-shadow: inset 0 1px 3px #ddd;
+            display: inline
         }`);
 
-        CssStyleSheet.insertRule(`.${name}:hover {
-            border: 1px solid red;
-        }`);
-
-        const element = new InputBuilder(InputTypeEnum.text)
+        const element = new LabelBuilder()
             .setName(name)
             .setId(name)
             .addCssClassName(name)
+            .setInnerText('New Label')
             .draggable()
             .build();
 
@@ -51,6 +43,8 @@ export default class Input extends RawHTMLConponent implements ComponentChangeOb
     protected openElementConfigs(event) {
         event.stopPropagation();
         this.selectorValue();
+
+
         this.buildElementConfigs();
     }
 
@@ -61,7 +55,8 @@ export default class Input extends RawHTMLConponent implements ComponentChangeOb
     }
 
     private buildElementConfigs() {
-        this.insertComponentAfter('addInputTypeSelectorComponent', 'addClassNameDefinitionComponent');
+        this.insertComponentAfter('addInnerTextChangeComponent', 'addClassNameDefinitionComponent');
+        // this.insertComponentBefore('addDisplayAsParentComponent', 'addDisplayAsChildComponent');
         this.buildElements();
     }
 }

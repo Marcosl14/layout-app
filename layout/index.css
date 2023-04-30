@@ -104,6 +104,31 @@ body {
     opacity: 0.6
 }
 
+.dom-element-label {
+    display: block;
+    color: black;
+    padding: 10px;
+    border: 1px solid #4CAF50;
+    width: 100%;
+}
+
+.dom-element-label:hover {
+    border: 1px solid red;
+}
+
+.dom-element-title {
+    display: block;
+    color: black;
+    padding: 10px;
+    margin: 0px;
+    border: 1px solid #4CAF50;
+    width: 100%;
+}
+
+.dom-element-title:hover {
+    border: 1px solid red;
+}
+
 .update-dom-elements {
     display: flex;
     flex-direction: row;

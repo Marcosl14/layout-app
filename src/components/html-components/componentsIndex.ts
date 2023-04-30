@@ -1,13 +1,25 @@
+import RawHTMLConponent from './RawHTMLComponent';
+
+import { TitleTypesEnum } from '../common/enums/title.types.enum';
+
 import Button from './Button';
 import Input from './Input';
 import Container from './Container';
-import RawHTMLConponent from './RawHTMLComponent';
+import Label from './Label';
+import Title from './Title';
 
 function componentsIndex(index) {
     const componentsIndex = {
         'BUTTON': () : RawHTMLConponent => new Button(),
         'INPUT': () : RawHTMLConponent => new Input(),
         'DIV': () : RawHTMLConponent => new Container(),
+        'LABEL': () : RawHTMLConponent => new Label(),
+        'H1': () : RawHTMLConponent => new Title(TitleTypesEnum.H1),
+        'H2': () : RawHTMLConponent => new Title(TitleTypesEnum.H2),
+        'H3': () : RawHTMLConponent => new Title(TitleTypesEnum.H3),
+        'H4': () : RawHTMLConponent => new Title(TitleTypesEnum.H4),
+        'H5': () : RawHTMLConponent => new Title(TitleTypesEnum.H5),
+        'H6': () : RawHTMLConponent => new Title(TitleTypesEnum.H6),
         'default': () : undefined  => undefined,
     }
 

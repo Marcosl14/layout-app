@@ -1,7 +1,6 @@
 import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
 
 import ButtonBuilder from '../common/models/ButtonBuilder';
-import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
@@ -12,12 +11,7 @@ export default class Button extends RawHTMLConponent implements ComponentChangeO
     private static iterator = 0;
 
     constructor() {
-        // TODO: cuando creo un nombre futuro, y justo creo un elemento con ese nombre futuro, tira error...
-        // por eso yo le pasaba el iterator... ver como solucionar...
-
         const name = defineElementName(`button${Button.iterator++}`, RawHTMLConponent.instances);
-
-        // TODO: con el id habria que reemplazar todos los caracteres especiales por guiones o algo asi...
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;
