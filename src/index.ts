@@ -28,4 +28,5 @@ CssStyleSheet.init();
 
 // Agregar el elemento img y a su vez, agregar imagenes al background...
 
-// TODO: Falta poder cambiar el width y el heigth
+// TODO: falta todo lo que es position... Absolute, relative, etc... No recuerdo bien como es eso...
+// incluso, el z index, que podria estar en el mismo componente.

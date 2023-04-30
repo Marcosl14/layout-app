@@ -66,19 +66,7 @@ export default class Input extends RawHTMLConponent implements ComponentChangeOb
     }
 
     private buildElementConfigs() {
-        this.stylesComponents = new StylesComponentsBuilder()
-            .appendChild(this.addIdDefinitionComponent())
-            .appendChild(this.addClassNameDefinitionComponent())
-            .appendChild(this.addInputTypeSelectorComponent())
-            .appendChild(this.addMarginStyleComponent())
-            .appendChild(this.addPaddingStyleComponent())
-            .appendChild(this.addSizeComponents())
-            .appendChild(this.addFontComponens())
-            .appendChild(this.addBackgroundSettingsComponent())
-            .appendChild(this.addBorderSettingsComponent())
-            .appendChild(this.addBoxShadowComponent())
-            .appendChild(this.addDisplayAsChildComponent())
-            .appendChild(this.addActionsComponents())
-            .build();
+        this.insertComponentAfter('addInputTypeSelectorComponent', 'addClassNameDefinitionComponent');
+        this.buildElements();
     }
 }

@@ -108,9 +108,6 @@ export default class Container extends RawHTMLConponent implements ComponentChan
         event.stopPropagation();
         this.selectorValue();
 
-        // TODO: falta todo lo que es position... Absolute, relative, etc... No recuerdo bien como es eso...
-        // incluso, el z index, que podria estar en el mismo componente.
-
         this.buildElementConfigs();
     }
 
@@ -121,19 +118,7 @@ export default class Container extends RawHTMLConponent implements ComponentChan
     }
 
     private buildElementConfigs() {
-        this.stylesComponents = new StylesComponentsBuilder()
-            .appendChild(this.addIdDefinitionComponent())
-            .appendChild(this.addClassNameDefinitionComponent())
-            .appendChild(this.addMarginStyleComponent())
-            .appendChild(this.addPaddingStyleComponent())
-            .appendChild(this.addSizeComponents())
-            .appendChild(this.addFontComponens())
-            .appendChild(this.addBackgroundSettingsComponent())
-            .appendChild(this.addBorderSettingsComponent())
-            .appendChild(this.addBoxShadowComponent())
-            .appendChild(this.addDisplayAsParentComponent())
-            .appendChild(this.addDisplayAsChildComponent())
-            .appendChild(this.addActionsComponents())
-            .build();
+        this.insertComponentBefore('addDisplayAsParentComponent', 'addDisplayAsChildComponent');
+        this.buildElements();
     }
 }

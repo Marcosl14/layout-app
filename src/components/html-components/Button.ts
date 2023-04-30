@@ -70,19 +70,7 @@ export default class Button extends RawHTMLConponent implements ComponentChangeO
     }
 
     private buildElementConfigs() {
-        this.stylesComponents = new StylesComponentsBuilder()
-            .appendChild(this.addIdDefinitionComponent())
-            .appendChild(this.addClassNameDefinitionComponent())
-            .appendChild(this.addInnerTextChangeComponent())
-            .appendChild(this.addMarginStyleComponent())
-            .appendChild(this.addPaddingStyleComponent())
-            .appendChild(this.addSizeComponents())
-            .appendChild(this.addFontComponens())
-            .appendChild(this.addBackgroundSettingsComponent())
-            .appendChild(this.addBorderSettingsComponent())
-            .appendChild(this.addBoxShadowComponent())
-            .appendChild(this.addDisplayAsChildComponent())
-            .appendChild(this.addActionsComponents())
-            .build();
+        this.insertComponentAfter('addInnerTextChangeComponent', 'addClassNameDefinitionComponent');
+        this.buildElements();
     }
 }

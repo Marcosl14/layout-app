@@ -4,6 +4,7 @@ import ComponentChangeObserverInterface from '../common/interfaces/component-cha
 import ButtonBuilder from '../common/models/ButtonBuilder';
 import LabelBuilder from '../common/models/LabelBuilder';
 import ContainerBuilder from '../common/models/ContainerBuilder';
+import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
 
 import contants from '../common/constants/constants';
 
@@ -26,7 +27,7 @@ import FontComponent from '../common/components/font.components';
 
 export default abstract class RawHTMLConponent implements ComponentChangeObserverInterface {
     protected _domElement: HTMLElement;
-    protected stylesComponents: HTMLDivElement;
+    protected stylesComponents: StylesComponentsBuilder;
 
     public static instances: HTMLElement[] = [];
 
@@ -179,7 +180,7 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
 
     protected dragLeave(event: DragEvent) {
         event.stopPropagation();
-        if(this._domElement.parentElement.tagName === 'DIV') {
+        if (this._domElement.parentElement.tagName === 'DIV') {
             this._domElement.parentElement.style.backgroundColor = contants.INVERTED_BACKGROUND_COLOR;
         }
     }
@@ -194,5 +195,58 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
 
     public componentSelected(component) {
         return;
+    }
+
+    protected commonComponents: string[] = [
+        'addIdDefinitionComponent',
+        'addClassNameDefinitionComponent',
+        'addMarginStyleComponent',
+        'addPaddingStyleComponent',
+        'addSizeComponents',
+        'addFontComponens',
+        'addBackgroundSettingsComponent',
+        'addBorderSettingsComponent',
+        'addBoxShadowComponent',
+        'addDisplayAsChildComponent',
+        'addActionsComponents',
+    ]
+
+    protected insertComponentBefore(
+        componentToInsert: string,
+        referenceComponent: string
+    ) {
+        const alreadyExists = this.commonComponents.find((comp) => comp === componentToInsert);
+
+        if(alreadyExists) {
+            return;
+        }
+
+        const index = this.commonComponents.findIndex((comp) => comp === referenceComponent);
+
+        this.commonComponents.splice(index, 0, componentToInsert)
+    }
+
+    protected insertComponentAfter(
+        componentToInsert: string,
+        referenceComponent: string
+    ) {
+        const alreadyExists = this.commonComponents.find((comp) => comp === componentToInsert);
+
+        if(alreadyExists) {
+            return;
+        }
+
+        const index = this.commonComponents.findIndex((comp) => comp === referenceComponent);
+        this.commonComponents.splice(index + 1, 0, componentToInsert)
+    }
+
+    protected buildElements() {
+        this.stylesComponents = new StylesComponentsBuilder()
+
+        this.commonComponents.forEach((componentName) => {
+            this.stylesComponents.appendChild(this[componentName]())
+        })
+
+        this.stylesComponents.build();
     }
 }
