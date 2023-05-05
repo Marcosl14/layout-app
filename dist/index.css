@@ -36,7 +36,6 @@ body {
     border-color: black;
     width: calc(100% - var(--components-container-width) - var(--actions-container-width));
     min-width: 400px;
-    /* background-color: #fabee1; */
 
     background: linear-gradient(-45deg, black 5%, #ffffff 5% 45%, black 45% 55%, #ffe1f3 55% 95%, black 95%);
     background-size: 5px 5px;
@@ -102,6 +101,44 @@ body {
 
 .dom-element-button:hover {
     opacity: 0.6
+}
+
+.dom-element-label {
+    display: block;
+    color: black;
+    padding: 10px;
+    border: 1px solid #4CAF50;
+    width: 100%;
+}
+
+.dom-element-label:hover {
+    border: 1px solid red;
+}
+
+.dom-element-title {
+    display: block;
+    color: black;
+    padding: 10px;
+    margin: 0px;
+    border: 1px solid #4CAF50;
+    width: 100%;
+}
+
+.dom-element-title:hover {
+    border: 1px solid red;
+}
+
+.dom-element-image {
+    display: block;
+    color: black;
+    padding: 10px;
+    margin: 0px;
+    border: 1px solid #4CAF50;
+    width: 100%;
+}
+
+.dom-element-image:hover {
+    border: 1px solid red;
 }
 
 .update-dom-elements {

@@ -1,7 +1,6 @@
 import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
 
 import ContainerBuilder from '../common/models/ContainerBuilder';
-import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
@@ -12,8 +11,6 @@ import { DisplayTypesEnum } from '../common/enums/display-types.enum';
 
 export default class Container extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
-
-    // TODO: falta propiedad scrollable
 
     constructor() {
         const name = defineElementName(`container${Container.iterator++}`, RawHTMLConponent.instances);
@@ -71,7 +68,7 @@ export default class Container extends RawHTMLConponent implements ComponentChan
         event.stopPropagation();
 
         this.domElement.style.backgroundColor = '';
-        this._domElement.attributes.removeNamedItem('style');
+        this._domElement.attributes.removeNamedItem('style'); // TODO: algo de esto falla
     }
 
     private drop() {
@@ -100,16 +97,13 @@ export default class Container extends RawHTMLConponent implements ComponentChan
         if (!this.hoverExists()) {
             this._domElement.style.backgroundColor = '';
             this._domElement.parentElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
-            this._domElement.attributes.removeNamedItem('style');
+            this._domElement.attributes.removeNamedItem('style'); // TODO: algo de esto falla
         }
     }
 
     protected openElementConfigs(event) {
         event.stopPropagation();
         this.selectorValue();
-
-        // TODO: falta todo lo que es position... Absolute, relative, etc... No recuerdo bien como es eso...
-        // incluso, el z index, que podria estar en el mismo componente.
 
         this.buildElementConfigs();
     }
@@ -121,19 +115,7 @@ export default class Container extends RawHTMLConponent implements ComponentChan
     }
 
     private buildElementConfigs() {
-        this.stylesComponents = new StylesComponentsBuilder()
-            .appendChild(this.addIdDefinitionComponent())
-            .appendChild(this.addClassNameDefinitionComponent())
-            .appendChild(this.addMarginStyleComponent())
-            .appendChild(this.addPaddingStyleComponent())
-            .appendChild(this.addSizeComponents())
-            .appendChild(this.addFontComponens())
-            .appendChild(this.addBackgroundSettingsComponent())
-            .appendChild(this.addBorderSettingsComponent())
-            .appendChild(this.addBoxShadowComponent())
-            .appendChild(this.addDisplayAsParentComponent())
-            .appendChild(this.addDisplayAsChildComponent())
-            .appendChild(this.addActionsComponents())
-            .build();
+        this.insertComponentBefore('addDisplayAsParentComponent', 'addDisplayAsChildComponent');
+        this.buildElements();
     }
 }

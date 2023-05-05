@@ -1,35 +1,31 @@
 import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
 
-import InputBuilder from '../common/models/InputBuilder';
+import TitleBuilder from '../common/models/TitleBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
-
-import defineElementName from '../common/functions/define-element-name';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 
-import { InputTypeEnum } from '../common/enums/input-type.enum';
-export default class Input extends RawHTMLConponent implements ComponentChangeObserverInterface {
+import defineElementName from '../common/functions/define-element-name';
+
+import { TitleTypesEnum } from '../common/enums/title.types.enum';
+
+export default class Title extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
 
-    constructor() {
-        const name = defineElementName(`input${Input.iterator++}`, RawHTMLConponent.instances);
+    constructor(type: TitleTypesEnum) {
+        const name = defineElementName(`title${Title.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-shadow: inset 0 1px 3px #ddd;
+            display: inline
         }`);
 
-        CssStyleSheet.insertRule(`.${name}:hover {
-            border: 1px solid red;
-        }`);
-
-        const element = new InputBuilder(InputTypeEnum.text)
+        const element = new TitleBuilder(type)
             .setName(name)
             .setId(name)
             .addCssClassName(name)
+            .setInnerText(`New Title ${type}`)
             .draggable()
             .build();
 
@@ -51,6 +47,8 @@ export default class Input extends RawHTMLConponent implements ComponentChangeOb
     protected openElementConfigs(event) {
         event.stopPropagation();
         this.selectorValue();
+
+
         this.buildElementConfigs();
     }
 
@@ -61,7 +59,7 @@ export default class Input extends RawHTMLConponent implements ComponentChangeOb
     }
 
     private buildElementConfigs() {
-        this.insertComponentAfter('addInputTypeSelectorComponent', 'addClassNameDefinitionComponent');
+        this.insertComponentAfter('addInnerTextChangeComponent', 'addClassNameDefinitionComponent');
         this.buildElements();
     }
 }

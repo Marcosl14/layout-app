@@ -11,9 +11,8 @@ CssStyleSheet.init();
 
 // TODO: acomodar estructuras con prettier y tslinter. Saltar linea cuando muy larga.
 
-// TODO: falta el color del texto, color tipografia y la tipografia...
-
 // TODO: hay que meterle drag enter al app-container-fixed para que le saque el background color al app-container...
+// o ver que pasa con el drag leave
 
 // TODO: insertar rules para el media query : https://davidwalsh.name/add-rules-stylesheets
 // https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
@@ -28,4 +27,22 @@ CssStyleSheet.init();
 
 // Agregar el elemento img y a su vez, agregar imagenes al background...
 
-// TODO: Falta poder cambiar el width y el heigth
+// TODO: falta todo lo que es position... Absolute, relative, etc... No recuerdo bien como es eso...
+// incluso, el z index, que podria estar en el mismo componente.
+
+
+// TODO: ver forma de remover el borde original del input. No es la misma propiedad que el border...
+// TODO: el borderbox del input viene como advanced... Ver si tenemos que hacerle algo
+
+// TODO: cuando creo un nombre futuro, y justo creo un elemento con ese nombre futuro, tira error...
+// por eso yo le pasaba el iterator... ver como solucionar...
+
+// TODO: con el id habria que reemplazar todos los caracteres especiales por guiones o algo asi...
+
+// TODO: falta propiedad scrollable en div
+
+// TODO: cualquier elemento debe poder modificar el display settings
+
+// TODO: falta la propiedad background-image en el background-color
+
+// TODO: agregar clase a mano mediante un textarea
