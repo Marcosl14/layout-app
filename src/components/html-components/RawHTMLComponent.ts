@@ -24,6 +24,7 @@ import BoxShadowComponent from '../common/components/box-shadow.component';
 import ClassManagementComponent from '../common/components/class-management.component';
 import SizesComponent from '../common/components/sizes.component';
 import FontComponent from '../common/components/font.components';
+import UrlDefinitionComponent from '../common/components/url-definition-component';
 
 export default abstract class RawHTMLConponent implements ComponentChangeObserverInterface {
     protected _domElement: HTMLElement;
@@ -136,6 +137,11 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
     protected addFontComponens() {
         const component = new FontComponent(this._domElement);
         this.classChangePublisher.attach(component);
+        return component.component;
+    }
+
+    protected addUrlInputComponent() {
+        const component = new UrlDefinitionComponent(this._domElement);
         return component.component;
     }
 

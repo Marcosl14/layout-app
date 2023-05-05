@@ -68,7 +68,7 @@ export default class Container extends RawHTMLConponent implements ComponentChan
         event.stopPropagation();
 
         this.domElement.style.backgroundColor = '';
-        this._domElement.attributes.removeNamedItem('style');
+        this._domElement.attributes.removeNamedItem('style'); // TODO: algo de esto falla
     }
 
     private drop() {
@@ -97,7 +97,7 @@ export default class Container extends RawHTMLConponent implements ComponentChan
         if (!this.hoverExists()) {
             this._domElement.style.backgroundColor = '';
             this._domElement.parentElement.style.backgroundColor = constants.INVERTED_BACKGROUND_COLOR;
-            this._domElement.attributes.removeNamedItem('style');
+            this._domElement.attributes.removeNamedItem('style'); // TODO: algo de esto falla
         }
     }
 

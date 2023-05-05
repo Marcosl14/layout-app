@@ -43,4 +43,6 @@ CssStyleSheet.init();
 
 // TODO: cualquier elemento debe poder modificar el display settings
 
-// TODO: agregar imagenes
+// TODO: falta la propiedad background-image en el background-color
+
+// TODO: agregar clase a mano mediante un textarea

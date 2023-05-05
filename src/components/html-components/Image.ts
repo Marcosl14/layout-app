@@ -1,31 +1,29 @@
 import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
 
-import TitleBuilder from '../common/models/TitleBuilder';
+import ImageBuilder from '../common/models/ImageBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
-
 import defineElementName from '../common/functions/define-element-name';
 
-import { TitleTypesEnum } from '../common/enums/title.types.enum';
-
-export default class Title extends RawHTMLConponent implements ComponentChangeObserverInterface {
+export default class Image extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
 
-    constructor(type: TitleTypesEnum) {
-        const name = defineElementName(`title${Title.iterator++}`, RawHTMLConponent.instances);
+    constructor() {
+        const name = defineElementName(`image${Image.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;
             padding: 10px;
-            display: inline
+            background-color: rgb(255,255,255);
+            border: 1px dashed rgb(0,0,0);
         }`);
 
-        const element = new TitleBuilder(type)
+        const element = new ImageBuilder()
             .setName(name)
             .setId(name)
             .addCssClassName(name)
-            .setInnerText(`New Title ${type}`)
+            .setUrl()
             .draggable()
             .build();
 
@@ -47,19 +45,17 @@ export default class Title extends RawHTMLConponent implements ComponentChangeOb
     protected openElementConfigs(event) {
         event.stopPropagation();
         this.selectorValue();
-
-
         this.buildElementConfigs();
     }
 
     public componentSelected(component) {
-        if(component === this._domElement['name']) {
+        if (component === this._domElement['name']) {
             this.buildElementConfigs();
         }
     }
 
     private buildElementConfigs() {
-        this.insertComponentAfter('addInnerTextChangeComponent', 'addClassNameDefinitionComponent');
+        this.insertComponentAfter('addUrlInputComponent', 'addClassNameDefinitionComponent');
         this.buildElements();
     }
 }

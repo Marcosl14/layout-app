@@ -27,8 +27,6 @@ export default class InitAppContainer {
 
     private printHtmlButton: HTMLButtonElement = document.querySelector('#print-html-file');
 
-    // TODO: falta propiedad scrollable
-
     constructor() {
         this.appContainer = document.querySelector('#app-container');
 
@@ -78,7 +76,7 @@ export default class InitAppContainer {
 
     private dragLeave() {
         this.appContainer.style.backgroundColor = '';
-        this.appContainer.attributes.removeNamedItem('style');
+        this.appContainer.attributes.removeNamedItem('style'); // TODO: algo de esto falla
     }
 
     private drop(event: DragEvent) {

@@ -7,6 +7,7 @@ import Input from './Input';
 import Container from './Container';
 import Label from './Label';
 import Title from './Title';
+import Image from './Image';
 
 function componentsIndex(index) {
     const componentsIndex = {
@@ -20,6 +21,7 @@ function componentsIndex(index) {
         'H4': () : RawHTMLConponent => new Title(TitleTypesEnum.H4),
         'H5': () : RawHTMLConponent => new Title(TitleTypesEnum.H5),
         'H6': () : RawHTMLConponent => new Title(TitleTypesEnum.H6),
+        'IMG': () : RawHTMLConponent => new Image(),
         'default': () : undefined  => undefined,
     }
 
