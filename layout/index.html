@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="../bundle.js" defer></script>
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./layout.css">
+    <title>App</title>
+</head>
+<body>
+    <div id="main-container">
+        <div id="components-container">
+            <div class="update-dom-elements">
+                <div>
+                    <label> Height </label>
+                    <input type="number" class="update-size-input" id="update-height">
+                </div>
+                <div>
+                    <label> Width </label>
+                    <input type="number" class="update-size-input" id="update-width">
+                </div>
+            </div>
+            <div class="update-dom-elements">
+                <div>
+                    <label> Actions </label>
+                    <button id="print-css-file"> Print CSS in Console </button>
+                    <button id="print-html-file"> Print HTML in Console </button>
+                </div>
+            </div>
+            <div class="update-dom-elements">
+                <div>
+                    <label> Select Item </label>
+                    <select id="select-item"></select>
+                </div>
+            </div>
+            <div draggable="true" class="dom-element dom-element-container">Div Container</div>
+            <button draggable="true" class="dom-element dom-element-button">Button</button>
+            <input draggable="true" class="dom-element dom-element-input" value="Input">
+            <label draggable="true" class="dom-element dom-element-label">Label</label>
+            <h1 draggable="true" class="dom-element dom-element-title">Title H1</h1>
+            <h2 draggable="true" class="dom-element dom-element-title">Title H2</h2>
+            <h3 draggable="true" class="dom-element dom-element-title">Title H3</h3>
+            <h4 draggable="true" class="dom-element dom-element-title">Title H4</h4>
+            <h5 draggable="true" class="dom-element dom-element-title">Title H5</h5>
+            <h6 draggable="true" class="dom-element dom-element-title">Title H6</h6>
+            <image draggable="true" class="dom-element dom-element-image" src="" alt="Image"></image>
+        </div>
+        <div id="app-container-fixed">
+            <div id="app-container" class="body"></div>
+        </div>
+        <div id="actions-container"></div>
+    </div>
+</body>
+</html>
