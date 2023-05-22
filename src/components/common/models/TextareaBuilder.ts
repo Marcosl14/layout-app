@@ -9,4 +9,8 @@ export default class TextareaBuilder extends RawBuilder<HTMLTextAreaElement>{
         this.element.value = value;
         return this;
     }
+
+    public getValue() {
+        return this.element.value;
+    }
 }

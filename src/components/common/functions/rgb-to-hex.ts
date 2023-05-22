@@ -8,7 +8,7 @@ export default function colorToHex(color: string) {
   } else if (color.includes('#')) {
     return color;
   } else {
-    const foundColor = colorValues.find((col) => col.name === color);
+    const foundColor = colorValues.find((col) => col.name.toLowerCase() === color);
 
     if(!foundColor) {
       return '#000000';

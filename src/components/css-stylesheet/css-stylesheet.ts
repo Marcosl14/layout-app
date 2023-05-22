@@ -17,8 +17,8 @@ export default class CssStyleSheet {
     static print() {
         let cssFileOutput = '';
 
-        Object.keys(CssStyleSheet.styleSheet.cssRules).forEach(key => {
-            cssFileOutput += `${CssStyleSheet.styleSheet.cssRules[parseInt(key)].cssText}\n\n`
+        Object.keys(this.styleSheet.cssRules).forEach(key => {
+            cssFileOutput += `${this.styleSheet.cssRules[parseInt(key)].cssText}\n\n`
         });
 
         console.log(cssFileOutput);
@@ -28,12 +28,12 @@ export default class CssStyleSheet {
 
     static getRule(id: string): CSSRule {
         const index = this.getRuleIndex(id);
-        return CssStyleSheet.styleSheet.cssRules[index];
+        return this.styleSheet.cssRules[index];
     }
 
     static getRuleIndex(id: string): number {
-        const index = parseInt(Object.keys(CssStyleSheet.styleSheet.cssRules).find(key => {
-            const className = CssStyleSheet.styleSheet.cssRules[parseInt(key)]['selectorText']
+        const index = parseInt(Object.keys(this.styleSheet.cssRules).find(key => {
+            const className = this.styleSheet.cssRules[parseInt(key)]['selectorText']
             return className === `.${id}`
         }))
 
@@ -46,17 +46,17 @@ export default class CssStyleSheet {
 
     static getRules(id: string): CSSRule[] {
         const indexes = this.getRulesIndexes(id);
-        return indexes.map((index) => CssStyleSheet.styleSheet.cssRules[index]);
+        return indexes.map((index) => this.styleSheet.cssRules[index]);
     }
 
     static getAllRules(): CSSRule[] {
-        return Object.values(CssStyleSheet.styleSheet.cssRules);
+        return Object.values(this.styleSheet.cssRules);
     }
 
     static getRulesIndexes(id: string): number[] {
-        return Object.keys(CssStyleSheet.styleSheet.cssRules)
+        return Object.keys(this.styleSheet.cssRules)
             .filter(key => {
-                const className = CssStyleSheet.styleSheet.cssRules[parseInt(key)]['selectorText']
+                const className = this.styleSheet.cssRules[parseInt(key)]['selectorText']
                 return className === `.${id}` || className.includes(`.${id}:`)
             })
             .map((index) => parseInt(index));
@@ -64,7 +64,7 @@ export default class CssStyleSheet {
 
     static getRuleStyles(id: string): CSSStyleDeclaration {
         const index = this.getRuleIndex(id);
-        const styles = CssStyleSheet.styleSheet.cssRules[index];
+        const styles = this.styleSheet.cssRules[index];
         return styles ? styles['style'] : {};
     }
 
@@ -79,21 +79,21 @@ export default class CssStyleSheet {
         })
 
         if(!existsRuleForAnotherComponent) {
-            CssStyleSheet.styleSheet.deleteRule(index);
+            this.styleSheet.deleteRule(index);
         }
     }
 
     static removeRuleByIndex(index: number): void {
-        CssStyleSheet.styleSheet.deleteRule(index);
+        this.styleSheet.deleteRule(index);
     }
 
     static insertRule(rule: string) {
-        CssStyleSheet.styleSheet.insertRule(rule);
+        this.styleSheet.insertRule(rule);
     }
 
     static changeRuleName(currentRule: string, newRuleName: string) {
         const currentRuleIndex = this.getRuleIndex(currentRule);
-        const newRule = CssStyleSheet.styleSheet.cssRules[currentRuleIndex].cssText.replace(currentRule, newRuleName);
+        const newRule = this.styleSheet.cssRules[currentRuleIndex].cssText.replace(currentRule, newRuleName);
         this.removeRuleByIndex(currentRuleIndex);
         this.insertRule(newRule);
     }
@@ -101,7 +101,7 @@ export default class CssStyleSheet {
     static duplicateRule(ruleToDuplicate: string, newName: string) {
         const ruleToDuplicateIndex = this.getRuleIndex(ruleToDuplicate);
         const newRule =
-            CssStyleSheet.styleSheet.cssRules[ruleToDuplicateIndex].cssText.replace(ruleToDuplicate, newName);
+            this.styleSheet.cssRules[ruleToDuplicateIndex].cssText.replace(ruleToDuplicate, newName);
         this.insertRule(newRule);
     }
 }
