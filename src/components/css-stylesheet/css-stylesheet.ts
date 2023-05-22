@@ -64,7 +64,8 @@ export default class CssStyleSheet {
 
     static getRuleStyles(id: string): CSSStyleDeclaration {
         const index = this.getRuleIndex(id);
-        return CssStyleSheet.styleSheet.cssRules[index]['style'];
+        const styles = CssStyleSheet.styleSheet.cssRules[index];
+        return styles ? styles['style'] : {};
     }
 
     static removeRule(id: string): void {
