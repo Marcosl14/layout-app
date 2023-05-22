@@ -23,6 +23,8 @@ export default class InitAppContainer {
     protected fatherBackgroundColor: string;
 
     private componentSelector: HTMLSelectElement = document.querySelector('#select-item');
+    private versionLabel: HTMLLabelElement = document.querySelector('#version-label');
+
     private componentChangePublisher: ComponentChangePublisher;
 
     private printHtmlButton: HTMLButtonElement = document.querySelector('#print-html-file');
@@ -59,7 +61,12 @@ export default class InitAppContainer {
 
         this.sendComponentName = this.sendComponentName.bind(this);
         this.componentChangePublisher = new ComponentChangePublisher();
+
         this.componentSelector.addEventListener('change', this.sendComponentName);
+
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const packageVersion = require('../../../package.json').version;
+        this.versionLabel.innerText = `Version: ${packageVersion}`;
 
         this.printHtmlButton.addEventListener('click', this.printHtmlFile);
     }
