@@ -45,4 +45,7 @@ CssStyleSheet.init();
 
 // TODO: falta la propiedad background-image en el background-color
 
-// TODO: agregar clase a mano mediante un textarea
+// eslint-disable-next-line max-len
+// TODO: en el Select Item no se encuentra el app-container. Es que para que esto funcione, el app-container deberia ser creado como un new Container();
+
+// TODO: falta un boton de delete initial properties, asi sacamos los bordes y eso a un div, por ejemplo...

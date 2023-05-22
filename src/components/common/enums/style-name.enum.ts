@@ -7,6 +7,9 @@ export enum StyleNameEnum {
     'align-self' = 'align-self',
     'grid-template-columns' = 'grid-template-columns',
     'grid-template-rows' = 'grid-template-rows',
-    border= 'border',
-    resize= 'resize',
+    border = 'border',
+    resize = 'resize',
+    width = 'witdth',
+    height = 'height',
+    'font-size' = 'font-size',
 }
