@@ -97,18 +97,20 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
 
     private updateProperty() {
         this.domElementStyleSheet['display'] = this.displaySelector.value;
-        this.setComponentAccordingToSelector();
+        this.setComponentAccordingToSelector(true);
     }
 
     private getCurrentProperties(property: string): string {
         return this.domElementStyleSheet[property];
     }
 
-    private setComponentAccordingToSelector() {
+    private setComponentAccordingToSelector(reset?: boolean) {
         const currentProperties = this.getCurrentProperties('display');
 
         if (currentProperties === DisplayTypesEnum.flex || currentProperties === DisplayTypesEnum['inline-flex']) {
-            this.resetGrid();
+            if(reset){
+                this.resetGrid();
+            }
             this.updateFlexComponentsStyleSheet();
             this.setFlexAsParentInitialValues();
             this.container.appendChild(this.flexContainerAsParent.build());
@@ -116,7 +118,9 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
             currentProperties === DisplayTypesEnum.grid
             || currentProperties === DisplayTypesEnum['inline-grid']
         ) {
-            this.resetFlex();
+            if(reset){
+                this.resetFlex();
+            }
             this.updateGridComponentsStyleSheet();
             this.setGridAsParentInitialValues();
             this.container.appendChild(this.gridContainerAsParent.build());
@@ -345,13 +349,12 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
             this.domElementStyleSheet['grid-auto-rows'] = '';
             this.domElementStyleSheet['grid-template-areas'] = '';
             this.domElementStyleSheet['justify-items'] = '';
-            this.domElementStyleSheet['align-items'] = '';
-            this.domElementStyleSheet['justify-content'] = '';
-            this.domElementStyleSheet['align-content'] = '';
             this.domElementStyleSheet['grid-auto-flow'] = '';
             this.domElementStyleSheet['column-gap'] = '';
             this.domElementStyleSheet['row-gap'] = '';
-
+            this.domElementStyleSheet['align-items'] = '';
+            this.domElementStyleSheet['justify-content'] = '';
+            this.domElementStyleSheet['align-content'] = '';
 
             // NOTE: decision: delete only children styles for classes named as the component id.
             this.domElement.childNodes.forEach((child) => {
@@ -371,7 +374,7 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
         const currentProperties = this.getCurrentProperties('display');
         this.displaySelector.value = currentProperties;
 
-        this.setComponentAccordingToSelector();
+        this.setComponentAccordingToSelector(true);
     }
 
     private updateFlexComponentsStyleSheet() {

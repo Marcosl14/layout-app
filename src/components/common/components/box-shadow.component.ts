@@ -90,7 +90,7 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
             .addEventListener('change', this.updateBoxShadowType)
             .build()
 
-        if(this.advancedEnabled) {
+        if (this.advancedEnabled) {
             this.advancedBoxShadowCheckbox.checked = true;
         } else {
             this.simpleBoxShadowCheckbox.checked = true;
@@ -255,40 +255,40 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
     }
 
     private buildComponentsContainer() {
-        if(this.advancedEnabled) {
+        if (this.advancedEnabled) {
             this.componentsContainer = new ContainerBuilder()
-            .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-            .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
-            .setStyle(StyleNameEnum['align-items'], AlignFlexItemsEnum.stretch)
-            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-            .setStyle(StyleNameEnum.padding, '3px')
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-            .appendChild(new LabelBuilder()
-                .setInnerText('Box Shadow')
+                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+                .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
+                .setStyle(StyleNameEnum['align-items'], AlignFlexItemsEnum.stretch)
+                .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
+                .setStyle(StyleNameEnum.padding, '3px')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Box Shadow')
+                    .build()
+                )
+                .appendChild(this.shadowBoxTypeContainer)
+                .appendChild(this.advancedShadowBoxContainer)
                 .build()
-            )
-            .appendChild(this.shadowBoxTypeContainer)
-            .appendChild(this.advancedShadowBoxContainer)
-            .build()
         } else {
             this.componentsContainer = new ContainerBuilder()
-            .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-            .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
-            .setStyle(StyleNameEnum['align-items'], AlignFlexItemsEnum.stretch)
-            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-            .setStyle(StyleNameEnum.padding, '3px')
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
-            .appendChild(new LabelBuilder()
-                .setInnerText('Box Shadow')
+                .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
+                .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
+                .setStyle(StyleNameEnum['align-items'], AlignFlexItemsEnum.stretch)
+                .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
+                .setStyle(StyleNameEnum.padding, '3px')
+                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(new LabelBuilder()
+                    .setInnerText('Box Shadow')
+                    .build()
+                )
+                .appendChild(this.shadowBoxTypeContainer)
+                .appendChild(this.colorInsetContainer)
+                .appendChild(this.horizontalOffsetContainer)
+                .appendChild(this.verticalOffsetContainer)
+                .appendChild(this.blurRadiusContainer)
+                .appendChild(this.spreadRadiusContainer)
                 .build()
-            )
-            .appendChild(this.shadowBoxTypeContainer)
-            .appendChild(this.colorInsetContainer)
-            .appendChild(this.horizontalOffsetContainer)
-            .appendChild(this.verticalOffsetContainer)
-            .appendChild(this.blurRadiusContainer)
-            .appendChild(this.spreadRadiusContainer)
-            .build()
         }
     }
 
@@ -390,30 +390,34 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
     private getInitialValues() {
         let boxShadowString = this.domElementStyleSheet['box-shadow'];
 
-        if(boxShadowString.split(',').filter((ele) => ele.includes('rgb')).length > 1){
-            this.advancedEnabled = true;
-        } else {
-            if(boxShadowString.split(',').length > 1){
+        let color, inset;
+        let sizesArr = [];
+
+        if (boxShadowString) {
+            if (boxShadowString.split(',').filter((ele) => ele.includes('rgb')).length > 1) {
                 this.advancedEnabled = true;
+            } else {
+                if (boxShadowString.split(',').length > 1) {
+                    this.advancedEnabled = true;
+                }
             }
+
+            if (boxShadowString.includes('rgb')) {
+                const initialIndexOfRGB = boxShadowString.indexOf('rgb');
+                const finalIndexOfRGB = boxShadowString.indexOf(')')
+
+                color = boxShadowString.slice(initialIndexOfRGB, finalIndexOfRGB + 1)
+
+                boxShadowString = boxShadowString.replace(color, '');
+            }
+
+            const boxShadowArr = boxShadowString.split(' ');
+
+            inset = boxShadowArr.find((ele) => ele === 'inset')
+
+            sizesArr = boxShadowArr.filter((ele) => !isNaN(parseInt(ele)));
         }
 
-        let color;
-
-        if (boxShadowString.includes('rgb')) {
-            const initialIndexOfRGB = boxShadowString.indexOf('rgb');
-            const finalIndexOfRGB = boxShadowString.indexOf(')')
-
-            color = boxShadowString.slice(initialIndexOfRGB, finalIndexOfRGB + 1)
-
-            boxShadowString = boxShadowString.replace(color, '');
-        }
-
-        const boxShadowArr = boxShadowString.split(' ');
-
-        const sizesArr = boxShadowArr.filter((ele) => !isNaN(parseInt(ele)));
-
-        const inset = boxShadowArr.find((ele) => ele === 'inset')
 
         return {
             color,

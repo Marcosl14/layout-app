@@ -76,7 +76,7 @@ export default class InitAppContainer {
 
     private dragLeave() {
         this.appContainer.style.backgroundColor = '';
-        this.appContainer.attributes.removeNamedItem('style'); // TODO: algo de esto falla
+        this.appContainer.attributes.removeNamedItem('style');
     }
 
     private drop(event: DragEvent) {
@@ -164,6 +164,7 @@ export default class InitAppContainer {
 
         // TODO: ver si deberia ir desplegando el arbol de elementos HTML e ir armando el html aqui.
         // TODO: ver si es necesario borrar el style y lo que haya dentro....
+        // TODO: eliminar el draggable
 
         const outputHtml = `
         <!DOCTYPE html>
