@@ -74,6 +74,7 @@ body {
 
 .dom-element-container {
     padding: 10px;
+    margin: 0px;
     border: dashed 1px black;
     width: 100%;
 }
