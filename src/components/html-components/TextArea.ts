@@ -21,6 +21,10 @@ export default class TextArea extends RawHTMLConponent implements ComponentChang
             box-shadow: inset 0 1px 3px #ddd;
         }`);
 
+        CssStyleSheet.insertRule(`.${name}:hover {
+            border: 1px solid red;
+        }`);
+
         const element = new TextAreaBuilder()
             .setName(name)
             .setId(name)
