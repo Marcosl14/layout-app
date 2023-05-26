@@ -6373,7 +6373,7 @@ function componentsIndex(index) {
   \**********************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"name":"layout-app","version":"1.0.0-2","repository":{"url":"git+https://github.com/Marcosl14/layout-app.git"},"description":"","main":"index.js","scripts":{"build":"webpack","start":"webpack --watch","lint":"eslint src/**/*.ts","lint-fix":"eslint src/**/*.ts --fix","predeploy":"npm run build","deploy":"gh-pages -d dist"},"author":"","license":"ISC","devDependencies":{"@typescript-eslint/eslint-plugin":"^5.53.0","@typescript-eslint/parser":"^5.53.0","eslint":"^8.34.0","gh-pages":"^5.0.0","husky":"^8.0.3","lint-staged":"^13.2.0","ts-loader":"^9.4.2","typescript":"^5.0.4","webpack":"^5.75.0","webpack-cli":"^5.0.1","webpack-dev-server":"^4.11.1"}}');
+module.exports = JSON.parse('{"name":"layout-app","version":"1.0.0-3","repository":{"url":"git+https://github.com/Marcosl14/layout-app.git"},"description":"","main":"index.js","scripts":{"build":"webpack","start":"webpack --watch","lint":"eslint src/**/*.ts","lint-fix":"eslint src/**/*.ts --fix","predeploy":"npm run build","deploy":"gh-pages -d dist"},"author":"","license":"ISC","devDependencies":{"@typescript-eslint/eslint-plugin":"^5.53.0","@typescript-eslint/parser":"^5.53.0","eslint":"^8.34.0","gh-pages":"^5.0.0","husky":"^8.0.3","lint-staged":"^13.2.0","ts-loader":"^9.4.2","typescript":"^5.0.4","webpack":"^5.75.0","webpack-cli":"^5.0.1","webpack-dev-server":"^4.11.1"}}');
 
 /***/ })
 
