@@ -1,8 +1,8 @@
 import RawBuilder from './RawBuilder';
 
-export default class FormBuilder extends RawBuilder<HTMLFormElement>{
+export default class TableBuilder extends RawBuilder<HTMLDivElement>{
     constructor() {
-        super('form');
+        super('table');
     }
 
     public appendChildIfDefined(element: HTMLElement){

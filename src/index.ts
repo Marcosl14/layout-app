@@ -50,7 +50,71 @@ CssStyleSheet.init();
 
 // TODO: falta un boton de delete initial properties, asi sacamos los bordes y eso a un div, por ejemplo...
 
-// TODO: agregar HEADER, BODY, FOOTER, ASIDE, ver cuales mas se necesitan
-// TODO: hacer una clase para todos los contenedores
+/*
+TODO: faltan los siguientes componentes:
+    - Table, tr, th, tb, y ver que otros de tablas -> Para esto tendremos que ir agregando elementos mediant JS:
+        - como ser, agregar el th, el tb o el t
 
-// TODO: el prevent default del form no me deja hacer click sobre el boton, pero con el selector si lo puedo llamar
+<table>
+  <thead>
+    <tr>
+      <th>Header content 1</th>
+      <th>Header content 2</th>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <td>Footer content 1</td>
+      <td>Footer content 2</td>
+    </tr>
+  </tfoot>
+  <tbody>
+    <tr>
+      <td>Body content 1</td>
+      <td>Body content 2</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <colgroup span="4" class="columns"></colgroup>
+  <tr>
+    <th>Countries</th>
+    <th>Capitals</th>
+    <th>Population</th>
+    <th>Language</th>
+  </tr>
+  <tr>
+    <td>USA</td>
+    <td>Washington D.C.</td>
+    <td>309 million</td>
+    <td>English</td>
+  </tr>
+  <tr>
+    <td>Sweden</td>
+    <td>Stockholm</td>
+    <td>9 million</td>
+    <td>Swedish</td>
+  </tr>
+</table>
+
+<table>
+  <caption>Awesome caption</caption>
+  <tr>
+    <td>Awesome data</td>
+  </tr>
+</table>
+
+
+
+    - ol y ul, y li:
+aqui debemos agregar los li a mano, y asignar el tipo de icono;
+
+    - hyperlink o anchor element: debemos agregar el hiperlink y algunas otras cosas
+
+    - textarea: debemos poder modificar el relleno, pero en vez de con un input, con un textarea
+    dar estilo tambien para que no sea estirable en el selector antes de hacer el drag and drop
+    tambien debe poder ser seleccionable si la queres estirable o no en el dom
+*/
+
+// TODO: falta posicion absoluta o relativa, z-index

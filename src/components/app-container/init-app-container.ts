@@ -91,7 +91,7 @@ export default class InitAppContainer {
 
         const targetElement = event.target as HTMLElement;
 
-        if (componentsIndex(targetElement).isContainer) {
+        if (!componentsIndex(targetElement.nodeName).isContainer) {
             return;
         }
 

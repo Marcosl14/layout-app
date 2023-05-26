@@ -10,6 +10,11 @@ import Label from '../html-components/Label';
 import Title from '../html-components/Title';
 import Image from '../html-components/Image';
 import Form from '../html-components/Form';
+import OrderedList from '../html-components/OrderedList';
+import UnorderedList from '../html-components/UnorderedList';
+import Table from '../html-components/Table';
+import Anchor from '../html-components/Anchor';
+import TextArea from '../html-components/TextArea';
 
 function componentsIndex(index) {
     const componentsIndex : ComponentIndex = {
@@ -60,6 +65,26 @@ function componentsIndex(index) {
         'IMG': {
             create: () : RawHTMLConponent => new Image(),
             isContainer: false,
+        },
+        'OL': {
+            create: () : RawHTMLConponent => new OrderedList(),
+            isContainer: true,
+        },
+        'UL': {
+            create: () : RawHTMLConponent => new UnorderedList(),
+            isContainer: true,
+        },
+        'A': {
+            create: () : RawHTMLConponent => new Anchor(),
+            isContainer: true,
+        },
+        'TEXTAREA': {
+            create: () : RawHTMLConponent => new TextArea(),
+            isContainer: true,
+        },
+        'TABLE': {
+            create: () : RawHTMLConponent => new Table(),
+            isContainer: true,
         },
         'default': {
             create: () : undefined  => undefined,

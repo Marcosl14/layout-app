@@ -1,3 +1,3 @@
-export default function dragStartWithTargetNodeName(e: DragEvent) {
-    e.dataTransfer.setData('text/plain', (e.target as HTMLElement).nodeName);
+export default function dragStartWithTargetNodeName(event: DragEvent) {
+    event.dataTransfer.setData('text/plain', (event.target as HTMLElement).nodeName);
 }

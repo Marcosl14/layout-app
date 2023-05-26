@@ -6,7 +6,7 @@ import constants from '../common/constants/constants';
 import { AddComponent } from '../common/enums/add-component.enum';
 
 export default class RawContainer extends RawHTMLConponent implements ComponentChangeObserverInterface {
-    constructor(element: HTMLDivElement) {
+    constructor(element: HTMLElement) {
         super(element);
 
         this.dragEnter = this.dragEnter.bind(this);
