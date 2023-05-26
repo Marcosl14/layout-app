@@ -8,7 +8,7 @@ import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 import defineElementName from '../common/functions/define-element-name';
 
 import { TitleTypesEnum } from '../common/enums/title.types.enum';
-import { AddComponent } from '../common/enums/components.enum';
+import { AddComponent } from '../common/enums/add-component.enum';
 
 export default class Title extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;

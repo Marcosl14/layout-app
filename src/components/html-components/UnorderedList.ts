@@ -1,4 +1,4 @@
-import FormBuilder from '../common/models/FormBuilder';
+import UnorderedListBuilder from '../common/models/UnoderedListBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 import RawContainer from './RawContainer';
 
@@ -8,11 +8,11 @@ import defineElementName from '../common/functions/define-element-name';
 
 import { DisplayTypesEnum } from '../common/enums/display-types.enum';
 
-export default class Form extends RawContainer {
+export default class UnorderedList extends RawContainer {
     private static iterator = 0;
 
     constructor() {
-        const name = defineElementName(`form${Form.iterator++}`, RawHTMLConponent.instances);
+        const name = defineElementName(`unordered_list${UnorderedList.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;
@@ -27,7 +27,7 @@ export default class Form extends RawContainer {
             background-color: ${constants.INVERTED_BACKGROUND_COLOR};
         }`);
 
-        const element = new FormBuilder()
+        const element = new UnorderedListBuilder()
             .setName(name)
             .setId(name)
             .addCssClassName(name)
@@ -35,11 +35,5 @@ export default class Form extends RawContainer {
             .build();
 
         super(element);
-
-        this._domElement.addEventListener('submit', this.eventPreventDefault);
-    }
-
-    private eventPreventDefault(event) {
-        event.preventDefault();
     }
 }

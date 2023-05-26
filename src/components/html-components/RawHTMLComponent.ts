@@ -25,7 +25,7 @@ import ClassManagementComponent from '../common/components/class-management.comp
 import SizesComponent from '../common/components/sizes.component';
 import FontComponent from '../common/components/font.components';
 import UrlDefinitionComponent from '../common/components/url-definition-component';
-import { AddComponent } from '../common/enums/components.enum';
+import { AddComponent } from '../common/enums/add-component.enum';
 
 export default abstract class RawHTMLConponent implements ComponentChangeObserverInterface {
     protected _domElement: HTMLElement;

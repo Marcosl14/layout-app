@@ -1,8 +1,8 @@
 import RawBuilder from './RawBuilder';
 
-export default class FormBuilder extends RawBuilder<HTMLFormElement>{
+export default class UnoderedListBuilder extends RawBuilder<HTMLUListElement>{
     constructor() {
-        super('form');
+        super('ul');
     }
 
     public appendChildIfDefined(element: HTMLElement){

@@ -10,7 +10,7 @@ import SelectorFromArrayBuilder from '../models/SelectorFromArrayBuilder';
 import InputBuilder from '../models/InputBuilder';
 import ButtonBuilder from '../models/ButtonBuilder';
 import SelectorFromEnumBuilder from '../models/SelectorFromEnumBuilder';
-import TextareaBuilder from '../models/TextareaBuilder';
+import TextareaBuilder from '../models/TextAreaBuilder';
 
 import { StyleNameEnum } from '../enums/style-name.enum';
 import { DisplayTypesEnum } from '../enums/display-types.enum';

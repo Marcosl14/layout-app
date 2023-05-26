@@ -3,7 +3,7 @@ import MarginOrPaddingComponent from '../common/components/margin-or-padding.com
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
 import RawHTMLConponent from '../html-components/RawHTMLComponent';
 import BackgroundComponent from '../common/components/background.component';
-import componentsIndex from '../html-components/componentsIndex';
+import componentsIndex from './componentsIndex';
 import constants from '../common/constants/constants';
 
 import { StyleNameEnum } from '../common/enums/style-name.enum';
@@ -91,10 +91,7 @@ export default class InitAppContainer {
 
         const targetElement = event.target as HTMLElement;
 
-        if (targetElement.nodeName !== 'DIV'
-            && targetElement.nodeName !== 'BUTTON'
-            && targetElement.nodeName !== 'FORM'
-        ) {
+        if (!componentsIndex(targetElement.nodeName).isContainer) {
             return;
         }
 
@@ -105,7 +102,7 @@ export default class InitAppContainer {
 
         const elementType = event.dataTransfer.getData('text/plain');
 
-        const newDomElement: RawHTMLConponent | undefined = componentsIndex(elementType)();
+        const newDomElement: RawHTMLConponent | undefined = componentsIndex(elementType).create();
 
         const elementExists = newDomElement ? false : true;
 

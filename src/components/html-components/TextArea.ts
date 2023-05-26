@@ -1,28 +1,34 @@
 import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
 
-import LabelBuilder from '../common/models/LabelBuilder';
+import TextAreaBuilder from '../common/models/TextAreaBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
+
+import defineElementName from '../common/functions/define-element-name';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 
-import defineElementName from '../common/functions/define-element-name';
-import { AddComponent } from '../common/enums/add-component.enum';
-
-export default class Label extends RawHTMLConponent implements ComponentChangeObserverInterface {
+export default class TextArea extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
 
     constructor() {
-        const name = defineElementName(`label${Label.iterator++}`, RawHTMLConponent.instances);
+        const name = defineElementName(`text_area${TextArea.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.insertRule(`.${name} {
-            display: inline
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 3px #ddd;
         }`);
 
-        const element = new LabelBuilder()
+        CssStyleSheet.insertRule(`.${name}:hover {
+            border: 1px solid red;
+        }`);
+
+        const element = new TextAreaBuilder()
             .setName(name)
             .setId(name)
             .addCssClassName(name)
-            .setInnerText('New Label')
             .draggable()
             .build();
 
@@ -44,8 +50,6 @@ export default class Label extends RawHTMLConponent implements ComponentChangeOb
     protected openElementConfigs(event) {
         event.stopPropagation();
         this.selectorValue();
-
-
         this.buildElementConfigs();
     }
 
@@ -56,11 +60,6 @@ export default class Label extends RawHTMLConponent implements ComponentChangeOb
     }
 
     private buildElementConfigs() {
-        this.insertComponentAfter(
-            AddComponent.addInnerTextChangeComponent,
-            AddComponent.addClassNameDefinitionComponent
-        );
-
         this.buildElements();
     }
 }

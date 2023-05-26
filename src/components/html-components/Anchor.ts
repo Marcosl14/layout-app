@@ -1,6 +1,6 @@
 import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
 
-import LabelBuilder from '../common/models/LabelBuilder';
+import AnchorBuilder from '../common/models/AnchorBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
@@ -8,21 +8,22 @@ import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 import defineElementName from '../common/functions/define-element-name';
 import { AddComponent } from '../common/enums/add-component.enum';
 
-export default class Label extends RawHTMLConponent implements ComponentChangeObserverInterface {
+export default class Anchor extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
 
     constructor() {
-        const name = defineElementName(`label${Label.iterator++}`, RawHTMLConponent.instances);
+        const name = defineElementName(`anchor${Anchor.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.insertRule(`.${name} {
             display: inline
         }`);
 
-        const element = new LabelBuilder()
+        const element = new AnchorBuilder()
             .setName(name)
             .setId(name)
             .addCssClassName(name)
-            .setInnerText('New Label')
+            .setInnerText('New Anchor')
+            .setHiperlink('')
             .draggable()
             .build();
 
@@ -43,9 +44,9 @@ export default class Label extends RawHTMLConponent implements ComponentChangeOb
 
     protected openElementConfigs(event) {
         event.stopPropagation();
+        event.preventDefault();
+
         this.selectorValue();
-
-
         this.buildElementConfigs();
     }
 
@@ -60,6 +61,8 @@ export default class Label extends RawHTMLConponent implements ComponentChangeOb
             AddComponent.addInnerTextChangeComponent,
             AddComponent.addClassNameDefinitionComponent
         );
+
+        // TODO: falta agregar la url del href y ver si algo mas
 
         this.buildElements();
     }
