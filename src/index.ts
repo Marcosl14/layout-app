@@ -50,6 +50,7 @@ CssStyleSheet.init();
 
 // TODO: falta un boton de delete initial properties, asi sacamos los bordes y eso a un div, por ejemplo...
 
-// TODO: ver porque a un boton cuando le meto un DIV dentro, toma el style del DIV.
-
 // TODO: agregar HEADER, BODY, FOOTER, ASIDE, ver cuales mas se necesitan
+// TODO: hacer una clase para todos los contenedores
+
+// TODO: el prevent default del form no me deja hacer click sobre el boton, pero con el selector si lo puedo llamar

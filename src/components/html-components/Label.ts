@@ -6,7 +6,7 @@ import RawHTMLConponent from './RawHTMLComponent';
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 
 import defineElementName from '../common/functions/define-element-name';
-import { AddComponent } from '../common/enums/components.enum';
+import { AddComponent } from '../common/enums/add-component.enum';
 
 export default class Label extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
