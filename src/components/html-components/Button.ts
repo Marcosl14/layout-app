@@ -6,6 +6,7 @@ import RawHTMLConponent from './RawHTMLComponent';
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 
 import defineElementName from '../common/functions/define-element-name';
+import { AddComponent } from '../common/enums/components.enum';
 
 export default class Button extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
@@ -64,7 +65,16 @@ export default class Button extends RawHTMLConponent implements ComponentChangeO
     }
 
     private buildElementConfigs() {
-        this.insertComponentAfter('addInnerTextChangeComponent', 'addClassNameDefinitionComponent');
+        this.insertComponentAfter(
+            AddComponent.addInnerTextChangeComponent,
+            AddComponent.addClassNameDefinitionComponent
+        );
+
+        this.insertComponentBefore(
+            AddComponent.addDisplayAsParentComponent,
+            AddComponent.addDisplayAsChildComponent
+        );
+
         this.buildElements();
     }
 }

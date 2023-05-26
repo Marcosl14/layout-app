@@ -25,6 +25,7 @@ import ClassManagementComponent from '../common/components/class-management.comp
 import SizesComponent from '../common/components/sizes.component';
 import FontComponent from '../common/components/font.components';
 import UrlDefinitionComponent from '../common/components/url-definition-component';
+import { AddComponent } from '../common/enums/components.enum';
 
 export default abstract class RawHTMLConponent implements ComponentChangeObserverInterface {
     protected _domElement: HTMLElement;
@@ -80,7 +81,21 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
     }
 
     protected addInnerTextChangeComponent() {
-        return new GenericPrimaryInputComponent(this._domElement, 'innerText', 'Inner Text').component;
+        const canAddText: () => boolean = () => {
+            if(this.domElement.innerHTML.includes('<')) {
+                alert('InnerHTML must be empty')
+                return false;
+            }
+
+            return true;
+        }
+
+        return new GenericPrimaryInputComponent(
+                this._domElement,
+                'innerText',
+                'Inner Text',
+                canAddText
+            ).component;
     }
 
     protected addInputTypeSelectorComponent() {
@@ -203,23 +218,23 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
         return;
     }
 
-    protected commonComponents: string[] = [
-        'addIdDefinitionComponent',
-        'addClassNameDefinitionComponent',
-        'addMarginStyleComponent',
-        'addPaddingStyleComponent',
-        'addSizeComponents',
-        'addFontComponens',
-        'addBackgroundSettingsComponent',
-        'addBorderSettingsComponent',
-        'addBoxShadowComponent',
-        'addDisplayAsChildComponent',
-        'addActionsComponents',
+    protected commonComponents: AddComponent[] = [
+        AddComponent.addIdDefinitionComponent,
+        AddComponent.addClassNameDefinitionComponent,
+        AddComponent.addMarginStyleComponent,
+        AddComponent.addPaddingStyleComponent,
+        AddComponent.addSizeComponents,
+        AddComponent.addFontComponens,
+        AddComponent.addBackgroundSettingsComponent,
+        AddComponent.addBorderSettingsComponent,
+        AddComponent.addBoxShadowComponent,
+        AddComponent.addDisplayAsChildComponent,
+        AddComponent.addActionsComponents,
     ]
 
     protected insertComponentBefore(
-        componentToInsert: string,
-        referenceComponent: string
+        componentToInsert: AddComponent,
+        referenceComponent: AddComponent
     ) {
         const alreadyExists = this.commonComponents.find((comp) => comp === componentToInsert);
 
@@ -233,8 +248,8 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
     }
 
     protected insertComponentAfter(
-        componentToInsert: string,
-        referenceComponent: string
+        componentToInsert: AddComponent,
+        referenceComponent: AddComponent
     ) {
         const alreadyExists = this.commonComponents.find((comp) => comp === componentToInsert);
 

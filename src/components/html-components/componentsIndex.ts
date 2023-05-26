@@ -8,12 +8,14 @@ import Container from './Container';
 import Label from './Label';
 import Title from './Title';
 import Image from './Image';
+import Form from './Form';
 
 function componentsIndex(index) {
     const componentsIndex = {
+        'DIV': () : RawHTMLConponent => new Container(),
+        'FORM': () : RawHTMLConponent => new Form(),
         'BUTTON': () : RawHTMLConponent => new Button(),
         'INPUT': () : RawHTMLConponent => new Input(),
-        'DIV': () : RawHTMLConponent => new Container(),
         'LABEL': () : RawHTMLConponent => new Label(),
         'H1': () : RawHTMLConponent => new Title(TitleTypesEnum.H1),
         'H2': () : RawHTMLConponent => new Title(TitleTypesEnum.H2),

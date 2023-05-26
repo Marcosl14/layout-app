@@ -49,3 +49,7 @@ CssStyleSheet.init();
 // TODO: en el Select Item no se encuentra el app-container. Es que para que esto funcione, el app-container deberia ser creado como un new Container();
 
 // TODO: falta un boton de delete initial properties, asi sacamos los bordes y eso a un div, por ejemplo...
+
+// TODO: ver porque a un boton cuando le meto un DIV dentro, toma el style del DIV.
+
+// TODO: agregar HEADER, BODY, FOOTER, ASIDE, ver cuales mas se necesitan

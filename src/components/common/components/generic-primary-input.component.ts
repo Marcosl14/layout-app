@@ -14,10 +14,16 @@ export default class GenericPrimaryInputComponent {
 
     private propertyValueInput: HTMLInputElement;
 
-    constructor(domElement: HTMLElement, style: string, label: string) {
+    private callback: () => boolean;
+
+    constructor(domElement: HTMLElement, style: string, label: string, callback: () => boolean) {
         this.domElement = domElement;
         this.label = label;
         this.style = style;
+
+        this.callback = callback;
+        this.callback = this.callback.bind(this);
+
         this.addComponents();
     }
 
@@ -60,7 +66,11 @@ export default class GenericPrimaryInputComponent {
             || (event as KeyboardEvent).key === 'Enter'
             || (event as KeyboardEvent).code === '13'
         ) {
-            this.domElement[this.style] = this.propertyValueInput.value;
+            if(this.callback()){
+                this.domElement[this.style] = this.propertyValueInput.value;
+            } else {
+                this.propertyValueInput.value = '';
+            }
         }
     }
 }
