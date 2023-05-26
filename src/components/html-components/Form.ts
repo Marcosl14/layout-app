@@ -1,6 +1,6 @@
 import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
 
-import ContainerBuilder from '../common/models/ContainerBuilder';
+import FormBuilder from '../common/models/FormBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
@@ -10,11 +10,11 @@ import defineElementName from '../common/functions/define-element-name';
 import { DisplayTypesEnum } from '../common/enums/display-types.enum';
 import { AddComponent } from '../common/enums/components.enum';
 
-export default class Container extends RawHTMLConponent implements ComponentChangeObserverInterface {
+export default class Form extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
 
     constructor() {
-        const name = defineElementName(`container${Container.iterator++}`, RawHTMLConponent.instances);
+        const name = defineElementName(`form${Form.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;
@@ -25,7 +25,7 @@ export default class Container extends RawHTMLConponent implements ComponentChan
             border: 1px dashed rgb(0,0,0);
         }`);
 
-        const element = new ContainerBuilder()
+        const element = new FormBuilder()
             .setName(name)
             .setId(name)
             .addCssClassName(name)
@@ -52,6 +52,7 @@ export default class Container extends RawHTMLConponent implements ComponentChan
         this._domElement.addEventListener('mouseleave', this.mouseLeave);
 
         this._domElement.addEventListener('click', this.openElementConfigs);
+        this._domElement.addEventListener('submit', this.openElementConfigs);
     }
 
     get domElement() {
@@ -102,6 +103,7 @@ export default class Container extends RawHTMLConponent implements ComponentChan
     }
 
     protected openElementConfigs(event) {
+        event.preventDefault();
         event.stopPropagation();
         this.selectorValue();
 

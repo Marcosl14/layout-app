@@ -91,7 +91,15 @@ export default class InitAppContainer {
 
         const targetElement = event.target as HTMLElement;
 
-        if (targetElement.nodeName !== 'DIV') {
+        if (targetElement.nodeName !== 'DIV'
+            && targetElement.nodeName !== 'BUTTON'
+            && targetElement.nodeName !== 'FORM'
+        ) {
+            return;
+        }
+
+        if(targetElement.children.length === 0 && targetElement.innerText !== ''){
+            alert('InnerText must be empty')
             return;
         }
 
