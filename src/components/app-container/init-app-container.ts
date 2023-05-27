@@ -11,7 +11,6 @@ import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 
 import ComponentChangePublisher from '../common/publishers/ComponentChangePublisher';
 
-
 export default class InitAppContainer {
     private appContainer: HTMLDivElement;
     private appContainerClassName = 'body';

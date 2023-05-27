@@ -11,6 +11,7 @@ import contants from '../common/constants/constants';
 import { InputTypeEnum } from '../common/enums/input-type.enum';
 import { StyleNameEnum } from '../common/enums/style-name.enum';
 import { DisplayTypesEnum } from '../common/enums/display-types.enum';
+import { AddComponentEnum } from '../common/enums/add-component.enum';
 
 import DisplayAsParentComponent from '../common/components/display-as-parent.component';
 import GenericPrimaryInputComponent from '../common/components/generic-primary-input.component';
@@ -25,7 +26,6 @@ import ClassManagementComponent from '../common/components/class-management.comp
 import SizesComponent from '../common/components/sizes.component';
 import FontComponent from '../common/components/font.components';
 import UrlDefinitionComponent from '../common/components/url-definition-component';
-import { AddComponent } from '../common/enums/add-component.enum';
 
 export default abstract class RawHTMLConponent implements ComponentChangeObserverInterface {
     protected _domElement: HTMLElement;
@@ -218,23 +218,23 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
         return;
     }
 
-    protected commonComponents: AddComponent[] = [
-        AddComponent.addIdDefinitionComponent,
-        AddComponent.addClassNameDefinitionComponent,
-        AddComponent.addMarginStyleComponent,
-        AddComponent.addPaddingStyleComponent,
-        AddComponent.addSizeComponents,
-        AddComponent.addFontComponens,
-        AddComponent.addBackgroundSettingsComponent,
-        AddComponent.addBorderSettingsComponent,
-        AddComponent.addBoxShadowComponent,
-        AddComponent.addDisplayAsChildComponent,
-        AddComponent.addActionsComponents,
+    protected commonComponents: AddComponentEnum[] = [
+        AddComponentEnum.addIdDefinitionComponent,
+        AddComponentEnum.addClassNameDefinitionComponent,
+        AddComponentEnum.addMarginStyleComponent,
+        AddComponentEnum.addPaddingStyleComponent,
+        AddComponentEnum.addSizeComponents,
+        AddComponentEnum.addFontComponens,
+        AddComponentEnum.addBackgroundSettingsComponent,
+        AddComponentEnum.addBorderSettingsComponent,
+        AddComponentEnum.addBoxShadowComponent,
+        AddComponentEnum.addDisplayAsChildComponent,
+        AddComponentEnum.addActionsComponents,
     ]
 
     protected insertComponentBefore(
-        componentToInsert: AddComponent,
-        referenceComponent: AddComponent
+        componentToInsert: AddComponentEnum,
+        referenceComponent: AddComponentEnum
     ) {
         const alreadyExists = this.commonComponents.find((comp) => comp === componentToInsert);
 
@@ -248,8 +248,8 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
     }
 
     protected insertComponentAfter(
-        componentToInsert: AddComponent,
-        referenceComponent: AddComponent
+        componentToInsert: AddComponentEnum,
+        referenceComponent: AddComponentEnum
     ) {
         const alreadyExists = this.commonComponents.find((comp) => comp === componentToInsert);
 

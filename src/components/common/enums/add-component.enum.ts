@@ -1,4 +1,4 @@
-export enum AddComponent {
+export enum AddComponentEnum {
     addIdDefinitionComponent = 'addIdDefinitionComponent',
     addClassNameDefinitionComponent = 'addClassNameDefinitionComponent',
     addMarginStyleComponent = 'addMarginStyleComponent',

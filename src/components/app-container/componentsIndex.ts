@@ -15,6 +15,7 @@ import UnorderedList from '../html-components/UnorderedList';
 import Table from '../html-components/Table';
 import Anchor from '../html-components/Anchor';
 import TextArea from '../html-components/TextArea';
+import ListItem from '../html-components/ListItem';
 
 function componentsIndex(index) {
     const componentsIndex : ComponentIndex = {
@@ -72,6 +73,10 @@ function componentsIndex(index) {
         },
         'UL': {
             create: () : RawHTMLConponent => new UnorderedList(),
+            isContainer: true,
+        },
+        'LI': {
+            create: () : RawHTMLConponent => new ListItem(),
             isContainer: true,
         },
         'A': {

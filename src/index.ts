@@ -1,4 +1,4 @@
-import initDraggableComponents from './components/components-container/init-draggable-components';
+import initDraggableComponents from './components/app-container/init-draggable-components';
 import CssStyleSheet from './components/css-stylesheet/css-stylesheet';
 import InitAppContainer from './components/app-container/init-app-container';
 
@@ -105,11 +105,6 @@ TODO: faltan los siguientes componentes:
   </tr>
 </table>
 
-
-
-    - ol y ul, y li:
-aqui debemos agregar los li a mano, y asignar el tipo de icono;
-
     - hyperlink o anchor element: debemos agregar el hiperlink y algunas otras cosas
 
     - textarea: debemos poder modificar el relleno, pero en vez de con un input, con un textarea
@@ -118,3 +113,9 @@ aqui debemos agregar los li a mano, y asignar el tipo de icono;
 */
 
 // TODO: falta posicion absoluta o relativa, z-index
+
+// TODO: el color tambien podria ser en degrade, pero podemos dejar que eso lo hagan con la rawclass
+
+// TODO: si yo a una clase le agrego, por ejemplo .table0>td,
+// nunca me trae esa clase como parte de la table0 en el Raw Class Editor
+// ni en el Classes Management Selector

@@ -3,7 +3,7 @@ import ComponentChangeObserverInterface from '../common/interfaces/component-cha
 import RawHTMLConponent from './RawHTMLComponent';
 
 import constants from '../common/constants/constants';
-import { AddComponent } from '../common/enums/add-component.enum';
+import { AddComponentEnum } from '../common/enums/add-component.enum';
 
 export default class RawContainer extends RawHTMLConponent implements ComponentChangeObserverInterface {
     constructor(element: HTMLElement) {
@@ -59,10 +59,16 @@ export default class RawContainer extends RawHTMLConponent implements ComponentC
 
     private buildElementConfigs() {
         this.insertComponentBefore(
-            AddComponent.addDisplayAsParentComponent,
-            AddComponent.addDisplayAsChildComponent
+            AddComponentEnum.addDisplayAsParentComponent,
+            AddComponentEnum.addDisplayAsChildComponent
         );
 
+        this.addChildConfigs();
+
         this.buildElements();
+    }
+
+    protected addChildConfigs() {
+        return;
     }
 }

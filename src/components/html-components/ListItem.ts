@@ -1,6 +1,6 @@
 import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
 
-import AnchorBuilder from '../common/models/AnchorBuilder';
+import ListItemBuilder from '../common/models/ListItemBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
@@ -8,22 +8,19 @@ import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 import defineElementName from '../common/functions/define-element-name';
 import { AddComponentEnum } from '../common/enums/add-component.enum';
 
-export default class Anchor extends RawHTMLConponent implements ComponentChangeObserverInterface {
+export default class ListItem extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
 
     constructor() {
-        const name = defineElementName(`anchor${Anchor.iterator++}`, RawHTMLConponent.instances);
+        const name = defineElementName(`list_item${ListItem.iterator++}`, RawHTMLConponent.instances);
 
-        CssStyleSheet.insertRule(`.${name} {
-            display: inline
-        }`);
+        CssStyleSheet.insertRule(`.${name} {}`);
 
-        const element = new AnchorBuilder()
+        const element = new ListItemBuilder()
             .setName(name)
             .setId(name)
             .addCssClassName(name)
-            .setInnerText('New Anchor')
-            .setHiperlink('')
+            .setInnerText('New List Item')
             .draggable()
             .build();
 
@@ -44,9 +41,9 @@ export default class Anchor extends RawHTMLConponent implements ComponentChangeO
 
     protected openElementConfigs(event) {
         event.stopPropagation();
-        event.preventDefault();
-
         this.selectorValue();
+
+
         this.buildElementConfigs();
     }
 
@@ -61,8 +58,6 @@ export default class Anchor extends RawHTMLConponent implements ComponentChangeO
             AddComponentEnum.addInnerTextChangeComponent,
             AddComponentEnum.addClassNameDefinitionComponent
         );
-
-        // TODO: falta agregar la url del href y ver si algo mas
 
         this.buildElements();
     }
