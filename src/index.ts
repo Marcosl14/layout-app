@@ -57,31 +57,8 @@ CssStyleSheet.init();
 
 /*
 TODO: faltan los siguientes componentes:
-    - Table, tr, th, tb, y ver que otros de tablas -> Para esto tendremos que ir agregando elementos mediant JS:
-        - como ser, agregar el th, el tb o el t
-
-    TODO: el Select Item no me esta trayendo los elementos, como ser los tbody, trow y tcell
-
-<table>
-  <thead>
-    <tr>
-      <th>Header content 1</th>
-      <th>Header content 2</th>
-    </tr>
-  </thead>
-  <tfoot>
-    <tr>
-      <td>Footer content 1</td>
-      <td>Footer content 2</td>
-    </tr>
-  </tfoot>
-  <tbody>
-    <tr>
-      <td>Body content 1</td>
-      <td>Body content 2</td>
-    </tr>
-  </tbody>
-</table>
+    - falta agregar el colgroup y el caption
+    - ver si permitimos que los componentes internos sean draggables, o no...
 
 <table>
   <colgroup span="4" class="columns"></colgroup>

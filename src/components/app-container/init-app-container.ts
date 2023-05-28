@@ -209,6 +209,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
         const newDomElement: RawHTMLConponent | undefined =
             componentsIndex(elementType).create(this.createNewInstancePublisher);
 
+        this.componentChangePublisher.attach(newDomElement);
         domElement.appendChild(newDomElement.domElement);
     }
 }
