@@ -2,23 +2,23 @@ import OrderedListBuilder from '../common/models/OrderedListBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 import RawContainer from './RawContainer';
 
+import CreateNewHTMLComponentPublisher from '../common/publishers/CreateNewHTMLComponentPublisher';
+
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 import constants from '../common/constants/constants';
 import defineElementName from '../common/functions/define-element-name';
 
-import { DisplayTypesEnum } from '../common/enums/display-types.enum';
+import { AddComponentEnum } from '../common/enums/add-component.enum';
 
 export default class OrderedList extends RawContainer {
     private static iterator = 0;
+    protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
-    constructor() {
+    constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
         const name = defineElementName(`ordered_list${OrderedList.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.insertRule(`.${name} {
-            margin: 10px;
-            padding: 10px;
-            display: ${DisplayTypesEnum.flex};
-            flex-direction: column;
+            padding: 30px;
             background-color: rgb(255,255,255);
             border: 1px dashed rgb(0,0,0);
         }`);
@@ -34,6 +34,13 @@ export default class OrderedList extends RawContainer {
             .draggable()
             .build();
 
-        super(element);
+        super(element, createNewHTMLComponentPublisher);
+    }
+
+    protected addChildConfigs() {
+        this.insertComponentAfter(
+            AddComponentEnum.addListItemComponent,
+            AddComponentEnum.addClassNameDefinitionComponent
+        );
     }
 }

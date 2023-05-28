@@ -1,9 +1,14 @@
 import initDraggableComponents from './components/app-container/init-draggable-components';
 import CssStyleSheet from './components/css-stylesheet/css-stylesheet';
 import InitAppContainer from './components/app-container/init-app-container';
+import CreateNewHTMLComponentPublisher from './components/common/publishers/CreateNewHTMLComponentPublisher';
 
 initDraggableComponents();
-new InitAppContainer();
+
+const createNewInstancePublisher = new CreateNewHTMLComponentPublisher();
+const appContainer = new InitAppContainer(createNewInstancePublisher);
+createNewInstancePublisher.attach(appContainer);
+
 CssStyleSheet.init();
 
 // TODO: el metodo init deberia buscar el css del localstorage, deberiamos hacer lo mismo con el HTML
@@ -54,6 +59,8 @@ CssStyleSheet.init();
 TODO: faltan los siguientes componentes:
     - Table, tr, th, tb, y ver que otros de tablas -> Para esto tendremos que ir agregando elementos mediant JS:
         - como ser, agregar el th, el tb o el t
+
+    TODO: el Select Item no me esta trayendo los elementos, como ser los tbody, trow y tcell
 
 <table>
   <thead>

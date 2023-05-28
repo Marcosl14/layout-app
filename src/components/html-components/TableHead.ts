@@ -1,4 +1,4 @@
-import UnorderedListBuilder from '../common/models/UnoderedListBuilder';
+import TableHeadBuilder from '../common/models/TableHeadBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 import RawContainer from './RawContainer';
 
@@ -10,15 +10,15 @@ import defineElementName from '../common/functions/define-element-name';
 
 import { AddComponentEnum } from '../common/enums/add-component.enum';
 
-export default class UnorderedList extends RawContainer {
+export default class TableHead extends RawContainer {
     private static iterator = 0;
     protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
     constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
-        const name = defineElementName(`unordered_list${UnorderedList.iterator++}`, RawHTMLConponent.instances);
+        const name = defineElementName(`table_head${TableHead.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.insertRule(`.${name} {
-            padding: 30px;
+            padding: 10px;
             background-color: rgb(255,255,255);
             border: 1px dashed rgb(0,0,0);
         }`);
@@ -27,7 +27,7 @@ export default class UnorderedList extends RawContainer {
             background-color: ${constants.INVERTED_BACKGROUND_COLOR};
         }`);
 
-        const element = new UnorderedListBuilder()
+        const element = new TableHeadBuilder()
             .setName(name)
             .setId(name)
             .addCssClassName(name)
@@ -39,7 +39,7 @@ export default class UnorderedList extends RawContainer {
 
     protected addChildConfigs() {
         this.insertComponentAfter(
-            AddComponentEnum.addListItemComponent,
+            AddComponentEnum.addTableRowComponent,
             AddComponentEnum.addClassNameDefinitionComponent
         );
     }

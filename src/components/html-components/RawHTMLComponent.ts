@@ -1,4 +1,5 @@
 import ClassChangePublisher from '../common/publishers/ClassChangePublisher';
+import CreateNewHTMLComponentPublisher from '../common/publishers/CreateNewHTMLComponentPublisher';
 import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
 
 import ButtonBuilder from '../common/models/ButtonBuilder';
@@ -26,6 +27,10 @@ import ClassManagementComponent from '../common/components/class-management.comp
 import SizesComponent from '../common/components/sizes.component';
 import FontComponent from '../common/components/font.components';
 import UrlDefinitionComponent from '../common/components/url-definition-component';
+import AddListItemComponent from '../common/components/addListItem.component';
+import AddTableItemsComponent from '../common/components/addTableItems.component';
+import AddTableRowComponent from '../common/components/addTableRow.component';
+import AddTableCellComponent from '../common/components/addTableCell.component';
 
 export default abstract class RawHTMLConponent implements ComponentChangeObserverInterface {
     protected _domElement: HTMLElement;
@@ -34,16 +39,18 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
     public static instances: HTMLElement[] = [];
 
     protected classChangePublisher: ClassChangePublisher;
+    protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
     protected itemsSelector: HTMLSelectElement = document.querySelector('#select-item');
     private optionElement: HTMLOptionElement = document.createElement('option');
 
-    constructor(domElement: HTMLElement) {
+    constructor(domElement: HTMLElement, createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher ) {
         this._domElement = domElement
 
         RawHTMLConponent.instances.push(this._domElement);
 
         this.classChangePublisher = new ClassChangePublisher();
+        this.createNewHTMLComponentPublisher = createNewHTMLComponentPublisher;
 
         this.optionElement.value = this.domElement.id;
         this.optionElement.text = this.domElement.id;
@@ -157,6 +164,26 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
 
     protected addUrlInputComponent() {
         const component = new UrlDefinitionComponent(this._domElement);
+        return component.component;
+    }
+
+    protected addListItemComponent() {
+        const component = new AddListItemComponent(this._domElement, this.createNewHTMLComponentPublisher);
+        return component.component;
+    }
+
+    protected addTableItemsComponent() {
+        const component = new AddTableItemsComponent(this._domElement, this.createNewHTMLComponentPublisher);
+        return component.component;
+    }
+
+    protected addTableRowComponent() {
+        const component = new AddTableRowComponent(this._domElement, this.createNewHTMLComponentPublisher);
+        return component.component;
+    }
+
+    protected addTableCellComponent() {
+        const component = new AddTableCellComponent(this._domElement, this.createNewHTMLComponentPublisher);
         return component.component;
     }
 
