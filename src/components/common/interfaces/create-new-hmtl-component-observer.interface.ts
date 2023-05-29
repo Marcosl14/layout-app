@@ -1,3 +1,3 @@
 export default interface CreateNewHTMLComponentObserverInterface {
-    createNewHTMLComponent(domElement: HTMLElement, elementType: string): void;
+    createNewHTMLComponent(domElement: HTMLElement, elementType: string, quantity?: number,): void;
 }

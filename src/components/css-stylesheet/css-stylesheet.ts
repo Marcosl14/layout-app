@@ -24,6 +24,7 @@ export default class CssStyleSheet {
         console.log(cssFileOutput);
 
         // TODO: ver si hay que eliminar algo del app-container... algun atributo...
+        // antes de exportar el css
     }
 
     static getRule(id: string): CSSRule {

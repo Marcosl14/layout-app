@@ -21,10 +21,12 @@ export default class CreateNewHTMLComponentPublisher implements CreateNewHTMLCom
     }
 
     public createNewHTMLComponent(
-        domElement: HTMLElement, elementType: 'LI' | 'THEAD' | 'TBODY' | 'TFOOT' | 'TR' | 'TD' | 'TH'
+        domElement: HTMLElement,
+        elementType: 'LI' | 'THEAD' | 'TBODY' | 'TFOOT' | 'TR' | 'TD' | 'TH',
+        quantity?: number,
     ): void {
         for (const observer of this.observers) {
-            observer.createNewHTMLComponent(domElement, elementType);
+            observer.createNewHTMLComponent(domElement, elementType, quantity);
         }
     }
 }

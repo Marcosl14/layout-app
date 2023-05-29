@@ -3,7 +3,10 @@ import CreateNewHTMLComponentPublisher from '../publishers/CreateNewHTMLComponen
 
 export interface ComponentIndex {
     [tag: string]: {
-        create: (createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher) => RawHTMLComponent;
+        create: (
+                createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher,
+                parentNode?: HTMLElement
+            ) => RawHTMLComponent;
         isContainer: boolean;
     };
 }

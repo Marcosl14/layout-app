@@ -19,7 +19,6 @@ import { FontStylesEnum } from '../enums/font-styles.enum';
 import { FontWeightEnum } from '../enums/font-weight.enum';
 import { FontVariantEnum } from '../enums/font-variant.enum';
 
-// TODO: hacer mas bello el contenedor de todas las fuentes que tiene el elemento
 // TODO: ver si se pueden agregar fuentes de Google, por ejemplo... como hacerlo...
 
 export default class FontComponent implements ClassChangeObserverInterface {

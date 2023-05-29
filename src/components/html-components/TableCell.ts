@@ -17,7 +17,7 @@ export default class TableCell extends RawHTMLConponent implements ComponentChan
         const name = defineElementName(`table_cell${TableCell.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.insertRule(`.${name} {
-            padding: 10px;
+            margin: 10px;
             background-color: rgb(255,255,255);
             border: 1px dashed rgb(0,0,0);
         }`);
@@ -29,6 +29,7 @@ export default class TableCell extends RawHTMLConponent implements ComponentChan
         const element = new TableCellBuilder()
             .setName(name)
             .setId(name)
+            .setInnerText('New Cell Item')
             .addCssClassName(name)
             .draggable()
             .build();

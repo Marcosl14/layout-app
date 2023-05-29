@@ -122,8 +122,8 @@ function componentsIndex(index) {
             isContainer: true,
         },
         'TR': {
-            create: (createNewHTMLComponentPublisher) : RawHTMLConponent => {
-                return new TableRow(createNewHTMLComponentPublisher)
+            create: (createNewHTMLComponentPublisher, parentNode) : RawHTMLConponent => {
+                return new TableRow(createNewHTMLComponentPublisher, parentNode)
             },
             isContainer: true,
         },

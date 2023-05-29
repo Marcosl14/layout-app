@@ -11,6 +11,10 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
+// TODO: dar estilos facheritos a las tablas, por ejemplo, algo especifico para el header,
+// y que las filas tengan diferentes colores...
+// que el footer tenga otro color distinto...
+
 // TODO: probar exportar css y html y ver como queda la pagina en la realidad */
 // TODO: hacer analisis de que deberiamos exportar realmente del html */
 
@@ -19,7 +23,8 @@ CssStyleSheet.init();
 // ver como duplicamos las clases... si le asignamos las clases del otro componente???, como hacemos con su clase???
 // si duplicamos, no creamos clase propia, solo asignamos las clases del otro componente...
 
-// Agregar imagenes al background...
+// TODO: Agregar imagenes al background...
+// TODO: el background-color tambien podria ser en degrade, pero podemos dejar que eso lo hagan con la rawclass
 
 // TODO: falta todo lo que es position... Absolute, relative, etc... No recuerdo bien como es eso...
 // incluso, el z index, que podria estar en el mismo componente.
@@ -47,6 +52,8 @@ CssStyleSheet.init();
 TODO: faltan los siguientes componentes:
     - falta agregar el colgroup y el caption
     - ver si permitimos que los componentes internos sean draggables, o no...
+
+TODO: para el caso de tablas, el DisplayTypesEnum deberia agregar mas elementos
 
 <table>
   <colgroup span="4" class="columns"></colgroup>
@@ -83,8 +90,6 @@ TODO: faltan los siguientes componentes:
     tambien debe poder ser seleccionable si la queres estirable o no en el dom
 */
 
-// TODO: el background-color tambien podria ser en degrade, pero podemos dejar que eso lo hagan con la rawclass
-
 // TODO: si yo a una clase le agrego, por ejemplo .table0>td,
 // nunca me trae esa clase como parte de la table0 en el Raw Class Editor
 // ni en el Classes Management Selector, pero esta en el CssStyleSheet
@@ -93,6 +98,14 @@ TODO: faltan los siguientes componentes:
 
 // TODO: cuando selecciono un contenedor, me muestra que le ppuedo agregar el hover que tiene a si mismo...
 // y cuando agrega la clase al classList del comp HTML, la agrega como contenedor0:hover
+
+
+
+
+
+
+// Para una v1.5:
+// TODO: hacer mas bello el contenedor de todas las fuentes que tiene el elemento
 
 
 

@@ -4,31 +4,16 @@ import RawContainer from './RawContainer';
 
 import CreateNewHTMLComponentPublisher from '../common/publishers/CreateNewHTMLComponentPublisher';
 
-import CssStyleSheet from '../css-stylesheet/css-stylesheet';
-import constants from '../common/constants/constants';
 import defineElementName from '../common/functions/define-element-name';
 
-import { DisplayTypesEnum } from '../common/enums/display-types.enum';
 import { AddComponentEnum } from '../common/enums/add-component.enum';
 
 export default class TableRow extends RawContainer {
     private static iterator = 0;
     protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
-    constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
+    constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher, parentNode: HTMLElement) {
         const name = defineElementName(`table_row${TableRow.iterator++}`, RawHTMLConponent.instances);
-
-        CssStyleSheet.insertRule(`.${name} {
-            padding: 10px;
-            display: ${DisplayTypesEnum.flex};
-            flex-direction: row;
-            background-color: rgb(255,255,255);
-            border: 1px dashed rgb(0,0,0);
-        }`);
-
-        CssStyleSheet.insertRule(`.${name}:hover {
-            background-color: ${constants.INVERTED_BACKGROUND_COLOR};
-        }`);
 
         const element = new TableRowBuilder()
             .setName(name)
@@ -38,6 +23,12 @@ export default class TableRow extends RawContainer {
             .build();
 
         super(element, createNewHTMLComponentPublisher);
+
+        if(parentNode.nodeName === 'THEAD'){
+            this.createNewHTMLComponentPublisher.createNewHTMLComponent(this.domElement, 'TH', 3);
+        } else {
+            this.createNewHTMLComponentPublisher.createNewHTMLComponent(this.domElement, 'TD', 3);
+        }
     }
 
     protected addChildConfigs() {

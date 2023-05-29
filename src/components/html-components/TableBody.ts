@@ -4,8 +4,6 @@ import RawContainer from './RawContainer';
 
 import CreateNewHTMLComponentPublisher from '../common/publishers/CreateNewHTMLComponentPublisher';
 
-import CssStyleSheet from '../css-stylesheet/css-stylesheet';
-import constants from '../common/constants/constants';
 import defineElementName from '../common/functions/define-element-name';
 
 import { AddComponentEnum } from '../common/enums/add-component.enum';
@@ -17,16 +15,6 @@ export default class TableBody extends RawContainer {
     constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
         const name = defineElementName(`table_body${TableBody.iterator++}`, RawHTMLConponent.instances);
 
-        CssStyleSheet.insertRule(`.${name} {
-            padding: 10px;
-            background-color: rgb(255,255,255);
-            border: 1px dashed rgb(0,0,0);
-        }`);
-
-        CssStyleSheet.insertRule(`.${name}:hover {
-            background-color: ${constants.INVERTED_BACKGROUND_COLOR};
-        }`);
-
         const element = new TableBodyBuilder()
             .setName(name)
             .setId(name)
@@ -35,6 +23,8 @@ export default class TableBody extends RawContainer {
             .build();
 
         super(element, createNewHTMLComponentPublisher);
+
+        this.createNewHTMLComponentPublisher.createNewHTMLComponent(this.domElement, 'TR');
     }
 
     protected addChildConfigs() {

@@ -28,8 +28,6 @@ export default class AddListItemComponent {
             .setInnerText('Add')
             .build()
 
-        // TODO: agregar un input para modificar el valor del innerText
-
         this.container = new ContainerBuilder()
             .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
             .setStyle(StyleNameEnum.padding, '3px')
