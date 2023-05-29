@@ -33,6 +33,12 @@ export default class CssStyleSheet {
     }
 
     static getRuleIndex(id: string): number {
+        const singIndex = id.indexOf('>')
+
+        if(singIndex !== -1 && id[singIndex-1] !== ' ' && id[singIndex+1] !== ' '){
+            id = id.split('>').join(' > ');
+        }
+
         const index = parseInt(Object.keys(this.styleSheet.cssRules).find(key => {
             const className = this.styleSheet.cssRules[parseInt(key)]['selectorText']
             return className === `.${id}`
@@ -58,7 +64,9 @@ export default class CssStyleSheet {
         return Object.keys(this.styleSheet.cssRules)
             .filter(key => {
                 const className = this.styleSheet.cssRules[parseInt(key)]['selectorText']
-                return className === `.${id}` || className.includes(`.${id}:`)
+                // TODO: aca hay que agregar decordores css todavia, como el > o el :, o ver si existen otros
+                // esto es para la carga de la funcion. Para la creacion de la misma, trabajar sobre la class management
+                return className === `.${id}` || className.includes(`.${id}:`) || className.includes(`.${id} >`)
             })
             .map((index) => parseInt(index));
     }
@@ -71,13 +79,14 @@ export default class CssStyleSheet {
 
     static removeRule(id: string): void {
         const index = this.getRuleIndex(id);
+
         let existsRuleForAnotherComponent = false;
 
         RawHTMLConponent.instances.forEach((instance) => {
             if(instance.classList.contains(id)) {
                 existsRuleForAnotherComponent = true;
             }
-        })
+        });
 
         if(!existsRuleForAnotherComponent) {
             this.styleSheet.deleteRule(index);
@@ -104,5 +113,42 @@ export default class CssStyleSheet {
         const newRule =
             this.styleSheet.cssRules[ruleToDuplicateIndex].cssText.replace(ruleToDuplicate, newName);
         this.insertRule(newRule);
+    }
+
+    static getRuleAttributes(id: string): {key: string, val: string}[] {
+        const value = this.getRule(id).cssText;
+
+        let classValueWithoutName = value.split('{')[1];
+        classValueWithoutName = classValueWithoutName.split('}')[0];
+
+        const modifiedValues = classValueWithoutName.split(';').map((val) => val.trim());
+
+        return modifiedValues
+            .map((att) => {
+                const [key, val] = att.split(':');
+                return {key, val};
+            })
+            .filter((att) => att.key !== '' && att.key !== undefined);
+    }
+
+    static editRuleAtributes(id: string, newRuleValues: {key: string, val: string}[]) {
+        const previousStyles = this.getRuleAttributes(id);
+        const ruleStyles = this.getRuleStyles(id);
+
+        newRuleValues.forEach((att) => {
+            ruleStyles[att.key] = att.val;
+
+            if(ruleStyles[att.key] === '' || ruleStyles[att.key] === undefined) {
+                alert(`The style ${att.key} could not be set. Wrong expression`);
+            }
+        });
+
+        previousStyles.forEach((prevAtt) => {
+            const styleAlreadyChanged = newRuleValues.find((att) => att.key === prevAtt.key);
+
+            if(styleAlreadyChanged === undefined){
+                ruleStyles[prevAtt.key] = '';
+            }
+        });
     }
 }

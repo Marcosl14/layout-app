@@ -70,27 +70,22 @@ export default class ClassManagementComponent {
     }
 
     private buildRawClassTextEditor() {
-        this.rawClassTextEditor = new TextareaBuilder()
+        this.rawClassTextEditor = new TextareaBuilder();
     }
 
     private populateRawClassTextEditor(className) {
-        const values = CssStyleSheet.getRules(className).map((rule) => rule.cssText).join('\n');
+        const value = CssStyleSheet.getRule(className).cssText;
 
-        let modifiedValues = '';
+        let classValueWithoutName = value.split('{')[1];
+        classValueWithoutName = classValueWithoutName.split('}')[0];
 
-        for (const char of values) {
-            if (char === '{' || char === ';' || char === '}') {
-                modifiedValues += `${char}\n `;
-            } else {
-                modifiedValues += char;
-            }
-        }
+        const modifiedValues = classValueWithoutName.split(';').map((val) => val.trim());
 
         this.rawClassTextEditor
             .setStyle(StyleNameEnum.height, '100px')
             .setStyle(StyleNameEnum['font-size'], '10px')
             .setStyle(StyleNameEnum['resize'], 'vertical')
-            .setValue(modifiedValues)
+            .setValue(modifiedValues.join('\n'))
     }
 
     private populateClassesList() {
@@ -147,8 +142,12 @@ export default class ClassManagementComponent {
         rules.forEach((rule) => {
             const ruleName = rule['selectorText']
             let value: string;
+
             if (ruleName[0] === '.' || ruleName[0] === '#') {
-                value = ruleName.substring(1)
+                value = ruleName.substring(1);
+                if(value.includes(':')){
+                    return;
+                }
             }
 
             if (value !== 'body' && !this.domElement.classList.contains(value)) {
@@ -326,7 +325,7 @@ export default class ClassManagementComponent {
 
         // Edit full class
         const rawClassChangeButton = new ButtonBuilder()
-            .setInnerText('Change Raw Class')
+            .setInnerText('Update Class')
             .addEventListener('click', this.changeFullClass)
             .build()
 
@@ -411,12 +410,14 @@ export default class ClassManagementComponent {
                     throw new Error('Class name already exists for another element');
                 } else {
                     if (foundRuleWithPseudoclass >= 0) {
-                        throw new Error('Class name already exists');
+                        throw new Error('Class name already exists for this element');
                     }
                 }
             }
 
-            this.domElement.classList.add(className);
+            const onlyClassName = className.split('>');
+
+            this.domElement.classList.add(onlyClassName[0]);
             CssStyleSheet.insertRule(`.${completeCssName} {}`);
 
             const newOption = document.createElement('option');
@@ -434,6 +435,7 @@ export default class ClassManagementComponent {
 
             this.newClassNameInput.value = '';
             this.classesSelector.selectedIndex = index;
+
             this.updateClassName();
         } catch (error) {
             alert(error.message);
@@ -441,7 +443,9 @@ export default class ClassManagementComponent {
     }
 
     private removeClass() {
-        this.domElement.classList.remove(`${this.classesSelector.value}`);
+        const classNameWithoutDecorators = this.classesSelector.value.split('>')[0].trim();
+
+        this.domElement.classList.remove(classNameWithoutDecorators);
         CssStyleSheet.removeRule(`${this.classesSelector.value}`);
         this.classesSelector.options.remove(this.classesSelector.selectedIndex);
 
@@ -452,6 +456,8 @@ export default class ClassManagementComponent {
         if (this.domElement.classList.value === '') {
             this.domElement.removeAttribute('class');
         }
+
+        this.updateClassName()
     }
 
     private changeClassName() {
@@ -471,8 +477,6 @@ export default class ClassManagementComponent {
     }
 
     private appendClass() {
-
-        // TODO: se muestra la clase .input0:hover para el input0, y no deberia....
         this.domElement.classList.add(this.appendClassSelector.value);
 
         this.appendNewOptionElement(this.appendClassSelector.value, this.classesSelector);
@@ -496,6 +500,11 @@ export default class ClassManagementComponent {
     }
 
     private duplicateClass() {
+        if(this.newDuplicadedClassNameInput.value === ''){
+            alert('Class name can not be empty');
+            return;
+        }
+
         this.domElement.classList.add(this.newDuplicadedClassNameInput.value);
 
         let newClassName;
@@ -517,64 +526,18 @@ export default class ClassManagementComponent {
     }
 
     private changeFullClass() {
-        // eslint-disable-next-line max-len
-        // TODO: los valores de la ventana no se van actualizando a medida que se agregan cosas a esa clase, quizas necesitamos un observer, que seria un verdadero quilombassssoooooo...
-
         const input = this.rawClassTextEditor.getValue();
-        const regex = /\.([\s\S]*?)\s*\{([\s\S]*?)\}/g;
 
-        const result: { name: string, values: string[], raw: string }[] = [];
-
-        let match;
-        while ((match = regex.exec(input))) {
-            const name = match[1].trim();
-            const value = match[2].trim();
-
-            const values: string[] = [];
-
-            value.split(';').forEach((val) => {
-                const trimedValue = val.trim();
-
-                if(trimedValue !== ''){
-                    values.push(trimedValue);
-                }
+        const atributes: {key: string, val: string}[] = input
+            .split('\n')
+            .map((att) => {
+                const [key,val] = att.trim().split(':');
+                return {key, val};
             })
+            .filter((att) => att.key !== '' && att.key !== undefined);
 
-            result.push({ name, values, raw: match[0]});
-        }
+        const currentRuleName = `${this.classesSelector.value}`;
 
-        result.forEach((rule) => {
-            const ruleStyles = CssStyleSheet.getRuleStyles(rule.name);
-
-            if(Object.keys(ruleStyles).length > 0) {
-                rule.values.forEach((value) => {
-                    const keyValues = value.split(':').map((val) => val.replace(';','').trim())
-                    ruleStyles[keyValues[0]] = keyValues[1];
-                })
-            } else {
-                try {
-                    CssStyleSheet.insertRule(rule.raw);
-                    this.domElement.classList.add(rule.name);
-
-                    const newOption = document.createElement('option');
-                    newOption.text = `.${rule.name}`;
-                    newOption.value = rule.name;
-
-                    this.classesSelector.appendChild(newOption);
-
-                    let index = 0;
-                    this.classesSelector.childNodes.forEach((child: HTMLOptionElement, i) => {
-                        if (child.value === newOption.value) {
-                            index = i;
-                        }
-                    });
-
-                    this.classesSelector.selectedIndex = index;
-                    this.updateClassName();
-                } catch (error) {
-                    alert(error.message);
-                }
-            }
-        });
+        CssStyleSheet.editRuleAtributes(currentRuleName, atributes);
     }
 }

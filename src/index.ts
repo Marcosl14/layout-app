@@ -11,12 +11,19 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
+// TODO: los valores no se van actualizando a medida que se agregan cosas en la clase en el raw class editor
+
+// TODO: reemplazar los alert por new Error(mensaje)
+
+// TODO: tenemos que tener el edit class raw y el create new raw class...
+// Entonces no necesitamos cargar todas las clases en la misma ventana...
+// Y en el edit class raw, deberia haber un boton para cargar la clase seleccionada... Actualizarla, y guardar...
+
+// TODO: cuando voy pasando por los contenedores, no le saca el hover al padre.
+
 // TODO: dar estilos facheritos a las tablas, por ejemplo, algo especifico para el header,
 // y que las filas tengan diferentes colores...
 // que el footer tenga otro color distinto...
-
-// TODO: probar exportar css y html y ver como queda la pagina en la realidad */
-// TODO: hacer analisis de que deberiamos exportar realmente del html */
 
 // TODO: falta la accion de duplicar un componente, es decir, de un componente existente, duplicar la config...
 // si, es necesario, porque es mucho mas facil que asignarle la clase de otro componente...
@@ -37,9 +44,9 @@ CssStyleSheet.init();
 
 // TODO: con el id habria que reemplazar todos los caracteres especiales por guiones o algo asi...???
 
-// TODO: falta propiedad scrollable en div
+// TODO: falta propiedad scrollable en div.
 
-// TODO: cualquier elemento debe poder modificar el display settings, solo que algunos no tendran el flex o grid
+// TODO: cualquier elemento debe poder modificar el display settings, solo que algunos no tendran el flex o grid.
 
 // TODO: en el Select Item no se encuentra el app-container.
 // Es que para que esto funcione, el app-container deberia ser creado como un new Container();
@@ -54,6 +61,9 @@ TODO: faltan los siguientes componentes:
     - ver si permitimos que los componentes internos sean draggables, o no...
 
 TODO: para el caso de tablas, el DisplayTypesEnum deberia agregar mas elementos
+
+TODO: quizas para las tablas habria que setear cuantas filas queremos que tenga el body, si queremos footer, etc.
+ver como se hariamos para que un td o th pueda compartir dos espacios.
 
 <table>
   <colgroup span="4" class="columns"></colgroup>
@@ -90,15 +100,8 @@ TODO: para el caso de tablas, el DisplayTypesEnum deberia agregar mas elementos
     tambien debe poder ser seleccionable si la queres estirable o no en el dom
 */
 
-// TODO: si yo a una clase le agrego, por ejemplo .table0>td,
-// nunca me trae esa clase como parte de la table0 en el Raw Class Editor
-// ni en el Classes Management Selector, pero esta en el CssStyleSheet
-
-// TODO: cuando voy pasando por los contenedores, no le saca el hover al padre
-
-// TODO: cuando selecciono un contenedor, me muestra que le ppuedo agregar el hover que tiene a si mismo...
-// y cuando agrega la clase al classList del comp HTML, la agrega como contenedor0:hover
-
+// TODO: probar exportar css y html y ver como queda la pagina en la realidad */
+// TODO: hacer analisis de que deberiamos exportar realmente del html */
 
 
 
