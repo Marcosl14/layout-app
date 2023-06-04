@@ -11,8 +11,6 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
-// TODO: en fonts, el font size no es correcto en los titulos, te das cuenta cuando lo cambias
-
 // TODO: los valores no se van actualizando a medida que se agregan cosas en la clase en el raw class editor
 // En el edit class raw, deberia haber un boton para cargar la clase seleccionada... Actualizarla, y guardar...?
 

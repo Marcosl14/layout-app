@@ -253,7 +253,13 @@ export default class FontComponent implements ClassChangeObserverInterface {
     }
 
     private setFontSizeValueAccordingToClass() {
-        const fontSize = this.domElementStyleSheet['font-size'];
+        let fontSize = this.domElementStyleSheet['font-size'];
+
+        if(!fontSize) {
+            const computedStyle = window.getComputedStyle(this.domElement);
+            fontSize = computedStyle.getPropertyValue('font-size');
+        }
+
         this.fontSizeInput.value = `${parseInt(fontSize) || 1}`;
         this.fontUnitSelector.value = getUnit(fontSize, UnitsEnum.em);
     }
