@@ -329,10 +329,12 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
 
             // NOTE: decision: delete only children styles for classes named as the component id.
             this.domElement.childNodes.forEach((child) => {
-                CssStyleSheet.getRuleStyles(child['name'])['align-self'] = '';
-                CssStyleSheet.getRuleStyles(child['name'])['flex-grow'] = '';
-                CssStyleSheet.getRuleStyles(child['name'])['flex-shrink'] = '';
-                CssStyleSheet.getRuleStyles(child['name'])['flex-basis'] = '';
+                if(child['name']){
+                    CssStyleSheet.getRuleStyles(child['name'])['align-self'] = '';
+                    CssStyleSheet.getRuleStyles(child['name'])['flex-grow'] = '';
+                    CssStyleSheet.getRuleStyles(child['name'])['flex-shrink'] = '';
+                    CssStyleSheet.getRuleStyles(child['name'])['flex-basis'] = '';
+                }
             })
         }
     }
@@ -358,12 +360,14 @@ export default class DisplayAsParentComponent implements ClassChangeObserverInte
 
             // NOTE: decision: delete only children styles for classes named as the component id.
             this.domElement.childNodes.forEach((child) => {
-                CssStyleSheet.getRuleStyles(child['name'])['grid-column-start'] = '';
-                CssStyleSheet.getRuleStyles(child['name'])['grid-column-end'] = '';
-                CssStyleSheet.getRuleStyles(child['name'])['grid-row-start'] = '';
-                CssStyleSheet.getRuleStyles(child['name'])['grid-row-end'] = '';
-                CssStyleSheet.getRuleStyles(child['name'])['justify-self'] = '';
-                CssStyleSheet.getRuleStyles(child['name'])['align-self'] = '';
+                if(child['name']){
+                    CssStyleSheet.getRuleStyles(child['name'])['grid-column-start'] = '';
+                    CssStyleSheet.getRuleStyles(child['name'])['grid-column-end'] = '';
+                    CssStyleSheet.getRuleStyles(child['name'])['grid-row-start'] = '';
+                    CssStyleSheet.getRuleStyles(child['name'])['grid-row-end'] = '';
+                    CssStyleSheet.getRuleStyles(child['name'])['justify-self'] = '';
+                    CssStyleSheet.getRuleStyles(child['name'])['align-self'] = '';
+                }
             })
         }
     }
