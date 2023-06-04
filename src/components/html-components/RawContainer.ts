@@ -3,11 +3,19 @@ import ComponentChangeObserverInterface from '../common/interfaces/component-cha
 import RawHTMLConponent from './RawHTMLComponent';
 
 import constants from '../common/constants/constants';
-import { AddComponent } from '../common/enums/add-component.enum';
+import { AddComponentEnum } from '../common/enums/add-component.enum';
+
+import CreateNewHTMLComponentPublisher from '../common/publishers/CreateNewHTMLComponentPublisher';
 
 export default class RawContainer extends RawHTMLConponent implements ComponentChangeObserverInterface {
-    constructor(element: HTMLElement) {
-        super(element);
+    protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
+
+    constructor(element: HTMLElement, createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher) {
+        if(createNewHTMLComponentPublisher){
+            super(element, createNewHTMLComponentPublisher);
+        } else {
+            super(element);
+        }
 
         this.dragEnter = this.dragEnter.bind(this);
         this.dragLeaveForThisElement = this.dragLeaveForThisElement.bind(this);
@@ -59,10 +67,16 @@ export default class RawContainer extends RawHTMLConponent implements ComponentC
 
     private buildElementConfigs() {
         this.insertComponentBefore(
-            AddComponent.addDisplayAsParentComponent,
-            AddComponent.addDisplayAsChildComponent
+            AddComponentEnum.addDisplayAsParentComponent,
+            AddComponentEnum.addDisplayAsChildComponent
         );
 
+        this.addChildConfigs();
+
         this.buildElements();
+    }
+
+    protected addChildConfigs() {
+        return;
     }
 }

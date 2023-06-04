@@ -38,6 +38,12 @@
                     <select id="select-item"></select>
                 </div>
             </div>
+            <div class="update-dom-elements" id="undo-remove-item-container" style="display:none;">
+                <div>
+                    <label> Undo Remove Last Element </label>
+                    <button id="undo-remove-item-button"> Undo </button>
+                </div>
+            </div>
             <div draggable="true" class="dom-element dom-element-container">Div Container</div>
             <form draggable="true" class="dom-element dom-element-container">Form Container</form>
             <button draggable="true" class="dom-element dom-element-button">Button</button>
@@ -51,9 +57,12 @@
             <h5 draggable="true" class="dom-element dom-element-title">Title H5</h5>
             <h6 draggable="true" class="dom-element dom-element-title">Title H6</h6>
             <image draggable="true" class="dom-element dom-element-image" src="" alt="Image"></image>
+
             <ol draggable="true" class="dom-element dom-element-container">Ord. List Container</ol>
             <ul draggable="true" class="dom-element dom-element-container">Unord. List Container</ul>
-            <textarea draggable="true" class="dom-element dom-element-container">Text Area</textarea>
+
+            <textarea draggable="true" class="dom-element dom-element-container dom-element-text-area">Text Area</textarea>
+
             <table draggable="true" class="dom-element dom-element-container"><td>Table Container</td></table>
         </div>
         <div id="app-container-fixed">

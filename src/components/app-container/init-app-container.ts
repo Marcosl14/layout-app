@@ -10,9 +10,12 @@ import { StyleNameEnum } from '../common/enums/style-name.enum';
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 
 import ComponentChangePublisher from '../common/publishers/ComponentChangePublisher';
+import CreateNewHTMLComponentPublisher from '../common/publishers/CreateNewHTMLComponentPublisher';
+import CreateNewHTMLComponentObserverInterface from '../common/interfaces/create-new-hmtl-component-observer.interface';
 
+export default class InitAppContainer implements CreateNewHTMLComponentObserverInterface {
+    private createNewInstancePublisher: CreateNewHTMLComponentPublisher;
 
-export default class InitAppContainer {
     private appContainer: HTMLDivElement;
     private appContainerClassName = 'body';
     private appContainerHeightInput: HTMLInputElement;
@@ -29,7 +32,9 @@ export default class InitAppContainer {
 
     private printHtmlButton: HTMLButtonElement = document.querySelector('#print-html-file');
 
-    constructor() {
+    constructor(createNewInstancePublisher: CreateNewHTMLComponentPublisher) {
+        this.createNewInstancePublisher = createNewInstancePublisher;
+
         this.appContainer = document.querySelector('#app-container');
 
         this.appContainerHeightInput = document.querySelector('#update-height');
@@ -102,7 +107,8 @@ export default class InitAppContainer {
 
         const elementType = event.dataTransfer.getData('text/plain');
 
-        const newDomElement: RawHTMLConponent | undefined = componentsIndex(elementType).create();
+        const newDomElement: RawHTMLConponent | undefined =
+            componentsIndex(elementType).create(this.createNewInstancePublisher);
 
         const elementExists = newDomElement ? false : true;
 
@@ -197,5 +203,14 @@ export default class InitAppContainer {
 
     private sendComponentName() {
         this.componentChangePublisher.notifyComponentName(this.componentSelector.value);
+    }
+
+    public createNewHTMLComponent(parentNode, elementType, quantity = 1) {
+        for(let i = 0; i < quantity; i++) {
+            const newDomElement = componentsIndex(elementType).create(this.createNewInstancePublisher, parentNode);
+
+            this.componentChangePublisher.attach(newDomElement);
+            parentNode.appendChild(newDomElement.domElement);
+        }
     }
 }

@@ -5,7 +5,7 @@ import RawHTMLConponent from './RawHTMLComponent';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 import defineElementName from '../common/functions/define-element-name';
-import { AddComponent } from '../common/enums/add-component.enum';
+import { AddComponentEnum } from '../common/enums/add-component.enum';
 
 export default class Image extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
@@ -57,8 +57,8 @@ export default class Image extends RawHTMLConponent implements ComponentChangeOb
 
     private buildElementConfigs() {
         this.insertComponentAfter(
-            AddComponent.addUrlInputComponent,
-            AddComponent.addClassNameDefinitionComponent
+            AddComponentEnum.addUrlInputComponent,
+            AddComponentEnum.addClassNameDefinitionComponent
         );
 
         this.buildElements();

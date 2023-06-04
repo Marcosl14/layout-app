@@ -1,29 +1,36 @@
 import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
 
-import AnchorBuilder from '../common/models/AnchorBuilder';
+import TableCellBuilder from '../common/models/TableCellBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 
+import constants from '../common/constants/constants';
+
 import defineElementName from '../common/functions/define-element-name';
 import { AddComponentEnum } from '../common/enums/add-component.enum';
 
-export default class Anchor extends RawHTMLConponent implements ComponentChangeObserverInterface {
+export default class TableCell extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
 
     constructor() {
-        const name = defineElementName(`anchor${Anchor.iterator++}`, RawHTMLConponent.instances);
+        const name = defineElementName(`table_cell${TableCell.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.insertRule(`.${name} {
-            display: inline
+            margin: 10px;
+            background-color: rgb(255,255,255);
+            border: 1px dashed rgb(0,0,0);
         }`);
 
-        const element = new AnchorBuilder()
+        CssStyleSheet.insertRule(`.${name}:hover {
+            background-color: ${constants.INVERTED_BACKGROUND_COLOR};
+        }`);
+
+        const element = new TableCellBuilder()
             .setName(name)
             .setId(name)
+            .setInnerText('New Cell Item')
             .addCssClassName(name)
-            .setInnerText('New Anchor')
-            .setHiperlink('')
             .draggable()
             .build();
 
@@ -44,9 +51,9 @@ export default class Anchor extends RawHTMLConponent implements ComponentChangeO
 
     protected openElementConfigs(event) {
         event.stopPropagation();
-        event.preventDefault();
-
         this.selectorValue();
+
+
         this.buildElementConfigs();
     }
 
@@ -61,8 +68,6 @@ export default class Anchor extends RawHTMLConponent implements ComponentChangeO
             AddComponentEnum.addInnerTextChangeComponent,
             AddComponentEnum.addClassNameDefinitionComponent
         );
-
-        // TODO: falta agregar la url del href y ver si algo mas
 
         this.buildElements();
     }

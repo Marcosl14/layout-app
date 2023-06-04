@@ -8,7 +8,7 @@ import defineElementName from '../common/functions/define-element-name';
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 
 import { InputTypeEnum } from '../common/enums/input-type.enum';
-import { AddComponent } from '../common/enums/add-component.enum';
+import { AddComponentEnum } from '../common/enums/add-component.enum';
 export default class Input extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
 
@@ -63,8 +63,8 @@ export default class Input extends RawHTMLConponent implements ComponentChangeOb
 
     private buildElementConfigs() {
         this.insertComponentAfter(
-            AddComponent.addInputTypeSelectorComponent,
-            AddComponent.addClassNameDefinitionComponent
+            AddComponentEnum.addInputTypeSelectorComponent,
+            AddComponentEnum.addClassNameDefinitionComponent
         );
 
         this.buildElements();

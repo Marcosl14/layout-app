@@ -1,4 +1,4 @@
-export enum AddComponent {
+export enum AddComponentEnum {
     addIdDefinitionComponent = 'addIdDefinitionComponent',
     addClassNameDefinitionComponent = 'addClassNameDefinitionComponent',
     addMarginStyleComponent = 'addMarginStyleComponent',
@@ -15,4 +15,8 @@ export enum AddComponent {
     addDisplayAsParentComponent = 'addDisplayAsParentComponent',
     addUrlInputComponent = 'addUrlInputComponent',
     addInputTypeSelectorComponent = 'addInputTypeSelectorComponent',
+    addListItemComponent = 'addListItemComponent',
+    addTableItemsComponent = 'addTableItemsComponent',
+    addTableRowComponent = 'addTableRowComponent',
+    addTableCellComponent = 'addTableCellComponent',
 }

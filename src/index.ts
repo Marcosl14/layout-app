@@ -1,35 +1,35 @@
-import initDraggableComponents from './components/components-container/init-draggable-components';
+import initDraggableComponents from './components/app-container/init-draggable-components';
 import CssStyleSheet from './components/css-stylesheet/css-stylesheet';
 import InitAppContainer from './components/app-container/init-app-container';
+import CreateNewHTMLComponentPublisher from './components/common/publishers/CreateNewHTMLComponentPublisher';
 
 initDraggableComponents();
-new InitAppContainer();
+
+const createNewInstancePublisher = new CreateNewHTMLComponentPublisher();
+const appContainer = new InitAppContainer(createNewInstancePublisher);
+createNewInstancePublisher.attach(appContainer);
+
 CssStyleSheet.init();
 
-// TODO: el metodo init deberia buscar el css del localstorage, deberiamos hacer lo mismo con el HTML
-// Deberiamos ver como almacenar y deshacer cambios....
+// TODO: los valores no se van actualizando a medida que se agregan cosas en la clase en el raw class editor
+// En el edit class raw, deberia haber un boton para cargar la clase seleccionada... Actualizarla, y guardar...?
 
-// TODO: acomodar estructuras con prettier y tslinter. Saltar linea cuando muy larga.
+// TODO: cuando voy pasando por los contenedores, no le saca el hover a los padre.
 
-// TODO: hay que meterle drag enter al app-container-fixed para que le saque el background color al app-container...
-// o ver que pasa con el drag leave
+// TODO: dar estilos facheritos a las tablas, por ejemplo, algo especifico para el header,
+// y que las filas tengan diferentes colores...
+// que el footer tenga otro color distinto...
 
-// TODO: insertar rules para el media query : https://davidwalsh.name/add-rules-stylesheets
-// https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
-
-// TODO: probar exportar css y html y ver como queda la pagina en la realidad */
-// TODO: hacer analisis de que deberiamos exportar realmente del html */
-
-// TODO: aqui falta la accion de duplicar un componente, es decir, de un componente existente, duplicar la config...
+// TODO: falta la accion de duplicar un componente, es decir, de un componente existente, duplicar la config...
 // si, es necesario, porque es mucho mas facil que asignarle la clase de otro componente...
 // ver como duplicamos las clases... si le asignamos las clases del otro componente???, como hacemos con su clase???
 // si duplicamos, no creamos clase propia, solo asignamos las clases del otro componente...
 
-// Agregar el elemento img y a su vez, agregar imagenes al background...
+// TODO: Agregar imagenes al background...
+// TODO: el background-color tambien podria ser en degrade, pero podemos dejar que eso lo hagan con la rawclass
 
 // TODO: falta todo lo que es position... Absolute, relative, etc... No recuerdo bien como es eso...
 // incluso, el z index, que podria estar en el mismo componente.
-
 
 // TODO: ver forma de remover el borde original del input. No es la misma propiedad que el border...
 // TODO: el borderbox del input viene como advanced... Ver si tenemos que hacerle algo
@@ -37,44 +37,28 @@ CssStyleSheet.init();
 // TODO: cuando creo un nombre futuro, y justo creo un elemento con ese nombre futuro, tira error...
 // por eso yo le pasaba el iterator... ver como solucionar...
 
-// TODO: con el id habria que reemplazar todos los caracteres especiales por guiones o algo asi...
+// TODO: con el id habria que reemplazar todos los caracteres especiales por guiones o algo asi...???
 
-// TODO: falta propiedad scrollable en div
+// TODO: falta propiedad scrollable en div.
 
-// TODO: cualquier elemento debe poder modificar el display settings
+// TODO: cualquier elemento debe poder modificar el display settings, solo que algunos no tendran el flex o grid.
 
-// TODO: falta la propiedad background-image en el background-color
+// TODO: en el Select Item no se encuentra el app-container.
+// Es que para que esto funcione, el app-container deberia ser creado como un new Container();
+// De hecho, cuando creo un solo componente, no lo puedo seleccionar por el selector...
+// Ver si en vez de usar change, usamos 'select'
 
-// eslint-disable-next-line max-len
-// TODO: en el Select Item no se encuentra el app-container. Es que para que esto funcione, el app-container deberia ser creado como un new Container();
-
-// TODO: falta un boton de delete initial properties, asi sacamos los bordes y eso a un div, por ejemplo...
+// TODO: falta un boton de remove initial properties, asi sacamos los bordes y eso a un div, por ejemplo...
 
 /*
 TODO: faltan los siguientes componentes:
-    - Table, tr, th, tb, y ver que otros de tablas -> Para esto tendremos que ir agregando elementos mediant JS:
-        - como ser, agregar el th, el tb o el t
+    - falta agregar el colgroup y el caption
+    - ver si permitimos que los componentes internos sean draggables, o no...
 
-<table>
-  <thead>
-    <tr>
-      <th>Header content 1</th>
-      <th>Header content 2</th>
-    </tr>
-  </thead>
-  <tfoot>
-    <tr>
-      <td>Footer content 1</td>
-      <td>Footer content 2</td>
-    </tr>
-  </tfoot>
-  <tbody>
-    <tr>
-      <td>Body content 1</td>
-      <td>Body content 2</td>
-    </tr>
-  </tbody>
-</table>
+TODO: para el caso de tablas, el DisplayTypesEnum deberia agregar mas elementos
+
+TODO: quizas para las tablas habria que setear cuantas filas queremos que tenga el body, si queremos footer, etc.
+ver como se hariamos para que un td o th pueda compartir dos espacios.
 
 <table>
   <colgroup span="4" class="columns"></colgroup>
@@ -105,16 +89,31 @@ TODO: faltan los siguientes componentes:
   </tr>
 </table>
 
-
-
-    - ol y ul, y li:
-aqui debemos agregar los li a mano, y asignar el tipo de icono;
-
     - hyperlink o anchor element: debemos agregar el hiperlink y algunas otras cosas
 
-    - textarea: debemos poder modificar el relleno, pero en vez de con un input, con un textarea
-    dar estilo tambien para que no sea estirable en el selector antes de hacer el drag and drop
+    - textarea: debemos poder modificar el relleno, pero en vez de con un input,
     tambien debe poder ser seleccionable si la queres estirable o no en el dom
 */
 
-// TODO: falta posicion absoluta o relativa, z-index
+// TODO: probar exportar css y html y ver como queda la pagina en la realidad */
+// TODO: hacer analisis de que deberiamos exportar realmente del html */
+
+
+
+
+
+// Para una v1.5:
+// TODO: hacer mas bello el contenedor de todas las fuentes que tiene el elemento
+
+
+
+
+
+// Para una V2 (por la complejidad):
+
+// TODO: el metodo init deberia buscar el css del localstorage, deberiamos hacer lo mismo con el HTML
+// Deberiamos ver como almacenar y deshacer cambios....
+
+// TODO: insertar rules para el media query : https://davidwalsh.name/add-rules-stylesheets
+// https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
+

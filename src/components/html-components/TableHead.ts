@@ -1,34 +1,21 @@
-import TableBuilder from '../common/models/TableBuilder';
+import TableHeadBuilder from '../common/models/TableHeadBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 import RawContainer from './RawContainer';
 
 import CreateNewHTMLComponentPublisher from '../common/publishers/CreateNewHTMLComponentPublisher';
 
-import CssStyleSheet from '../css-stylesheet/css-stylesheet';
-import constants from '../common/constants/constants';
 import defineElementName from '../common/functions/define-element-name';
 
 import { AddComponentEnum } from '../common/enums/add-component.enum';
 
-export default class Table extends RawContainer {
+export default class TableHead extends RawContainer {
     private static iterator = 0;
     protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
     constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
-        const name = defineElementName(`table${Table.iterator++}`, RawHTMLConponent.instances);
+        const name = defineElementName(`table_head${TableHead.iterator++}`, RawHTMLConponent.instances);
 
-        CssStyleSheet.insertRule(`.${name} {
-            margin: 10px;
-            padding: 10px;
-            background-color: rgb(255,255,255);
-            border: 1px dashed rgb(0,0,0);
-        }`);
-
-        CssStyleSheet.insertRule(`.${name}:hover {
-            background-color: ${constants.INVERTED_BACKGROUND_COLOR};
-        }`);
-
-        const element = new TableBuilder()
+        const element = new TableHeadBuilder()
             .setName(name)
             .setId(name)
             .addCssClassName(name)
@@ -36,11 +23,13 @@ export default class Table extends RawContainer {
             .build();
 
         super(element, createNewHTMLComponentPublisher);
+
+        this.createNewHTMLComponentPublisher.createNewHTMLComponent(this.domElement, 'TR');
     }
 
     protected addChildConfigs() {
         this.insertComponentAfter(
-            AddComponentEnum.addTableItemsComponent,
+            AddComponentEnum.addTableRowComponent,
             AddComponentEnum.addClassNameDefinitionComponent
         );
     }

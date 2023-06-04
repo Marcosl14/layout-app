@@ -1,8 +1,8 @@
 import { ComponentIndex } from '../common/interfaces/component-index.interface';
-import RawHTMLConponent from '../html-components/RawHTMLComponent';
 
 import { TitleTypesEnum } from '../common/enums/title.types.enum';
 
+import RawHTMLConponent from '../html-components/RawHTMLComponent';
 import Button from '../html-components/Button';
 import Input from '../html-components/Input';
 import Container from '../html-components/Container';
@@ -15,6 +15,13 @@ import UnorderedList from '../html-components/UnorderedList';
 import Table from '../html-components/Table';
 import Anchor from '../html-components/Anchor';
 import TextArea from '../html-components/TextArea';
+import ListItem from '../html-components/ListItem';
+import TableHead from '../html-components/TableHead';
+import TableBody from '../html-components/TableBody';
+import TableFoot from '../html-components/TableFoot';
+import TableRow from '../html-components/TableRow';
+import TableCell from '../html-components/TableCell';
+import TableHeadCell from '../html-components/TableHeadCell';
 
 function componentsIndex(index) {
     const componentsIndex : ComponentIndex = {
@@ -67,11 +74,19 @@ function componentsIndex(index) {
             isContainer: false,
         },
         'OL': {
-            create: () : RawHTMLConponent => new OrderedList(),
+            create: (createNewHTMLComponentPublisher) : RawHTMLConponent => {
+                return new OrderedList(createNewHTMLComponentPublisher);
+            },
             isContainer: true,
         },
         'UL': {
-            create: () : RawHTMLConponent => new UnorderedList(),
+            create: (createNewHTMLComponentPublisher) : RawHTMLConponent => {
+                return new UnorderedList(createNewHTMLComponentPublisher)
+            },
+            isContainer: true,
+        },
+        'LI': {
+            create: () : RawHTMLConponent => new ListItem(),
             isContainer: true,
         },
         'A': {
@@ -83,7 +98,41 @@ function componentsIndex(index) {
             isContainer: true,
         },
         'TABLE': {
-            create: () : RawHTMLConponent => new Table(),
+            create: (createNewHTMLComponentPublisher) : RawHTMLConponent => {
+                return new Table(createNewHTMLComponentPublisher)
+            },
+            isContainer: true,
+        },
+        'THEAD': {
+            create: (createNewHTMLComponentPublisher) : RawHTMLConponent => {
+                return new TableHead(createNewHTMLComponentPublisher)
+            },
+            isContainer: true,
+        },
+        'TBODY': {
+            create: (createNewHTMLComponentPublisher) : RawHTMLConponent => {
+                return new TableBody(createNewHTMLComponentPublisher)
+            },
+            isContainer: true,
+        },
+        'TFOOT': {
+            create: (createNewHTMLComponentPublisher) : RawHTMLConponent => {
+                return new TableFoot(createNewHTMLComponentPublisher)
+            },
+            isContainer: true,
+        },
+        'TR': {
+            create: (createNewHTMLComponentPublisher, parentNode) : RawHTMLConponent => {
+                return new TableRow(createNewHTMLComponentPublisher, parentNode)
+            },
+            isContainer: true,
+        },
+        'TD': {
+            create: () : RawHTMLConponent => new TableCell(),
+            isContainer: true,
+        },
+        'TH': {
+            create: () : RawHTMLConponent => new TableHeadCell(),
             isContainer: true,
         },
         'default': {

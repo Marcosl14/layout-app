@@ -19,7 +19,6 @@ import { FontStylesEnum } from '../enums/font-styles.enum';
 import { FontWeightEnum } from '../enums/font-weight.enum';
 import { FontVariantEnum } from '../enums/font-variant.enum';
 
-// TODO: hacer mas bello el contenedor de todas las fuentes que tiene el elemento
 // TODO: ver si se pueden agregar fuentes de Google, por ejemplo... como hacerlo...
 
 export default class FontComponent implements ClassChangeObserverInterface {
@@ -196,7 +195,7 @@ export default class FontComponent implements ClassChangeObserverInterface {
 
     private buildAllComponents() {
         this.fontSelector = new SelectorFromEnumBuilder(FontsEnum)
-            .selectOption(FontsEnum.default)
+            .selectOption(FontsEnum.Default)
             .build();
 
         this.currentFontsElementsContainer = new ContainerBuilder();
@@ -254,7 +253,13 @@ export default class FontComponent implements ClassChangeObserverInterface {
     }
 
     private setFontSizeValueAccordingToClass() {
-        const fontSize = this.domElementStyleSheet['font-size'];
+        let fontSize = this.domElementStyleSheet['font-size'];
+
+        if(!fontSize) {
+            const computedStyle = window.getComputedStyle(this.domElement);
+            fontSize = computedStyle.getPropertyValue('font-size');
+        }
+
         this.fontSizeInput.value = `${parseInt(fontSize) || 1}`;
         this.fontUnitSelector.value = getUnit(fontSize, UnitsEnum.em);
     }
