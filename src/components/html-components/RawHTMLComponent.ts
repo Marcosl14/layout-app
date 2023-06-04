@@ -1,6 +1,7 @@
 import ClassChangePublisher from '../common/publishers/ClassChangePublisher';
 import CreateNewHTMLComponentPublisher from '../common/publishers/CreateNewHTMLComponentPublisher';
 import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
+import UndoRemoveModuleSingleton from '../common/singletons/undo-remove.module';
 
 import ButtonBuilder from '../common/models/ButtonBuilder';
 import LabelBuilder from '../common/models/LabelBuilder';
@@ -221,6 +222,10 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
         if (confirm('Are you sure to remove this component')) {
             const parent = this._domElement.parentNode;
             parent.removeChild(this._domElement);
+
+            const undoList = UndoRemoveModuleSingleton.getInstance();
+            undoList.addChange({parentElement: parent, childElement: this._domElement })
+
             this.stylesComponents.remove();
             this.itemsSelector.removeChild(this.optionElement);
         }

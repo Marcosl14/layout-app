@@ -195,7 +195,7 @@ export default class FontComponent implements ClassChangeObserverInterface {
 
     private buildAllComponents() {
         this.fontSelector = new SelectorFromEnumBuilder(FontsEnum)
-            .selectOption(FontsEnum.default)
+            .selectOption(FontsEnum.Default)
             .build();
 
         this.currentFontsElementsContainer = new ContainerBuilder();

@@ -11,15 +11,14 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
+// TODO: solucionar button se rompe cuando lo intento abrir
+
+// TODO: en fonts, el font size no es correcto en los titulos, te das cuenta cuando lo cambias
+
 // TODO: los valores no se van actualizando a medida que se agregan cosas en la clase en el raw class editor
+// En el edit class raw, deberia haber un boton para cargar la clase seleccionada... Actualizarla, y guardar...?
 
-// TODO: reemplazar los alert por new Error(mensaje)
-
-// TODO: tenemos que tener el edit class raw y el create new raw class...
-// Entonces no necesitamos cargar todas las clases en la misma ventana...
-// Y en el edit class raw, deberia haber un boton para cargar la clase seleccionada... Actualizarla, y guardar...
-
-// TODO: cuando voy pasando por los contenedores, no le saca el hover al padre.
+// TODO: cuando voy pasando por los contenedores, no le saca el hover a los padre.
 
 // TODO: dar estilos facheritos a las tablas, por ejemplo, algo especifico para el header,
 // y que las filas tengan diferentes colores...
