@@ -11,6 +11,10 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
+// TODO: el z-index tambien puede ser auto, habria que ver de agregar un checkbox
+
+// TODO: incorporar google metrics o algo para medir los usuarios que utilizan la pagina
+
 // TODO: dar estilos facheritos a las tablas, por ejemplo, algo especifico para el header,
 // y que las filas tengan diferentes colores... que el footer tenga otro color distinto...
 

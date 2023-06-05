@@ -71,7 +71,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
 
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const packageVersion = require('../../../package.json').version;
-        this.versionLabel.innerText = `Version: ${packageVersion}`;
+        this.versionLabel.innerText = `Version: ${packageVersion} --- ${process.env.SIMPLE_ANALYTICS_KEY}`;
 
         this.printHtmlButton.addEventListener('click', this.printHtmlFile);
     }
