@@ -16,6 +16,10 @@ export default class SelectorFromEnumBuilder extends RawBuilder<HTMLSelectElemen
         return this.element.value;
     }
 
+    public setValue(value: string) {
+        this.element.value = value;
+    }
+
     private addOptions() {
         this.keys.forEach((optKey) => {
             const newOption = document.createElement('option');

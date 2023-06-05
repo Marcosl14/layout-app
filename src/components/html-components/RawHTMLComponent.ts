@@ -32,6 +32,7 @@ import AddListItemComponent from '../common/components/addListItem.component';
 import AddTableItemsComponent from '../common/components/addTableItems.component';
 import AddTableRowComponent from '../common/components/addTableRow.component';
 import AddTableCellComponent from '../common/components/addTableCell.component';
+import PositionComponent from '../common/components/position.component';
 
 export default abstract class RawHTMLConponent implements ComponentChangeObserverInterface {
     protected _domElement: HTMLElement;
@@ -131,6 +132,12 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
 
     protected addDisplayAsChildComponent() {
         const component = new DisplayAsChildComponent(this._domElement);
+        this.classChangePublisher.attach(component);
+        return component.component;
+    }
+
+    protected addPositionComponent() {
+        const component = new PositionComponent(this._domElement);
         this.classChangePublisher.attach(component);
         return component.component;
     }
@@ -293,6 +300,7 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
         AddComponentEnum.addBorderSettingsComponent,
         AddComponentEnum.addBoxShadowComponent,
         AddComponentEnum.addDisplayAsChildComponent,
+        AddComponentEnum.addPositionComponent,
         AddComponentEnum.addActionsComponents,
     ]
 
