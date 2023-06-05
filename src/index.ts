@@ -11,21 +11,6 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
-// TODO: cuando abro un thead, se me rompe
-/*
-class-management.component.ts:77 Uncaught TypeError: Cannot read properties of undefined (reading 'cssText')
-    at ClassManagementComponent.populateRawClassTextEditor (class-management.component.ts:77:55)
-    at new ClassManagementComponent (class-management.component.ts:63:14)
-    at RawHTMLConponent.addClassNameDefinitionComponent (RawHTMLComponent.ts:76:16)
-    at RawHTMLComponent.ts:315:66
-    at Array.forEach (<anonymous>)
-    at RawHTMLConponent.buildElements (RawHTMLComponent.ts:314:31)
-    at RawContainer.buildElementConfigs (RawContainer.ts:76:14)
-    at RawContainer.componentSelected (RawContainer.ts:64:18)
-    at ComponentChangePublisher.notifyComponentName (ComponentChangePublisher.ts:25:22)
-    at InitAppContainer.sendComponentName (init-app-container.ts:205:39)
-*/
-
 // TODO: dar estilos facheritos a las tablas, por ejemplo, algo especifico para el header,
 // y que las filas tengan diferentes colores...
 // que el footer tenga otro color distinto...

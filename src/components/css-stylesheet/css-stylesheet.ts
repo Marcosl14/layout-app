@@ -71,10 +71,14 @@ export default class CssStyleSheet {
             .map((index) => parseInt(index));
     }
 
-    static getRuleStyles(id: string): CSSStyleDeclaration {
-        const index = this.getRuleIndex(id);
-        const styles = this.styleSheet.cssRules[index];
-        return styles ? styles['style'] : {};
+    static getRuleStyles(id: string): CSSStyleDeclaration | object | object {
+        try {
+            const index = this.getRuleIndex(id);
+            const styles = this.styleSheet.cssRules[index];
+            return styles ? styles['style'] : {};
+        } catch(err) {
+            return {};
+        }
     }
 
     static removeRule(id: string): void {

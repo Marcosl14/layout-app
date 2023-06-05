@@ -18,7 +18,6 @@ export default class TableRow extends RawContainer {
         const element = new TableRowBuilder()
             .setName(name)
             .setId(name)
-            .addCssClassName(name)
             .draggable()
             .build();
 

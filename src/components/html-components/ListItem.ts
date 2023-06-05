@@ -3,8 +3,6 @@ import ComponentChangeObserverInterface from '../common/interfaces/component-cha
 import ListItemBuilder from '../common/models/ListItemBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 
-import CssStyleSheet from '../css-stylesheet/css-stylesheet';
-
 import defineElementName from '../common/functions/define-element-name';
 import { AddComponentEnum } from '../common/enums/add-component.enum';
 
@@ -14,12 +12,9 @@ export default class ListItem extends RawHTMLConponent implements ComponentChang
     constructor(createNewHTMLComponentPublisher) {
         const name = defineElementName(`list_item${ListItem.iterator++}`, RawHTMLConponent.instances);
 
-        CssStyleSheet.insertRule(`.${name} {}`);
-
         const element = new ListItemBuilder()
             .setName(name)
             .setId(name)
-            .addCssClassName(name)
             .setInnerText('New List Item')
             .draggable()
             .build();

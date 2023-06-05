@@ -16,7 +16,7 @@ import { DisplayTypesEnum } from '../enums/display-types.enum';
 export default class SizesComponent implements ClassChangeObserverInterface {
     private domElement: HTMLElement;
     private container: HTMLDivElement;
-    private domElementStyleSheet: CSSStyleDeclaration;
+    private domElementStyleSheet: CSSStyleDeclaration | object;
 
     private widthSizeInput: HTMLInputElement;
     private widthUnitSelector: HTMLSelectElement;
@@ -129,7 +129,7 @@ export default class SizesComponent implements ClassChangeObserverInterface {
     }
 
     private updateWidth() {
-        if(this.widthSizeInput.value === '0'){
+        if(this.widthSizeInput.value === '0' && this.domElementStyleSheet instanceof CSSStyleDeclaration){
             this.domElementStyleSheet.removeProperty('width');
             return;
         }
@@ -137,7 +137,7 @@ export default class SizesComponent implements ClassChangeObserverInterface {
     }
 
     private updateHeight() {
-        if(this.heightSizeInput.value === '0'){
+        if(this.heightSizeInput.value === '0' && this.domElementStyleSheet instanceof CSSStyleDeclaration){
             this.domElementStyleSheet.removeProperty('height');
             return;
         }

@@ -80,15 +80,17 @@ export default class ClassManagementComponent {
     }
 
     private populateRawClassTextEditor(className) {
-        const value = CssStyleSheet.getRule(className).cssText;
+        if(className){
+            const value = CssStyleSheet.getRule(className).cssText;
 
-        let classValueWithoutName = value.split('{')[1];
-        classValueWithoutName = classValueWithoutName.split('}')[0];
+            let classValueWithoutName = value.split('{')[1];
+            classValueWithoutName = classValueWithoutName.split('}')[0];
 
-        const modifiedValues = classValueWithoutName.split(';').map((val) => val.trim());
+            const modifiedValues = classValueWithoutName.split(';').map((val) => val.trim());
 
-        this.rawClassTextEditor
-            .setValue(modifiedValues.join('\n'))
+            this.rawClassTextEditor
+                .setValue(modifiedValues.join('\n'))
+        }
     }
 
     private refreshRawClassTextEditor() {

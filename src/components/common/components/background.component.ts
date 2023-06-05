@@ -15,7 +15,7 @@ import { DisplayTypesEnum } from '../enums/display-types.enum';
 export default class BackgroundComponent implements ClassChangeObserverInterface{
     private domElement: HTMLElement;
     private container: HTMLDivElement;
-    private domElementStyleSheet: CSSStyleDeclaration;
+    private domElementStyleSheet: CSSStyleDeclaration | object;
 
     private colorInput: HTMLInputElement;
     private opacitySlider: HTMLInputElement;
