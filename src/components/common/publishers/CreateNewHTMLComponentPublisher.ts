@@ -21,12 +21,30 @@ export default class CreateNewHTMLComponentPublisher implements CreateNewHTMLCom
     }
 
     public createNewHTMLComponent(
-        domElement: HTMLElement,
-        elementType: 'LI' | 'THEAD' | 'TBODY' | 'TFOOT' | 'TR' | 'TD' | 'TH',
+        parentElement: HTMLElement,
+        childElementNodeName: 'LI' | 'THEAD' | 'TBODY' | 'TFOOT' | 'TR' | 'TD' | 'TH',
         quantity?: number,
     ): void {
         for (const observer of this.observers) {
-            observer.createNewHTMLComponent(domElement, elementType, quantity);
+            observer.createNewHTMLComponent(parentElement, childElementNodeName, quantity);
+        }
+    }
+
+    public duplicateHTMLComponentWithChildren(
+        parentElement: HTMLElement,
+        childToDuplicate: HTMLElement
+    ): void {
+        for (const observer of this.observers) {
+            observer.duplicateHTMLComponentWithChildren(parentElement, childToDuplicate);
+        }
+    }
+
+    public duplicateHTMLComponent(
+        parentElement: HTMLElement,
+        childToDuplicate: HTMLElement
+    ): void {
+        for (const observer of this.observers) {
+            observer.duplicateHTMLComponent(parentElement, childToDuplicate);
         }
     }
 }

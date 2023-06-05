@@ -213,4 +213,36 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             parentNode.appendChild(newDomElement.domElement);
         }
     }
+
+    public duplicateHTMLComponent(parentElement: HTMLElement, childToDuplicate: HTMLElement): HTMLElement {
+        const newRawDomElement =
+            componentsIndex(childToDuplicate.nodeName)
+                .create(this.createNewInstancePublisher, parentElement);
+
+        this.componentChangePublisher.attach(newRawDomElement);
+
+        const newDomElement = newRawDomElement.domElement;
+
+        parentElement.appendChild(newDomElement);
+
+        while (newDomElement.classList.length > 0) {
+            newDomElement.classList.remove(newDomElement.classList.item(0));
+        }
+
+        for (let index = 0; index < childToDuplicate.classList.length; index++) {
+            newDomElement.classList.add(childToDuplicate.classList.item(index))
+        }
+
+        return newDomElement;
+    }
+
+    public duplicateHTMLComponentWithChildren(parentElement: HTMLElement, childToDuplicate: HTMLElement): HTMLElement {
+        const newDomElement = this.duplicateHTMLComponent(parentElement, childToDuplicate);
+
+        Array.from(childToDuplicate.children).forEach(child => {
+            return this.duplicateHTMLComponentWithChildren(newDomElement, child as HTMLElement);
+        });
+
+        return newDomElement;
+    }
 }

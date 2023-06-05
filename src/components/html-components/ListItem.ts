@@ -11,7 +11,7 @@ import { AddComponentEnum } from '../common/enums/add-component.enum';
 export default class ListItem extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
 
-    constructor() {
+    constructor(createNewHTMLComponentPublisher) {
         const name = defineElementName(`list_item${ListItem.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.insertRule(`.${name} {}`);
@@ -24,7 +24,7 @@ export default class ListItem extends RawHTMLConponent implements ComponentChang
             .draggable()
             .build();
 
-        super(element);
+        super(element, createNewHTMLComponentPublisher);
 
         this.openElementConfigs = this.openElementConfigs.bind(this);
         this.dragLeave = this.dragLeave.bind(this);

@@ -58,6 +58,8 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
         this.itemsSelector.appendChild(this.optionElement);
 
         this.removeElement = this.removeElement.bind(this);
+        this.duplicateElementComponent = this.duplicateElementComponent.bind(this);
+        this.duplicateElementWithChildren = this.duplicateElementWithChildren.bind(this);
     }
 
     get domElement() {
@@ -205,10 +207,26 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                 .setStyle(StyleNameEnum.margin, '0px 0px 10px')
+                .appendChild(this.addDuplicateElementComponent())
+                .appendChild(this.addDuplicateElementWithChildrensComponent())
                 .appendChild(this.addRemoveElementComponent())
                 .build()
             )
             .build()
+    }
+
+    private addDuplicateElementComponent() {
+        return new ButtonBuilder()
+            .setInnerText('Duplicate Element')
+            .addEventListener('click', this.duplicateElementComponent)
+            .build();
+    }
+
+    private addDuplicateElementWithChildrensComponent() {
+        return new ButtonBuilder()
+            .setInnerText('Duplicate Element With Children')
+            .addEventListener('click', this.duplicateElementWithChildren)
+            .build();
     }
 
     private addRemoveElementComponent() {
@@ -216,6 +234,20 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
             .setInnerText('Remove Element')
             .addEventListener('click', this.removeElement)
             .build();
+    }
+
+    protected duplicateElementComponent() {
+        this.createNewHTMLComponentPublisher.duplicateHTMLComponent(
+            this.domElement.parentElement,
+            this.domElement,
+        );
+    }
+
+    protected duplicateElementWithChildren() {
+        this.createNewHTMLComponentPublisher.duplicateHTMLComponentWithChildren(
+            this.domElement.parentElement,
+            this.domElement,
+        );
     }
 
     protected removeElement() {
