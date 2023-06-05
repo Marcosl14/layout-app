@@ -26,9 +26,6 @@ class-management.component.ts:77 Uncaught TypeError: Cannot read properties of u
     at InitAppContainer.sendComponentName (init-app-container.ts:205:39)
 */
 
-// TODO: los valores no se van actualizando a medida que se agregan cosas en la clase en el raw class editor
-// En el edit class raw, deberia haber un boton para cargar la clase seleccionada... Actualizarla, y guardar...?
-
 // TODO: dar estilos facheritos a las tablas, por ejemplo, algo especifico para el header,
 // y que las filas tengan diferentes colores...
 // que el footer tenga otro color distinto...
