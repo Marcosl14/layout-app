@@ -14,7 +14,7 @@ import { AlignFlexItemsEnum } from '../enums/align-flex-items.enum';
 
 export default class InputAndUnitsSelectorComponent {
     private container: HTMLDivElement;
-    private domElementStyleSheet: CSSStyleDeclaration;
+    private domElementStyleSheet: CSSStyleDeclaration | object;
 
     private label: string;
     private style: string;
@@ -24,7 +24,7 @@ export default class InputAndUnitsSelectorComponent {
 
     private zeroValue: number;
 
-    constructor(domElementStyleSheet: CSSStyleDeclaration, style: string, label: string) {
+    constructor(domElementStyleSheet: CSSStyleDeclaration | object, style: string, label: string) {
         this.style = style;
         this.label = label;
         this.domElementStyleSheet = domElementStyleSheet;
@@ -77,7 +77,7 @@ export default class InputAndUnitsSelectorComponent {
             `${this.propertyValueInput.getValue()}${this.unitsSelectorInput.getValue()}`
     }
 
-    public updateStyleSheet(domElementStyleSheet: CSSStyleDeclaration) {
+    public updateStyleSheet(domElementStyleSheet: CSSStyleDeclaration | object) {
         this.domElementStyleSheet = domElementStyleSheet;
         this.setInitialValues();
     }

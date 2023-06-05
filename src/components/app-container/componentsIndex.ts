@@ -24,119 +24,153 @@ import TableCell from '../html-components/TableCell';
 import TableHeadCell from '../html-components/TableHeadCell';
 
 function componentsIndex(index) {
-    const componentsIndex : ComponentIndex = {
+    const componentsIndex: ComponentIndex = {
         'DIV': {
-            create: () : RawHTMLConponent => new Container(),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Container(createNewHTMLComponentPublisher);
+            },
             isContainer: true,
         },
         'FORM': {
-            create: () : RawHTMLConponent => new Form(),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Form(createNewHTMLComponentPublisher);
+            },
             isContainer: true,
         },
         'BUTTON': {
-            create: () : RawHTMLConponent => new Button(),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Button(createNewHTMLComponentPublisher);
+            },
             isContainer: true,
         },
         'INPUT': {
-            create: () : RawHTMLConponent => new Input(),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Input(createNewHTMLComponentPublisher);
+            },
             isContainer: false,
         },
         'LABEL': {
-            create: () : RawHTMLConponent => new Label(),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Label(createNewHTMLComponentPublisher);
+            },
             isContainer: false,
         },
         'H1': {
-            create: () : RawHTMLConponent => new Title(TitleTypesEnum.H1),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Title(TitleTypesEnum.H1, createNewHTMLComponentPublisher);
+            },
             isContainer: false,
         },
         'H2': {
-            create: () : RawHTMLConponent => new Title(TitleTypesEnum.H2),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Title(TitleTypesEnum.H2, createNewHTMLComponentPublisher);
+            },
             isContainer: false,
         },
         'H3': {
-            create: () : RawHTMLConponent => new Title(TitleTypesEnum.H3),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Title(TitleTypesEnum.H3, createNewHTMLComponentPublisher);
+            },
             isContainer: false,
         },
         'H4': {
-            create: () : RawHTMLConponent => new Title(TitleTypesEnum.H4),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Title(TitleTypesEnum.H4, createNewHTMLComponentPublisher)
+            },
             isContainer: false,
         },
         'H5': {
-            create: () : RawHTMLConponent => new Title(TitleTypesEnum.H5),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Title(TitleTypesEnum.H5, createNewHTMLComponentPublisher);
+            },
             isContainer: false,
         },
         'H6': {
-            create: () : RawHTMLConponent => new Title(TitleTypesEnum.H6),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Title(TitleTypesEnum.H6, createNewHTMLComponentPublisher);
+            },
             isContainer: false,
         },
         'IMG': {
-            create: () : RawHTMLConponent => new Image(),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Image(createNewHTMLComponentPublisher);
+            },
             isContainer: false,
         },
         'OL': {
-            create: (createNewHTMLComponentPublisher) : RawHTMLConponent => {
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
                 return new OrderedList(createNewHTMLComponentPublisher);
             },
             isContainer: true,
         },
         'UL': {
-            create: (createNewHTMLComponentPublisher) : RawHTMLConponent => {
-                return new UnorderedList(createNewHTMLComponentPublisher)
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new UnorderedList(createNewHTMLComponentPublisher);
             },
             isContainer: true,
         },
         'LI': {
-            create: () : RawHTMLConponent => new ListItem(),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new ListItem(createNewHTMLComponentPublisher);
+            },
             isContainer: true,
         },
         'A': {
-            create: () : RawHTMLConponent => new Anchor(),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Anchor(createNewHTMLComponentPublisher);
+            },
             isContainer: true,
         },
         'TEXTAREA': {
-            create: () : RawHTMLConponent => new TextArea(),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new TextArea(createNewHTMLComponentPublisher);
+            },
             isContainer: true,
         },
         'TABLE': {
-            create: (createNewHTMLComponentPublisher) : RawHTMLConponent => {
-                return new Table(createNewHTMLComponentPublisher)
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Table(createNewHTMLComponentPublisher);
             },
             isContainer: true,
         },
         'THEAD': {
-            create: (createNewHTMLComponentPublisher) : RawHTMLConponent => {
-                return new TableHead(createNewHTMLComponentPublisher)
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new TableHead(createNewHTMLComponentPublisher);
             },
             isContainer: true,
         },
         'TBODY': {
-            create: (createNewHTMLComponentPublisher) : RawHTMLConponent => {
-                return new TableBody(createNewHTMLComponentPublisher)
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new TableBody(createNewHTMLComponentPublisher);
             },
             isContainer: true,
         },
         'TFOOT': {
-            create: (createNewHTMLComponentPublisher) : RawHTMLConponent => {
-                return new TableFoot(createNewHTMLComponentPublisher)
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new TableFoot(createNewHTMLComponentPublisher);
             },
             isContainer: true,
         },
         'TR': {
-            create: (createNewHTMLComponentPublisher, parentNode) : RawHTMLConponent => {
-                return new TableRow(createNewHTMLComponentPublisher, parentNode)
+            create: (createNewHTMLComponentPublisher, parentNode): RawHTMLConponent => {
+                return new TableRow(createNewHTMLComponentPublisher, parentNode);
             },
             isContainer: true,
         },
         'TD': {
-            create: () : RawHTMLConponent => new TableCell(),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new TableCell(createNewHTMLComponentPublisher);
+            },
             isContainer: true,
         },
         'TH': {
-            create: () : RawHTMLConponent => new TableHeadCell(),
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new TableHeadCell(createNewHTMLComponentPublisher);
+            },
             isContainer: true,
         },
         'default': {
-            create: () : undefined  => undefined,
+            create: (): undefined => undefined,
             isContainer: false,
         },
     }

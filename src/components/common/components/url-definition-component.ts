@@ -13,7 +13,7 @@ import { DisplayTypesEnum } from '../enums/display-types.enum';
 export default class UrlDefinitionComponent implements ClassChangeObserverInterface {
     private domElement: HTMLElement;
     private container: HTMLDivElement;
-    private domElementStyleSheet: CSSStyleDeclaration;
+    private domElementStyleSheet: CSSStyleDeclaration | object | object;
 
     private urlInput: HTMLInputElement;
 

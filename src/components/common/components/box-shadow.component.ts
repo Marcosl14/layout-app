@@ -23,7 +23,7 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
     private container: HTMLDivElement;
     private componentsContainer: HTMLDivElement;
     private shadowBoxTypeContainer: HTMLDivElement;
-    private domElementStyleSheet: CSSStyleDeclaration;
+    private domElementStyleSheet: CSSStyleDeclaration | object;
 
     private simpleBoxShadowCheckbox: HTMLInputElement;
     private advancedBoxShadowCheckbox: HTMLInputElement;

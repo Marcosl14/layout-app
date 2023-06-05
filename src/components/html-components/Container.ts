@@ -11,7 +11,7 @@ import { DisplayTypesEnum } from '../common/enums/display-types.enum';
 export default class Container extends RawContainer {
     private static iterator = 0;
 
-    constructor() {
+    constructor(createNewHTMLComponentPublisher) {
         const name = defineElementName(`container${Container.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.insertRule(`.${name} {
@@ -34,6 +34,6 @@ export default class Container extends RawContainer {
             .draggable()
             .build();
 
-        super(element);
+        super(element, createNewHTMLComponentPublisher);
     }
 }

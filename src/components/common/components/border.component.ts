@@ -18,7 +18,7 @@ import { DisplayTypesEnum } from '../enums/display-types.enum';
 export default class BorderComponent implements ClassChangeObserverInterface {
     private domElement: HTMLElement;
     private container: HTMLDivElement;
-    private domElementStyleSheet: CSSStyleDeclaration;
+    private domElementStyleSheet: CSSStyleDeclaration | object;
 
     private topBorderColorInput: HTMLInputElement;
     private rightBorderColorInput: HTMLInputElement;

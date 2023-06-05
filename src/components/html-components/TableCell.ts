@@ -13,7 +13,7 @@ import { AddComponentEnum } from '../common/enums/add-component.enum';
 export default class TableCell extends RawHTMLConponent implements ComponentChangeObserverInterface {
     private static iterator = 0;
 
-    constructor() {
+    constructor(createNewHTMLComponentPublisher) {
         const name = defineElementName(`table_cell${TableCell.iterator++}`, RawHTMLConponent.instances);
 
         CssStyleSheet.insertRule(`.${name} {
@@ -34,7 +34,7 @@ export default class TableCell extends RawHTMLConponent implements ComponentChan
             .draggable()
             .build();
 
-        super(element);
+        super(element, createNewHTMLComponentPublisher);
 
         this.openElementConfigs = this.openElementConfigs.bind(this);
         this.dragLeave = this.dragLeave.bind(this);

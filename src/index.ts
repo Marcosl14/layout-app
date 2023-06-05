@@ -11,25 +11,15 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
-// TODO: los valores no se van actualizando a medida que se agregan cosas en la clase en el raw class editor
-// En el edit class raw, deberia haber un boton para cargar la clase seleccionada... Actualizarla, y guardar...?
+// TODO: el z-index tambien puede ser auto, habria que ver de agregar un checkbox
 
-// TODO: cuando voy pasando por los contenedores, no le saca el hover a los padre.
+// TODO: incorporar google metrics o algo para medir los usuarios que utilizan la pagina
 
 // TODO: dar estilos facheritos a las tablas, por ejemplo, algo especifico para el header,
-// y que las filas tengan diferentes colores...
-// que el footer tenga otro color distinto...
-
-// TODO: falta la accion de duplicar un componente, es decir, de un componente existente, duplicar la config...
-// si, es necesario, porque es mucho mas facil que asignarle la clase de otro componente...
-// ver como duplicamos las clases... si le asignamos las clases del otro componente???, como hacemos con su clase???
-// si duplicamos, no creamos clase propia, solo asignamos las clases del otro componente...
+// y que las filas tengan diferentes colores... que el footer tenga otro color distinto...
 
 // TODO: Agregar imagenes al background...
 // TODO: el background-color tambien podria ser en degrade, pero podemos dejar que eso lo hagan con la rawclass
-
-// TODO: falta todo lo que es position... Absolute, relative, etc... No recuerdo bien como es eso...
-// incluso, el z index, que podria estar en el mismo componente.
 
 // TODO: ver forma de remover el borde original del input. No es la misma propiedad que el border...
 // TODO: el borderbox del input viene como advanced... Ver si tenemos que hacerle algo
@@ -98,7 +88,21 @@ ver como se hariamos para que un td o th pueda compartir dos espacios.
 // TODO: probar exportar css y html y ver como queda la pagina en la realidad */
 // TODO: hacer analisis de que deberiamos exportar realmente del html */
 
+// TODO: cuando voy pasando por los contenedores, no le saca el hover a los padre. Esto parece bastante complicado
+// de solucionar. Hay que trabajar con el mouse entre y el mouse leave, lo cual habiamos visto que traia algunos
+// problemas...
+/*
+  const parent = document.getElementById('parent');
+  const child = parent.querySelector('.child');
 
+  child.addEventListener('mouseenter', () => {
+    child.classList.add('hovered');
+  });
+
+  child.addEventListener('mouseleave', () => {
+    child.classList.remove('hovered');
+});
+*/
 
 
 

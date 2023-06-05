@@ -9,7 +9,7 @@ import { AlignFlexItemsEnum } from '../enums/align-flex-items.enum';
 
 export default class GenericCssPropertyMutatorComponent {
     private container: HTMLDivElement;
-    private domElementStyleSheet: CSSStyleDeclaration;
+    private domElementStyleSheet: CSSStyleDeclaration | object;
 
     private label: string;
     private style: string;
@@ -20,7 +20,7 @@ export default class GenericCssPropertyMutatorComponent {
     private zeroValue: number;
 
     constructor(
-        domElementStyleSheet: CSSStyleDeclaration,
+        domElementStyleSheet: CSSStyleDeclaration | object,
         style: string,
         label: string,
         changeElement: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement,
@@ -62,7 +62,7 @@ export default class GenericCssPropertyMutatorComponent {
         this.changeElement.value = value;
     }
 
-    public updateStyleSheet(domElementStyleSheet: CSSStyleDeclaration) {
+    public updateStyleSheet(domElementStyleSheet: CSSStyleDeclaration | object) {
         this.domElementStyleSheet = domElementStyleSheet;
     }
 

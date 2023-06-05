@@ -18,7 +18,7 @@ export default class MarginOrPaddingComponent implements ClassChangeObserverInte
     private type;
     private domElement: HTMLElement;
     private container: HTMLDivElement;
-    private domElementStyleSheet: CSSStyleDeclaration;
+    private domElementStyleSheet: CSSStyleDeclaration | object | object;
 
     private topPropertyValueInput: HTMLInputElement;
     private rigthPropertyValueInput: HTMLInputElement;
@@ -35,10 +35,10 @@ export default class MarginOrPaddingComponent implements ClassChangeObserverInte
     constructor(domElement: HTMLElement, type: 'margin' | 'padding', ) {
         this.type = type;
         this.domElement = domElement;
-        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(this.domElement.classList[0])
+        this.domElementStyleSheet = CssStyleSheet.getRuleStyles(this.domElement.classList[0]);
         this.addComponents();
         this.setValuesAccordingToClass();
-        this.updateProperty()
+        this.updateProperty();
     }
 
     get component() {

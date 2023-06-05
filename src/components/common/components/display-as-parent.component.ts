@@ -30,7 +30,7 @@ import { GridAutoFlowEnum } from '../enums/grid-auto-flow.enum';
 export default class DisplayAsParentComponent implements ClassChangeObserverInterface {
     private domElement: HTMLElement;
     private container: HTMLDivElement;
-    private domElementStyleSheet: CSSStyleDeclaration;
+    private domElementStyleSheet: CSSStyleDeclaration | object;
 
     private displaySelector: HTMLSelectElement;
 

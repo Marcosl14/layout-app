@@ -18,7 +18,6 @@ export default class TableFoot extends RawContainer {
         const element = new TableFootBuilder()
             .setName(name)
             .setId(name)
-            .addCssClassName(name)
             .draggable()
             .build();
 

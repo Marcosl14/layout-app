@@ -21,7 +21,7 @@ import { AlignGridSelfEnum } from '../enums/align-grid-self.enum';
 export default class DisplayAsChildComponent implements ClassChangeObserverInterface {
     private domElement: HTMLElement;
     private container: HTMLDivElement;
-    private domElementStyleSheet: CSSStyleDeclaration;
+    private domElementStyleSheet: CSSStyleDeclaration | object;
 
     private flexContainerAsChildren: HTMLDivElement;
     private alignSelfSelector: GenericCssPropertyMutatorComponent;

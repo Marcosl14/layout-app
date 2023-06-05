@@ -24,7 +24,7 @@ import { FontVariantEnum } from '../enums/font-variant.enum';
 export default class FontComponent implements ClassChangeObserverInterface {
     private domElement: HTMLElement;
     private container: HTMLDivElement;
-    private domElementStyleSheet: CSSStyleDeclaration;
+    private domElementStyleSheet: CSSStyleDeclaration | object;
 
     private currentFontFamiliesArray: string[] = [];
     private fontSelector: HTMLSelectElement;

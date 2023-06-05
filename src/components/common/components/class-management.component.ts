@@ -70,22 +70,31 @@ export default class ClassManagementComponent {
     }
 
     private buildRawClassTextEditor() {
-        this.rawClassTextEditor = new TextareaBuilder();
-    }
+        this.refreshRawClassTextEditor = this.refreshRawClassTextEditor.bind(this);
 
-    private populateRawClassTextEditor(className) {
-        const value = CssStyleSheet.getRule(className).cssText;
-
-        let classValueWithoutName = value.split('{')[1];
-        classValueWithoutName = classValueWithoutName.split('}')[0];
-
-        const modifiedValues = classValueWithoutName.split(';').map((val) => val.trim());
-
-        this.rawClassTextEditor
+        this.rawClassTextEditor = new TextareaBuilder()
             .setStyle(StyleNameEnum.height, '100px')
             .setStyle(StyleNameEnum['font-size'], '10px')
             .setStyle(StyleNameEnum['resize'], 'vertical')
-            .setValue(modifiedValues.join('\n'))
+            .addEventListener('click', this.refreshRawClassTextEditor)
+    }
+
+    private populateRawClassTextEditor(className) {
+        if(className){
+            const value = CssStyleSheet.getRule(className).cssText;
+
+            let classValueWithoutName = value.split('{')[1];
+            classValueWithoutName = classValueWithoutName.split('}')[0];
+
+            const modifiedValues = classValueWithoutName.split(';').map((val) => val.trim());
+
+            this.rawClassTextEditor
+                .setValue(modifiedValues.join('\n'))
+        }
+    }
+
+    private refreshRawClassTextEditor() {
+        this.populateRawClassTextEditor(this.classesSelector.value)
     }
 
     private populateClassesList() {
