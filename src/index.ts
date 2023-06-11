@@ -11,10 +11,10 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
-// TODO: el z-index tambien puede ser auto, habria que ver de agregar un checkbox
-
 // TODO: leer HTML y CSS del local storage (deberia ser automatico con cada accion).
 // Cada vez que hagamos click sobre un elemento para buildear las configs, ahi guardamos.
+
+// TODO: el z-index tambien puede ser auto, habria que ver de agregar un checkbox
 
 // TODO: poder guardar el proyecto con un cierto nombre.
 // TODO: hacer un selector con los proyectos guardados.

@@ -33,6 +33,7 @@ import AddTableItemsComponent from '../common/components/addTableItems.component
 import AddTableRowComponent from '../common/components/addTableRow.component';
 import AddTableCellComponent from '../common/components/addTableCell.component';
 import PositionComponent from '../common/components/position.component';
+import validateAndSave from '../common/functions/validate-and-save-loocalstorage';
 
 export default abstract class RawHTMLConponent implements ComponentChangeObserverInterface {
     protected _domElement: HTMLElement;
@@ -341,5 +342,10 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
         })
 
         this.stylesComponents.build();
+
+        // TODO: el boton load deberia setear una variable loaded en true,
+        // para saber si estamos trabajamos o no sobre ese componente
+        const loadedProjectsSelector: HTMLSelectElement = document.querySelector('#proyect-names-selector');
+        validateAndSave(loadedProjectsSelector.value);
     }
 }

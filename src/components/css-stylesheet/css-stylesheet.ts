@@ -15,16 +15,20 @@ export default class CssStyleSheet {
     }
 
     static print() {
+        console.log(this.getStyleSheetAsText());
+    }
+
+    static getStyleSheetAsText(): string {
+        // TODO: ver si hay que eliminar algo del app-container... algun atributo...
+        // antes de exportar el css
+
         let cssFileOutput = '';
 
         Object.keys(this.styleSheet.cssRules).forEach(key => {
             cssFileOutput += `${this.styleSheet.cssRules[parseInt(key)].cssText}\n\n`
         });
 
-        console.log(cssFileOutput);
-
-        // TODO: ver si hay que eliminar algo del app-container... algun atributo...
-        // antes de exportar el css
+        return cssFileOutput;
     }
 
     static getRule(id: string): CSSRule {
