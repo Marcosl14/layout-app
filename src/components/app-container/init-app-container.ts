@@ -421,6 +421,8 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
     private loadProyect() {
         const proyectInfo = JSON.parse(localStorage.getItem(this.loadedProjectsSelector.value));
 
+        localStorage.setItem('loaded-project-layout-app', this.loadedProjectsSelector.value);
+
         this.insertHtmlElementsInAppContainer(proyectInfo.html);
         this.parseCSS(proyectInfo.css)
     }

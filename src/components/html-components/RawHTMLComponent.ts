@@ -343,9 +343,12 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
 
         this.stylesComponents.build();
 
-        // TODO: el boton load deberia setear una variable loaded en true,
-        // para saber si estamos trabajamos o no sobre ese componente
         const loadedProjectsSelector: HTMLSelectElement = document.querySelector('#proyect-names-selector');
-        validateAndSave(loadedProjectsSelector.value);
+
+        const loadedProject = localStorage.getItem('loaded-project-layout-app');
+
+        if(loadedProject === loadedProjectsSelector.value){
+            validateAndSave(loadedProjectsSelector.value);
+        }
     }
 }
