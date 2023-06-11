@@ -367,7 +367,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
 
     private segregateteAtributes(ruleText: string): {key: string, val: string}[] {
         return ruleText
-            .split(';\n')
+            .split(';')
             .map((att) => {
                 const [key,val] = att.trim().split(':');
                 return {key, val};
