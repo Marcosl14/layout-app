@@ -11,16 +11,7 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
-// TODO: leer HTML y CSS del local storage (deberia ser automatico con cada accion).
-// Cada vez que hagamos click sobre un elemento para buildear las configs, ahi guardamos.
-
 // TODO: el z-index tambien puede ser auto, habria que ver de agregar un checkbox
-
-// TODO: poder guardar el proyecto con un cierto nombre.
-// TODO: hacer un selector con los proyectos guardados.
-// TODO: debemos guardar en el localstorage la key con el nombre del proyecto + '-layout-app'
-// TODO: debemos guardar el nombre del proyecto en el localstorage bajo la key 'proyects-layout-app'
-// -> que sera un array (JSON.stringify)
 
 // TODO: agregar header, aside, nav, footer, etc...
 

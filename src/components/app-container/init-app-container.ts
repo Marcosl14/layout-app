@@ -383,11 +383,6 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
         if(projectsArray && projectsArray.length > 0){
             this.projects = projectsArray;
 
-            const optionElement = document.createElement('option');
-            optionElement.text = '';
-            optionElement.value = '';
-            this.loadedProjectsSelector.appendChild(optionElement);
-
             this.projects.forEach((proyectName) => {
                 if(proyectName){
                     const optionElement = document.createElement('option');
@@ -401,21 +396,42 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
 
     private createProyect() {
         const createNewProyectInput: HTMLInputElement = document.querySelector('#create-new-proyect-input');
-        const projectName = createNewProyectInput.value;
-        const completeProyectName = `${projectName}-layout-app`;
-        const { exists } = validateAndSave(completeProyectName);
 
-        if(!exists) {
-            this.projects.push(completeProyectName);
-            localStorage.setItem('projects-layout-app', JSON.stringify(this.projects));
+        try{
+            const projectName = this.validateName(createNewProyectInput.value);
+            const completeProyectName = `${projectName}-layout-app`;
+            const { exists } = validateAndSave(completeProyectName);
 
-            const optionElement = document.createElement('option');
-            optionElement.text = projectName;
-            optionElement.value = completeProyectName;
-            this.loadedProjectsSelector.appendChild(optionElement);
+            if(!exists) {
+                this.projects.push(completeProyectName);
+                localStorage.setItem('projects-layout-app', JSON.stringify(this.projects));
 
-            createNewProyectInput.value = '';
+                const optionElement = document.createElement('option');
+                optionElement.text = projectName;
+                optionElement.value = completeProyectName;
+                this.loadedProjectsSelector.appendChild(optionElement);
+
+                createNewProyectInput.value = '';
+            }
+        } catch (err) {
+            alert(err.message)
         }
+    }
+
+    private validateName(name: string): string {
+        if (!/^[a-z]/.test(name)) {
+            throw new Error('The first character of the string must be a lowercase letter.\n');
+        }
+
+        if (!/^[a-zA-Z0-9]+$/.test(name)) {
+            throw new Error('The string can only contain letters and numbers.\n');
+        }
+
+        if (!/^[a-zA-Z0-9_-]+$/.test(name)) {
+            throw new Error('The string can only contain letters, numbers, hyphens, and underscores.\n');
+        }
+
+        return name;
     }
 
     private loadProyect() {
