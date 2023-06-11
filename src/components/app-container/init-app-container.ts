@@ -28,6 +28,12 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
     private componentSelector: HTMLSelectElement = document.querySelector('#select-item');
     private versionLabel: HTMLLabelElement = document.querySelector('#version-label');
 
+    private readHtmlInput: HTMLInputElement = document.querySelector('#html-file-input');
+    private searchHtmlButton: HTMLButtonElement = document.querySelector('#search-html-file');
+
+    private readCssInput: HTMLInputElement = document.querySelector('#css-file-input');
+    private searchCssButton: HTMLButtonElement = document.querySelector('#search-css-file');
+
     private componentChangePublisher: ComponentChangePublisher;
 
     private printHtmlButton: HTMLButtonElement = document.querySelector('#print-html-file');
@@ -74,6 +80,18 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
         this.versionLabel.innerText = `Version: ${packageVersion}`;
 
         this.printHtmlButton.addEventListener('click', this.printHtmlFile);
+
+        this.readHtmlFileAndInsert = this.readHtmlFileAndInsert.bind(this);
+        this.readHtmlInput.addEventListener('change', this.readHtmlFileAndInsert)
+        this.searchHtmlButton.addEventListener('click', () => {
+            this.readHtmlInput.click();
+        });
+
+        this.readCssFileAndInsert = this.readCssFileAndInsert.bind(this);
+        this.readCssInput.addEventListener('change', this.readCssFileAndInsert)
+        this.searchCssButton.addEventListener('click', () => {
+            this.readCssInput.click();
+        });
     }
 
     private dragEnter(event: DragEvent) {
@@ -100,7 +118,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             return;
         }
 
-        if(targetElement.children.length === 0 && targetElement.innerText !== ''){
+        if (targetElement.children.length === 0 && targetElement.innerText !== '') {
             alert('InnerText must be empty')
             return;
         }
@@ -206,7 +224,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
     }
 
     public createNewHTMLComponent(parentNode, elementType, quantity = 1) {
-        for(let i = 0; i < quantity; i++) {
+        for (let i = 0; i < quantity; i++) {
             const newDomElement = componentsIndex(elementType).create(this.createNewInstancePublisher, parentNode);
 
             this.componentChangePublisher.attach(newDomElement);
@@ -244,5 +262,116 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
         });
 
         return newDomElement;
+    }
+
+    private readHtmlFileAndInsert() {
+        const file = this.readHtmlInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            const content = e.target.result;
+            const bodyContent = this.getBodyContent(content);
+
+            const renderedElements = this.createElementsFromContent(bodyContent);
+
+            renderedElements.forEach(element => {
+                this.appContainer.appendChild(element);
+            });
+        };
+
+        reader.readAsText(file);
+    }
+
+    private getBodyContent(htmlContent) {
+        const parser = new DOMParser();
+        const htmlDoc = parser.parseFromString(htmlContent, 'text/html');
+        const bodyContent = htmlDoc.body;
+        return bodyContent;
+    }
+
+    private createElementsFromContent(content) {
+        const elements = [];
+
+        for (let i = 0; i < content.childNodes.length; i++) {
+            const node = content.childNodes[i];
+
+            const elementType = node.nodeName;
+
+            try {
+                const element = componentsIndex(elementType).create(this.createNewInstancePublisher).domElement;
+
+                if (element) {
+                    const children = this.createElementsFromContent(node);
+
+                    children.forEach(child => {
+                        element.appendChild(child);
+                    });
+
+                    if (node.id) {
+                        element.id = node.id;
+                    }
+
+                    const classList = node.classList;
+                    if (classList.length > 0) {
+                        classList.forEach(className => {
+                            element.classList.add(className);
+                        });
+                    }
+
+                    if(node.innerText !== '' && node.children.length === 0) {
+                        element.innerText = node.innerText.trim();
+                    }
+
+                    elements.push(element);
+                }
+            } catch (err) {
+                console.log(`Element Type Not Found: ${elementType}`)
+            }
+        }
+
+        return elements;
+    }
+
+    private readCssFileAndInsert() {
+        const cssFile = this.readCssInput.files[0];
+
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            const cssContent = e.target.result;
+            this.parseCSS(cssContent);
+        };
+
+        reader.readAsText(cssFile);
+    }
+
+    private parseCSS(cssContent) {
+        const regex = /([^{}]+)\{([^{}]+)}/g;
+        let match;
+
+        while ((match = regex.exec(cssContent)) !== null) {
+            const ruleText = match[0].trim();
+            const ruleId = match[1].replace('.', '').replace('#', '').trim();
+            const existsRule = CssStyleSheet.getRule(ruleId) as CSSStyleRule;
+
+            if(existsRule) {
+                if(existsRule.selectorText === '.body'){
+                    return;
+                }
+                CssStyleSheet.editRuleAtributes(ruleId, this.segregateteAtributes(match[2]));
+            } else {
+                CssStyleSheet.insertRule(ruleText);
+            }
+        }
+    }
+
+    private segregateteAtributes(ruleText: string): {key: string, val: string}[] {
+        return ruleText
+            .split(';\n')
+            .map((att) => {
+                const [key,val] = att.trim().split(':');
+                return {key, val};
+            })
+            .filter((att) => att.key !== '' && att.key !== undefined);
     }
 }
