@@ -40,7 +40,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
 
     private printHtmlButton: HTMLButtonElement = document.querySelector('#print-html-file');
 
-    private loadedProjectsSelector: HTMLSelectElement = document.querySelector('#proyect-names-selector');
+    private loadedProjectsSelector: HTMLSelectElement = document.querySelector('#project-names-selector');
 
     private projects: string[] = [];
 
@@ -99,19 +99,21 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             this.readCssInput.click();
         });
 
-        const createNewProyectButton: HTMLButtonElement = document.querySelector('#create-new-proyect-button');
-        this.createProyect = this.createProyect.bind(this);
-        createNewProyectButton.addEventListener('click', this.createProyect);
+        const createNewProjectButton: HTMLButtonElement = document.querySelector('#create-new-project-button');
+        this.createProject = this.createProject.bind(this);
+        createNewProjectButton.addEventListener('click', this.createProject);
 
-        const loadSavedProyectButton: HTMLButtonElement = document.querySelector('#load-saved-project-button');
-        this.loadProyect = this.loadProyect.bind(this);
-        loadSavedProyectButton.addEventListener('click', this.loadProyect);
+        const loadSavedProjectButton: HTMLButtonElement = document.querySelector('#load-saved-project-button');
+        this.loadProject = this.loadProject.bind(this);
+        loadSavedProjectButton.addEventListener('click', this.loadProject);
 
-        const removeSavedProyectButton: HTMLButtonElement = document.querySelector('#remove-saved-project-button');
-        this.removeProyect = this.removeProyect.bind(this);
-        removeSavedProyectButton.addEventListener('click', this.removeProyect);
+        const removeSavedProjectButton: HTMLButtonElement = document.querySelector('#remove-saved-project-button');
+        this.removeProject = this.removeProject.bind(this);
+        removeSavedProjectButton.addEventListener('click', this.removeProject);
 
-        this.populateProyects();
+        this.populateProjects();
+
+        localStorage.removeItem('loaded-project-layout-app');
     }
 
     private dragEnter(event: DragEvent) {
@@ -159,6 +161,8 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
         }
 
         targetElement.appendChild(newDomElement.domElement);
+
+        this.saveProject();
     }
 
     private openElementConfigs(event: MouseEvent) {
@@ -199,10 +203,12 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
 
     private changeAppContainerHeight() {
         CssStyleSheet.getRuleStyles(this.appContainerClassName)['height'] = `${this.appContainerHeightInput.value}px`
+        this.saveProject();
     }
 
     private changeAppContainerWidth() {
         CssStyleSheet.getRuleStyles(this.appContainerClassName)['width'] = `${this.appContainerWidthInput.value}px`
+        this.saveProject();
     }
 
     private getCurrentHeight() {
@@ -228,6 +234,8 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             this.componentChangePublisher.attach(newDomElement);
             parentNode.appendChild(newDomElement.domElement);
         }
+
+        this.saveProject();
     }
 
     public duplicateHTMLComponent(parentElement: HTMLElement, childToDuplicate: HTMLElement): HTMLElement {
@@ -248,6 +256,8 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
         for (let index = 0; index < childToDuplicate.classList.length; index++) {
             newDomElement.classList.add(childToDuplicate.classList.item(index))
         }
+
+        this.saveProject();
 
         return newDomElement;
     }
@@ -270,6 +280,8 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             const content = e.target.result;
             this.insertHtmlElementsInAppContainer(content);
         };
+
+        this.saveProject();
 
         reader.readAsText(file);
     }
@@ -377,41 +389,45 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             .filter((att) => att.key !== '' && att.key !== undefined);
     }
 
-    private populateProyects() {
+    private populateProjects() {
         const projectsArray = JSON.parse(localStorage.getItem('projects-layout-app'));
 
         if(projectsArray && projectsArray.length > 0){
             this.projects = projectsArray;
 
-            this.projects.forEach((proyectName) => {
-                if(proyectName){
+            this.projects.forEach((projectName) => {
+                if(projectName){
                     const optionElement = document.createElement('option');
-                    optionElement.text = proyectName.replace('-layout-app', '');
-                    optionElement.value = proyectName;
+                    optionElement.text = projectName.replace('-layout-app', '');
+                    optionElement.value = projectName;
                     this.loadedProjectsSelector.appendChild(optionElement);
                 }
             })
         }
     }
 
-    private createProyect() {
-        const createNewProyectInput: HTMLInputElement = document.querySelector('#create-new-proyect-input');
+    private createProject() {
+        const createNewProjectInput: HTMLInputElement = document.querySelector('#create-new-project-input');
 
         try{
-            const projectName = this.validateName(createNewProyectInput.value);
-            const completeProyectName = `${projectName}-layout-app`;
-            const { exists } = validateAndSave(completeProyectName);
+            const projectName = this.validateName(createNewProjectInput.value);
+            const completeProjectName = `${projectName}-layout-app`;
+            const { exists } = validateAndSave(completeProjectName, this.projects);
 
             if(!exists) {
-                this.projects.push(completeProyectName);
+                this.projects.push(completeProjectName);
                 localStorage.setItem('projects-layout-app', JSON.stringify(this.projects));
 
                 const optionElement = document.createElement('option');
                 optionElement.text = projectName;
-                optionElement.value = completeProyectName;
+                optionElement.value = completeProjectName;
                 this.loadedProjectsSelector.appendChild(optionElement);
 
-                createNewProyectInput.value = '';
+                this.loadedProjectsSelector.selectedIndex = this.loadedProjectsSelector.length - 1;
+
+                localStorage.setItem('loaded-project-layout-app', this.loadedProjectsSelector.value);
+
+                createNewProjectInput.value = '';
             }
         } catch (err) {
             alert(err.message)
@@ -434,17 +450,44 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
         return name;
     }
 
-    private loadProyect() {
-        const proyectInfo = JSON.parse(localStorage.getItem(this.loadedProjectsSelector.value));
+    private loadProject() {
+        const loadedProject = localStorage.getItem('loaded-project-layout-app');
+
+        if(!loadedProject){
+            if (!confirm(`The current project was not saved, do you want to continue loading ${
+                this.loadedProjectsSelector.value
+            }`)) {
+                return;
+            }
+        }
+
+        this.appContainer.innerHTML = '';
+
+        const projectInfo = JSON.parse(localStorage.getItem(this.loadedProjectsSelector.value));
 
         localStorage.setItem('loaded-project-layout-app', this.loadedProjectsSelector.value);
 
-        this.insertHtmlElementsInAppContainer(proyectInfo.html);
-        this.parseCSS(proyectInfo.css)
+        this.insertHtmlElementsInAppContainer(projectInfo.html);
+        this.parseCSS(projectInfo.css);
+
+        CssStyleSheet.getRuleStyles(this.appContainerClassName)['height'] = `${projectInfo.body.height}px`
+        CssStyleSheet.getRuleStyles(this.appContainerClassName)['width'] = `${projectInfo.body.width}px`
     }
 
-    private removeProyect() {
-        if (confirm('Are you sure to remove this proyect')) {
+    private saveProject() {
+        const loadedProject = localStorage.getItem('loaded-project-layout-app');
+
+        if(loadedProject === this.loadedProjectsSelector.value){
+            validateAndSave(this.loadedProjectsSelector.value);
+        }
+    }
+
+    private removeProject() {
+        if(this.loadedProjectsSelector.children.length === 0){
+            return;
+        }
+
+        if (confirm('Are you sure to remove this project')) {
             const index = this.projects.findIndex((projectName) => {
                 return projectName === this.loadedProjectsSelector.value
             });
@@ -452,6 +495,11 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             localStorage.setItem('projects-layout-app', JSON.stringify(this.projects));
 
             localStorage.removeItem(this.loadedProjectsSelector.value);
+
+            const loadedProject = localStorage.getItem('loaded-project-layout-app');
+            if(loadedProject === this.loadedProjectsSelector.value){
+                localStorage.removeItem('loaded-project-layout-app');
+            }
 
             this.loadedProjectsSelector.childNodes.forEach((option: HTMLOptionElement) => {
                 if(option.value === this.loadedProjectsSelector.value) {

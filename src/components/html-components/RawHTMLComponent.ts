@@ -343,7 +343,7 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
 
         this.stylesComponents.build();
 
-        const loadedProjectsSelector: HTMLSelectElement = document.querySelector('#proyect-names-selector');
+        const loadedProjectsSelector: HTMLSelectElement = document.querySelector('#project-names-selector');
 
         const loadedProject = localStorage.getItem('loaded-project-layout-app');
 
