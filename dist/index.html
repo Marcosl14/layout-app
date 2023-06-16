@@ -27,9 +27,34 @@
             </div>
             <div class="update-dom-elements">
                 <div>
+                    <label> Create New Project </label>
+                    <input type="text" id="create-new-project-input" placeholder="Project Name">
+                    <button id="create-new-project-button"> Create </button>
+                </div>
+            </div>
+            <div class="update-dom-elements">
+                <div>
+                    <label> Load / Remove Project </label>
+                    <select id="project-names-selector"></select>
+                    <div>
+                        <button id="load-saved-project-button"> Load </button>
+                        <button id="remove-saved-project-button"> Remove </button>
+                    </div>
+                </div>
+            </div>
+            <div class="update-dom-elements">
+                <div>
                     <label> Actions </label>
                     <button id="print-css-file"> Print CSS in Console </button>
                     <button id="print-html-file"> Print HTML in Console </button>
+                    <button id="search-html-file">
+                        <label >Read HTML File </label>
+                        <input type="file" id="html-file-input" accept=".html" readonly>
+                    </button>
+                    <button id="search-css-file">
+                        <label >Read CSS File</label>
+                        <input type="file" id="css-file-input" accept=".css" readonly>
+                    </button>
                 </div>
             </div>
             <div class="update-dom-elements">
@@ -45,17 +70,35 @@
                 </div>
             </div>
             <div draggable="true" class="dom-element dom-element-container">Div Container</div>
+            <header draggable="true" class="dom-element dom-element-container">Header Container</header>
+            <nav draggable="true" class="dom-element dom-element-container">Nav Container</nav>
+            <main draggable="true" class="dom-element dom-element-container">Main Container</main>
+            <aside draggable="true" class="dom-element dom-element-container">Aside Container</aside>
+            <footer draggable="true" class="dom-element dom-element-container">Footer Container</footer>
             <form draggable="true" class="dom-element dom-element-container">Form Container</form>
+
             <button draggable="true" class="dom-element dom-element-button">Button</button>
+            
             <input draggable="true" class="dom-element dom-element-input" value="Input">
+            
             <label draggable="true" class="dom-element dom-element-label">Label</label>
+
+            <p draggable="true" class="dom-element dom-element-label">Paragraph</p>
+
+            <div draggable="true" class="dom-element dom-element-container">
+                <select class="dom-element dom-element-input"></select>
+
+            </div>
+            
             <a draggable="true" class="dom-element dom-element-label" href="">Ancor Element</a>
+
             <h1 draggable="true" class="dom-element dom-element-title">Title H1</h1>
             <h2 draggable="true" class="dom-element dom-element-title">Title H2</h2>
             <h3 draggable="true" class="dom-element dom-element-title">Title H3</h3>
             <h4 draggable="true" class="dom-element dom-element-title">Title H4</h4>
             <h5 draggable="true" class="dom-element dom-element-title">Title H5</h5>
             <h6 draggable="true" class="dom-element dom-element-title">Title H6</h6>
+
             <image draggable="true" class="dom-element dom-element-image" src="" alt="Image"></image>
 
             <ol draggable="true" class="dom-element dom-element-container">Ord. List Container</ol>

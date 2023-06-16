@@ -12,6 +12,8 @@ import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 import ComponentChangePublisher from '../common/publishers/ComponentChangePublisher';
 import CreateNewHTMLComponentPublisher from '../common/publishers/CreateNewHTMLComponentPublisher';
 import CreateNewHTMLComponentObserverInterface from '../common/interfaces/create-new-hmtl-component-observer.interface';
+import prepareHTMLFileForOutput from '../common/functions/prepare-html-file';
+import validateAndSave from '../common/functions/validate-and-save-loocalstorage';
 
 export default class InitAppContainer implements CreateNewHTMLComponentObserverInterface {
     private createNewInstancePublisher: CreateNewHTMLComponentPublisher;
@@ -28,9 +30,19 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
     private componentSelector: HTMLSelectElement = document.querySelector('#select-item');
     private versionLabel: HTMLLabelElement = document.querySelector('#version-label');
 
+    private readHtmlInput: HTMLInputElement = document.querySelector('#html-file-input');
+    private searchHtmlButton: HTMLButtonElement = document.querySelector('#search-html-file');
+
+    private readCssInput: HTMLInputElement = document.querySelector('#css-file-input');
+    private searchCssButton: HTMLButtonElement = document.querySelector('#search-css-file');
+
     private componentChangePublisher: ComponentChangePublisher;
 
     private printHtmlButton: HTMLButtonElement = document.querySelector('#print-html-file');
+
+    private loadedProjectsSelector: HTMLSelectElement = document.querySelector('#project-names-selector');
+
+    private projects: string[] = [];
 
     constructor(createNewInstancePublisher: CreateNewHTMLComponentPublisher) {
         this.createNewInstancePublisher = createNewInstancePublisher;
@@ -71,9 +83,37 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
 
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const packageVersion = require('../../../package.json').version;
-        this.versionLabel.innerText = `Version: ${packageVersion} --- ${process.env.SIMPLE_ANALYTICS_KEY}`;
+        this.versionLabel.innerText = `Version: ${packageVersion}`;
 
         this.printHtmlButton.addEventListener('click', this.printHtmlFile);
+
+        this.readHtmlFileAndInsert = this.readHtmlFileAndInsert.bind(this);
+        this.readHtmlInput.addEventListener('change', this.readHtmlFileAndInsert)
+        this.searchHtmlButton.addEventListener('click', () => {
+            this.readHtmlInput.click();
+        });
+
+        this.readCssFileAndInsert = this.readCssFileAndInsert.bind(this);
+        this.readCssInput.addEventListener('change', this.readCssFileAndInsert)
+        this.searchCssButton.addEventListener('click', () => {
+            this.readCssInput.click();
+        });
+
+        const createNewProjectButton: HTMLButtonElement = document.querySelector('#create-new-project-button');
+        this.createProject = this.createProject.bind(this);
+        createNewProjectButton.addEventListener('click', this.createProject);
+
+        const loadSavedProjectButton: HTMLButtonElement = document.querySelector('#load-saved-project-button');
+        this.loadProject = this.loadProject.bind(this);
+        loadSavedProjectButton.addEventListener('click', this.loadProject);
+
+        const removeSavedProjectButton: HTMLButtonElement = document.querySelector('#remove-saved-project-button');
+        this.removeProject = this.removeProject.bind(this);
+        removeSavedProjectButton.addEventListener('click', this.removeProject);
+
+        this.populateProjects();
+
+        localStorage.removeItem('loaded-project-layout-app');
     }
 
     private dragEnter(event: DragEvent) {
@@ -100,7 +140,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             return;
         }
 
-        if(targetElement.children.length === 0 && targetElement.innerText !== ''){
+        if (targetElement.children.length === 0 && targetElement.innerText !== '') {
             alert('InnerText must be empty')
             return;
         }
@@ -121,6 +161,8 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
         }
 
         targetElement.appendChild(newDomElement.domElement);
+
+        this.saveProject();
     }
 
     private openElementConfigs(event: MouseEvent) {
@@ -161,10 +203,12 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
 
     private changeAppContainerHeight() {
         CssStyleSheet.getRuleStyles(this.appContainerClassName)['height'] = `${this.appContainerHeightInput.value}px`
+        this.saveProject();
     }
 
     private changeAppContainerWidth() {
         CssStyleSheet.getRuleStyles(this.appContainerClassName)['width'] = `${this.appContainerWidthInput.value}px`
+        this.saveProject();
     }
 
     private getCurrentHeight() {
@@ -176,29 +220,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
     }
 
     private printHtmlFile() {
-        const mainContainer = document.querySelector('#app-container').innerHTML;
-        const removeDraggableRegEx = new RegExp(' draggable="true"', 'g');
-        mainContainer.replace(removeDraggableRegEx, '');
-
-        // TODO: ver si deberia ir desplegando el arbol de elementos HTML e ir armando el html aqui.
-        // TODO: ver si es necesario borrar el style y lo que haya dentro....
-        // TODO: eliminar el draggable
-
-        const outputHtml = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Document</title>
-        </head>
-        <body id="app-container" class="body">
-            ${mainContainer}
-        </body>
-        </html>`
-
-        console.log(outputHtml);
+        console.log(prepareHTMLFileForOutput());
     }
 
     private sendComponentName() {
@@ -206,12 +228,14 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
     }
 
     public createNewHTMLComponent(parentNode, elementType, quantity = 1) {
-        for(let i = 0; i < quantity; i++) {
+        for (let i = 0; i < quantity; i++) {
             const newDomElement = componentsIndex(elementType).create(this.createNewInstancePublisher, parentNode);
 
             this.componentChangePublisher.attach(newDomElement);
             parentNode.appendChild(newDomElement.domElement);
         }
+
+        this.saveProject();
     }
 
     public duplicateHTMLComponent(parentElement: HTMLElement, childToDuplicate: HTMLElement): HTMLElement {
@@ -233,6 +257,8 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             newDomElement.classList.add(childToDuplicate.classList.item(index))
         }
 
+        this.saveProject();
+
         return newDomElement;
     }
 
@@ -244,5 +270,242 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
         });
 
         return newDomElement;
+    }
+
+    private readHtmlFileAndInsert() {
+        const file = this.readHtmlInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            const content = e.target.result;
+            this.insertHtmlElementsInAppContainer(content);
+        };
+
+        this.saveProject();
+
+        reader.readAsText(file);
+    }
+
+    private insertHtmlElementsInAppContainer (content) {
+        const bodyContent = this.getBodyContent(content);
+
+        const renderedElements = this.createElementsFromContent(bodyContent);
+
+        renderedElements.forEach(element => {
+            this.appContainer.appendChild(element);
+        });
+    }
+
+    private getBodyContent(htmlContent) {
+        const parser = new DOMParser();
+        const htmlDoc = parser.parseFromString(htmlContent, 'text/html');
+        const bodyContent = htmlDoc.body;
+        return bodyContent;
+    }
+
+    private createElementsFromContent(content) {
+        const elements = [];
+
+        for (let i = 0; i < content.childNodes.length; i++) {
+            const node = content.childNodes[i];
+
+            const elementType = node.nodeName;
+
+            try {
+                const element = componentsIndex(elementType).create(this.createNewInstancePublisher).domElement;
+
+                if (element) {
+                    const children = this.createElementsFromContent(node);
+
+                    children.forEach(child => {
+                        element.appendChild(child);
+                    });
+
+                    if (node.id) {
+                        element.id = node.id;
+                    }
+
+                    const classList = node.classList;
+                    if (classList.length > 0) {
+                        classList.forEach(className => {
+                            element.classList.add(className);
+                        });
+                    }
+
+                    if (node.innerText !== '' && node.children.length === 0) {
+                        element.innerText = node.innerText.trim();
+                    }
+
+                    elements.push(element);
+                }
+            } catch (err) {
+                console.log(`Element Type Not Found: ${elementType}`)
+            }
+        }
+
+        return elements;
+    }
+
+    private readCssFileAndInsert() {
+        const cssFile = this.readCssInput.files[0];
+
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            const cssContent = e.target.result;
+            this.parseCSS(cssContent);
+        };
+
+        reader.readAsText(cssFile);
+    }
+
+    private parseCSS(cssContent) {
+        const regex = /([^{}]+)\{([^{}]+)}/g;
+        let match;
+
+        while ((match = regex.exec(cssContent)) !== null) {
+            const ruleText = match[0].trim();
+            const ruleId = match[1].replace('.', '').replace('#', '').trim();
+            const existsRule = CssStyleSheet.getRule(ruleId) as CSSStyleRule;
+
+            if (existsRule) {
+                if (existsRule.selectorText === '.body') {
+                    return;
+                }
+                CssStyleSheet.editRuleAtributes(ruleId, this.segregateteAtributes(match[2]));
+            } else {
+                CssStyleSheet.insertRule(ruleText);
+            }
+        }
+    }
+
+    private segregateteAtributes(ruleText: string): { key: string, val: string }[] {
+        return ruleText
+            .split(';')
+            .map((att) => {
+                const [key, val] = att.trim().split(':');
+                return { key, val };
+            })
+            .filter((att) => att.key !== '' && att.key !== undefined);
+    }
+
+    private populateProjects() {
+        const projectsArray = JSON.parse(localStorage.getItem('projects-layout-app'));
+
+        if(projectsArray && projectsArray.length > 0){
+            this.projects = projectsArray;
+
+            this.projects.forEach((projectName) => {
+                if(projectName){
+                    const optionElement = document.createElement('option');
+                    optionElement.text = projectName.replace('-layout-app', '');
+                    optionElement.value = projectName;
+                    this.loadedProjectsSelector.appendChild(optionElement);
+                }
+            })
+        }
+    }
+
+    private createProject() {
+        const createNewProjectInput: HTMLInputElement = document.querySelector('#create-new-project-input');
+
+        try{
+            const projectName = this.validateName(createNewProjectInput.value);
+            const completeProjectName = `${projectName}-layout-app`;
+            const { exists } = validateAndSave(completeProjectName, this.projects);
+
+            if(!exists) {
+                this.projects.push(completeProjectName);
+                localStorage.setItem('projects-layout-app', JSON.stringify(this.projects));
+
+                const optionElement = document.createElement('option');
+                optionElement.text = projectName;
+                optionElement.value = completeProjectName;
+                this.loadedProjectsSelector.appendChild(optionElement);
+
+                this.loadedProjectsSelector.selectedIndex = this.loadedProjectsSelector.length - 1;
+
+                localStorage.setItem('loaded-project-layout-app', this.loadedProjectsSelector.value);
+
+                createNewProjectInput.value = '';
+            }
+        } catch (err) {
+            alert(err.message)
+        }
+    }
+
+    private validateName(name: string): string {
+        if (!/^[a-z]/.test(name)) {
+            throw new Error('The first character of the string must be a lowercase letter.\n');
+        }
+
+        if (!/^[a-zA-Z0-9]+$/.test(name)) {
+            throw new Error('The string can only contain letters and numbers.\n');
+        }
+
+        if (!/^[a-zA-Z0-9_-]+$/.test(name)) {
+            throw new Error('The string can only contain letters, numbers, hyphens, and underscores.\n');
+        }
+
+        return name;
+    }
+
+    private loadProject() {
+        const loadedProject = localStorage.getItem('loaded-project-layout-app');
+
+        if(!loadedProject){
+            if (!confirm(`The current project was not saved, do you want to continue loading ${
+                this.loadedProjectsSelector.value
+            }`)) {
+                return;
+            }
+        }
+
+        this.appContainer.innerHTML = '';
+
+        const projectInfo = JSON.parse(localStorage.getItem(this.loadedProjectsSelector.value));
+
+        localStorage.setItem('loaded-project-layout-app', this.loadedProjectsSelector.value);
+
+        this.insertHtmlElementsInAppContainer(projectInfo.html);
+        this.parseCSS(projectInfo.css);
+
+        CssStyleSheet.getRuleStyles(this.appContainerClassName)['height'] = `${projectInfo.body.height}px`
+        CssStyleSheet.getRuleStyles(this.appContainerClassName)['width'] = `${projectInfo.body.width}px`
+    }
+
+    private saveProject() {
+        const loadedProject = localStorage.getItem('loaded-project-layout-app');
+
+        if(loadedProject === this.loadedProjectsSelector.value){
+            validateAndSave(this.loadedProjectsSelector.value);
+        }
+    }
+
+    private removeProject() {
+        if(this.loadedProjectsSelector.children.length === 0){
+            return;
+        }
+
+        if (confirm('Are you sure to remove this project')) {
+            const index = this.projects.findIndex((projectName) => {
+                return projectName === this.loadedProjectsSelector.value
+            });
+            this.projects.splice(index, 1);
+            localStorage.setItem('projects-layout-app', JSON.stringify(this.projects));
+
+            localStorage.removeItem(this.loadedProjectsSelector.value);
+
+            const loadedProject = localStorage.getItem('loaded-project-layout-app');
+            if(loadedProject === this.loadedProjectsSelector.value){
+                localStorage.removeItem('loaded-project-layout-app');
+            }
+
+            this.loadedProjectsSelector.childNodes.forEach((option: HTMLOptionElement) => {
+                if(option.value === this.loadedProjectsSelector.value) {
+                    this.loadedProjectsSelector.removeChild(option);
+                }
+            });
+        }
     }
 }

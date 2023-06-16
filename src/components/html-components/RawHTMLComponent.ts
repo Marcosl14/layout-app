@@ -33,6 +33,8 @@ import AddTableItemsComponent from '../common/components/addTableItems.component
 import AddTableRowComponent from '../common/components/addTableRow.component';
 import AddTableCellComponent from '../common/components/addTableCell.component';
 import PositionComponent from '../common/components/position.component';
+import validateAndSave from '../common/functions/validate-and-save-loocalstorage';
+import AddOptionComponent from '../common/components/addOption.component';
 
 export default abstract class RawHTMLConponent implements ComponentChangeObserverInterface {
     protected _domElement: HTMLElement;
@@ -197,6 +199,32 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
         return component.component;
     }
 
+    protected addOptionComponent() {
+        const component = new AddOptionComponent(this._domElement, this.createNewHTMLComponentPublisher);
+        return component.component;
+    }
+
+    protected addTextAndValueChangeComponent() {
+        const textInput = new GenericPrimaryInputComponent(
+                this._domElement,
+                'text',
+                'Text',
+                () => true,
+            ).component;
+
+        const valueInput = new GenericPrimaryInputComponent(
+                this._domElement,
+                'value',
+                'Value',
+                () => true,
+            ).component;
+
+        return new ContainerBuilder()
+            .appendChild(textInput)
+            .appendChild(valueInput)
+            .build();
+    }
+
     protected addActionsComponents() {
         return new ContainerBuilder()
             .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
@@ -341,5 +369,13 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
         })
 
         this.stylesComponents.build();
+
+        const loadedProjectsSelector: HTMLSelectElement = document.querySelector('#project-names-selector');
+
+        const loadedProject = localStorage.getItem('loaded-project-layout-app');
+
+        if(loadedProject === loadedProjectsSelector.value){
+            validateAndSave(loadedProjectsSelector.value);
+        }
     }
 }
