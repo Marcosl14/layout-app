@@ -22,12 +22,50 @@ import TableFoot from '../html-components/TableFoot';
 import TableRow from '../html-components/TableRow';
 import TableCell from '../html-components/TableCell';
 import TableHeadCell from '../html-components/TableHeadCell';
+import Paragraph from '../html-components/Paragraph';
+import Header from '../html-components/Header';
+import Navigation from '../html-components/Navigation';
+import Main from '../html-components/Main';
+import Aside from '../html-components/Aside';
+import Footer from '../html-components/Footer';
+import Select from '../html-components/Select';
+import Option from '../html-components/Option';
 
 function componentsIndex(index) {
     const componentsIndex: ComponentIndex = {
         'DIV': {
             create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
                 return new Container(createNewHTMLComponentPublisher);
+            },
+            isContainer: true,
+        },
+        'HEADER': {
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Header(createNewHTMLComponentPublisher);
+            },
+            isContainer: true,
+        },
+        'NAV': {
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Navigation(createNewHTMLComponentPublisher);
+            },
+            isContainer: true,
+        },
+        'MAIN': {
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Main(createNewHTMLComponentPublisher);
+            },
+            isContainer: true,
+        },
+        'ASIDE': {
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Aside(createNewHTMLComponentPublisher);
+            },
+            isContainer: true,
+        },
+        'FOOTER': {
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Footer(createNewHTMLComponentPublisher);
             },
             isContainer: true,
         },
@@ -49,9 +87,27 @@ function componentsIndex(index) {
             },
             isContainer: false,
         },
+        'SELECT': {
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Select(createNewHTMLComponentPublisher);
+            },
+            isContainer: false,
+        },
+        'OPTION': {
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Option(createNewHTMLComponentPublisher);
+            },
+            isContainer: false,
+        },
         'LABEL': {
             create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
                 return new Label(createNewHTMLComponentPublisher);
+            },
+            isContainer: false,
+        },
+        'P': {
+            create: (createNewHTMLComponentPublisher): RawHTMLConponent => {
+                return new Paragraph(createNewHTMLComponentPublisher);
             },
             isContainer: false,
         },

@@ -22,7 +22,7 @@ export default class CreateNewHTMLComponentPublisher implements CreateNewHTMLCom
 
     public createNewHTMLComponent(
         parentElement: HTMLElement,
-        childElementNodeName: 'LI' | 'THEAD' | 'TBODY' | 'TFOOT' | 'TR' | 'TD' | 'TH',
+        childElementNodeName: 'LI' | 'THEAD' | 'TBODY' | 'TFOOT' | 'TR' | 'TD' | 'TH' | 'OPTION',
         quantity?: number,
     ): void {
         for (const observer of this.observers) {

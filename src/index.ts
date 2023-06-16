@@ -11,12 +11,6 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
-// TODO: el z-index tambien puede ser auto, habria que ver de agregar un checkbox
-
-// TODO: agregar header, aside, nav, footer, etc...
-
-// TODO: agregar select... al cual le tenemos que poder agregar options de manera sencilla
-
 // TODO: deployar pagina en otro servidor web, no en github pages
 // TODO: incorporar google metrics o algo para medir los usuarios que utilizan la pagina
 
@@ -51,9 +45,7 @@ TODO: faltan los siguientes componentes:
     - ver si permitimos que los componentes internos sean draggables, o no...
 
 TODO: para el caso de tablas, el DisplayTypesEnum deberia agregar mas elementos
-
-TODO: quizas para las tablas habria que setear cuantas filas queremos que tenga el body, si queremos footer, etc.
-ver como se hariamos para que un td o th pueda compartir dos espacios.
+TODO: Ver como se hariamos para que un td o th pueda compartir dos espacios.
 
 <table>
   <colgroup span="4" class="columns"></colgroup>
@@ -113,7 +105,7 @@ ver como se hariamos para que un td o th pueda compartir dos espacios.
 
 // Para una v1.5:
 // TODO: hacer mas bello el contenedor de todas las fuentes que tiene el elemento
-
+// TODO: el select es solo draggable si esta contenido en un div... No hay otra manera???.
 
 
 

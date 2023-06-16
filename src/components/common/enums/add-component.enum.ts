@@ -16,8 +16,13 @@ export enum AddComponentEnum {
     addDisplayAsParentComponent = 'addDisplayAsParentComponent',
     addUrlInputComponent = 'addUrlInputComponent',
     addInputTypeSelectorComponent = 'addInputTypeSelectorComponent',
+
     addListItemComponent = 'addListItemComponent',
+
     addTableItemsComponent = 'addTableItemsComponent',
     addTableRowComponent = 'addTableRowComponent',
     addTableCellComponent = 'addTableCellComponent',
+
+    addOptionComponent = 'addOptionComponent',
+    addTextAndValueChangeComponent = 'addTextAndValueChangeComponent',
 }
