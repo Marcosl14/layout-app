@@ -11,17 +11,21 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
+// TODO: agregar el outline al input y select... hay algun otro???
+// outline-color
+// outline-offset
+// outline-style
+// outline-width
+
 // TODO: deployar pagina en otro servidor web, no en github pages
 // TODO: incorporar google metrics o algo para medir los usuarios que utilizan la pagina
+// TODO: hacer repo privado
 
 // TODO: dar estilos facheritos a las tablas, por ejemplo, algo especifico para el header,
 // y que las filas tengan diferentes colores... que el footer tenga otro color distinto...
 
 // TODO: Agregar imagenes al background...
 // TODO: el background-color tambien podria ser en degrade, pero podemos dejar que eso lo hagan con la rawclass
-
-// TODO: ver forma de remover el borde original del input. No es la misma propiedad que el border...
-// TODO: el borderbox del input viene como advanced... Ver si tenemos que hacerle algo
 
 // TODO: cuando creo un nombre futuro, y justo creo un elemento con ese nombre futuro, tira error...
 // por eso yo le pasaba el iterator... ver como solucionar...
