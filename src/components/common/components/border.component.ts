@@ -559,30 +559,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
         this.domElementStyleSheet['border-style'] = [top, right, bottom, left].join(' ')
     }
 
-    private resetBorderProperty(
-        property: 'border-style' | 'border-color' | 'border-width' | 'border-radius' | 'border-image',
-        position: 'top' | 'right' | 'bottom' | 'left' | 'all'
-    ) {
-        const style = position === 'all' ? property : `${property}-${position}`;
-        this.domElementStyleSheet[style] = '';
-
-        if(property === 'border-style') {
-            this.setBorderStyleValuesAccordingToClass();
-        }
-
-        if(property === 'border-color') {
-            this.setBorderColorValuesAccordingToClass();
-        }
-
-        if(property === 'border-width') {
-            this.setBorderWidthValuesAccordingToClass();
-        }
-
-        if(property === 'border-radius') {
-            this.setBorderRadiusValuesAccordingToClass();
-        }
-    }
-
     private updateBorderColor() {
         let {top, right, bottom, left} = this.getCurrentBorderColor();
 
@@ -609,11 +585,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
         let {top, right, bottom, left} = this.getCurrentBorderWidth();
 
         if (this.selectAllCheckBox.checked) {
-            if(parseInt(this.topBorderWidthInput.value) === 0) {
-                this.resetBorderProperty('border-width', 'all');
-                return;
-            }
-
             top = `${this.topBorderWidthInput.value}${this.topBorderWidthUnitSelector.value}`;
             right = top;
             bottom = top;
@@ -640,7 +611,7 @@ export default class BorderComponent implements ClassChangeObserverInterface {
 
         if (this.selectAllCheckBox.checked) {
             if(parseInt(this.topBorderRadiusInput.value) === 0) {
-                this.resetBorderProperty('border-radius', 'all');
+                this.domElementStyleSheet['border-radius'] = '';
                 return;
             }
 

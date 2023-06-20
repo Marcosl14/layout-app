@@ -105,7 +105,8 @@ TODO: Ver como se hariamos para que un td o th pueda compartir dos espacios.
 // TODO: hacer mas bello el contenedor de todas las fuentes que tiene el elemento
 // TODO: el select es solo draggable si esta contenido en un div... No hay otra manera???.
 
-
+// TODO: estoy pensando que quizas estaria bueno tener un selector con todas las prop que tiene ese componente
+// y que cuando selecciones, ahi si se habra el contenedor con dicha prop...
 
 
 // Para una V2 (por la complejidad):
