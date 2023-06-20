@@ -549,15 +549,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             this.rightBorderStyleSelector.value = this.topBorderStyleSelector.value;
             this.bottomBorderStyleSelector.value = this.topBorderStyleSelector.value;
             this.leftBorderStyleSelector.value = this.topBorderStyleSelector.value;
-
-            if(top === BorderStyleEnum.none) {
-                this.resetBorderProperty('border-style', 'all');
-                this.resetBorderProperty('border-color', 'all');
-                this.resetBorderProperty('border-width', 'all');
-                this.resetBorderProperty('border-radius', 'all');
-                this.resetBorderProperty('border-image', 'all');
-                return;
-            }
         } else {
             top = this.topBorderStyleSelector.value;
             right = this.rightBorderStyleSelector.value;

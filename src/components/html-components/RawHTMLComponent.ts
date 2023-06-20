@@ -35,6 +35,7 @@ import AddTableCellComponent from '../common/components/addTableCell.component';
 import PositionComponent from '../common/components/position.component';
 import validateAndSave from '../common/functions/validate-and-save-loocalstorage';
 import AddOptionComponent from '../common/components/addOption.component';
+import OutlineComponent from '../common/components/outline.component';
 
 export default abstract class RawHTMLConponent implements ComponentChangeObserverInterface {
     protected _domElement: HTMLElement;
@@ -146,6 +147,12 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
 
     protected addBorderSettingsComponent() {
         const component = new BorderComponent(this._domElement);
+        this.classChangePublisher.attach(component);
+        return component.component;
+    }
+
+    protected addOutlineComponents() {
+        const component = new OutlineComponent(this._domElement);
         this.classChangePublisher.attach(component);
         return component.component;
     }
@@ -326,6 +333,7 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
         AddComponentEnum.addFontComponens,
         AddComponentEnum.addBackgroundSettingsComponent,
         AddComponentEnum.addBorderSettingsComponent,
+        AddComponentEnum.addOutlineComponents,
         AddComponentEnum.addBoxShadowComponent,
         AddComponentEnum.addDisplayAsChildComponent,
         AddComponentEnum.addPositionComponent,
