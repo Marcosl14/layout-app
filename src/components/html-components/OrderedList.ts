@@ -15,7 +15,13 @@ export default class OrderedList extends RawContainer {
     protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
     constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
-        const name = defineElementName(`ordered_list${OrderedList.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'ordered_list',
+            iterator: OrderedList.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        OrderedList.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             padding: 30px;

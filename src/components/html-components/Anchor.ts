@@ -12,7 +12,13 @@ export default class Anchor extends RawHTMLConponent implements ComponentChangeO
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher) {
-        const name = defineElementName(`anchor${Anchor.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'anchor',
+            iterator: Anchor.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Anchor.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             display: inline

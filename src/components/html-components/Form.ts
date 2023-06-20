@@ -12,7 +12,13 @@ export default class Form extends RawContainer {
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher) {
-        const name = defineElementName(`form${Form.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'form',
+            iterator: Form.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Form.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;

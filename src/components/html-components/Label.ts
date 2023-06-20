@@ -12,7 +12,13 @@ export default class Label extends RawHTMLConponent implements ComponentChangeOb
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher) {
-        const name = defineElementName(`label${Label.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'label',
+            iterator: Label.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Label.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             display: inline

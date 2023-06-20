@@ -13,7 +13,13 @@ export default class TableFoot extends RawContainer {
     protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
     constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
-        const name = defineElementName(`table_foot${TableFoot.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'table_foot',
+            iterator: TableFoot.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        TableFoot.iterator = iterator;
 
         const element = new TableFootBuilder()
             .setName(name)

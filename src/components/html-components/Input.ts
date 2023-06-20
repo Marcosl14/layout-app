@@ -13,7 +13,13 @@ export default class Input extends RawHTMLConponent implements ComponentChangeOb
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher) {
-        const name = defineElementName(`input${Input.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'input',
+            iterator: Input.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Input.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;

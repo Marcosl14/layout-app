@@ -11,7 +11,13 @@ export default class TextArea extends RawHTMLConponent implements ComponentChang
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher) {
-        const name = defineElementName(`text_area${TextArea.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'text_area',
+            iterator: TextArea.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        TextArea.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;

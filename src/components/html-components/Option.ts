@@ -11,7 +11,13 @@ export default class Option extends RawHTMLConponent implements ComponentChangeO
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
-        const name = defineElementName(`option${Option.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'option',
+            iterator: Option.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Option.iterator = iterator;
 
         const element = new OptionBuilder()
             .setName(name)

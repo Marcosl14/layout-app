@@ -12,7 +12,13 @@ export default class Button extends RawHTMLConponent implements ComponentChangeO
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher) {
-        const name = defineElementName(`button${Button.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'button',
+            iterator: Button.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Button.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;

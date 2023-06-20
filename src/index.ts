@@ -11,18 +11,15 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
+// TODO: si la clase solo la utiliza ese unico componente,
+// quizas el nombre de la clase css deberia ir con # y no con punto...
+
 // TODO: deployar pagina en otro servidor web, no en github pages
 // TODO: incorporar google metrics o algo para medir los usuarios que utilizan la pagina
 // TODO: hacer repo privado
 
 // TODO: dar estilos facheritos a las tablas, por ejemplo, algo especifico para el header,
 // y que las filas tengan diferentes colores... que el footer tenga otro color distinto...
-
-// TODO: Agregar imagenes al background...
-// TODO: el background-color tambien podria ser en degrade, pero podemos dejar que eso lo hagan con la rawclass
-
-// TODO: cuando creo un nombre futuro, y justo creo un elemento con ese nombre futuro, tira error...
-// por eso yo le pasaba el iterator... ver como solucionar...
 
 // TODO: con el id habria que reemplazar todos los caracteres especiales por guiones o algo asi...???
 
@@ -102,11 +99,20 @@ TODO: Ver como se hariamos para que un td o th pueda compartir dos espacios.
 
 
 // Para una v1.5:
+
+// TODO: Agregar imagenes al background...
+// TODO: el background-color tambien podria ser en degrade, pero podemos dejar que eso lo hagan con la rawclass
+// https://developer.mozilla.org/en-US/docs/Web/CSS/background
+
 // TODO: hacer mas bello el contenedor de todas las fuentes que tiene el elemento
 // TODO: el select es solo draggable si esta contenido en un div... No hay otra manera???.
 
 // TODO: estoy pensando que quizas estaria bueno tener un selector con todas las prop que tiene ese componente
 // y que cuando selecciones, ahi si se habra el contenedor con dicha prop...
+
+
+
+
 
 
 // Para una V2 (por la complejidad):
@@ -116,4 +122,9 @@ TODO: Ver como se hariamos para que un td o th pueda compartir dos espacios.
 
 // TODO: insertar rules para el media query : https://davidwalsh.name/add-rules-stylesheets
 // https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
+
+
+
+
+
 
