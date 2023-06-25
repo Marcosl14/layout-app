@@ -7,7 +7,6 @@ import SelectorFromEnumBuilder from '../models/SelectorFromEnumBuilder';
 
 import { InputTypeEnum } from '../enums/input-type.enum';
 import { UnitsEnum } from '../enums/units.enum';
-import { StyleNameEnum } from '../enums/style-name.enum';
 
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
 
@@ -139,9 +138,6 @@ export default class MarginOrPaddingComponent implements ClassChangeObserverInte
             .build()
 
         this.container = new ContainerBuilder()
-            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-            .setStyle(StyleNameEnum.padding, '3px')
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new LabelBuilder()
                 .setInnerText(`${capitalizeFirstLetters(this.type, ' ', ' ')} Selector`)
                 .build()

@@ -16,6 +16,7 @@ import { UnitsEnum } from '../enums/units.enum';
 import { AlignFlexItemsEnum } from '../enums/align-flex-items.enum';
 import { FlexDirectionEnum } from '../enums/flex-direction.enum';
 import { DisplayTypesEnum } from '../enums/display-types.enum';
+import ButtonBuilder from '../models/ButtonBuilder';
 
 
 export default class BoxShadowComponent implements ClassChangeObserverInterface {
@@ -260,9 +261,6 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                 .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
                 .setStyle(StyleNameEnum['align-items'], AlignFlexItemsEnum.stretch)
-                .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-                .setStyle(StyleNameEnum.padding, '3px')
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Box Shadow')
                     .build()
@@ -275,9 +273,6 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                 .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
                 .setStyle(StyleNameEnum['align-items'], AlignFlexItemsEnum.stretch)
-                .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-                .setStyle(StyleNameEnum.padding, '3px')
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Box Shadow')
                     .build()
@@ -295,9 +290,15 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
     private buildAdvancedShadowBoxContainer() {
         this.updateAdvancedProperty = this.updateAdvancedProperty.bind(this);
 
+        const advancedBoxShadowAcceptButton = new ButtonBuilder()
+            .addEventListener('click', this.updateAdvancedProperty)
+            .setInnerText('Accept')
+            .build()
+
         this.advancedShadowBoxTextArea = new TextareaBuilder()
             .setStyle(StyleNameEnum.resize, 'vertical')
-            .addEventListener('input', this.updateAdvancedProperty)
+            .setStyle(StyleNameEnum.height, '100px')
+            .setStyle(StyleNameEnum['font-size'], '10px')
             .build()
 
         this.advancedShadowBoxContainer = new ContainerBuilder()
@@ -314,6 +315,7 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
                 .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
                 .setStyle(StyleNameEnum['align-items'], AlignFlexItemsEnum.stretch)
                 .appendChild(this.advancedShadowBoxTextArea)
+                .appendChild(advancedBoxShadowAcceptButton)
                 .build()
             )
             .build()
@@ -336,7 +338,7 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
         this.spreadRadiusInput.value = `${parseInt(initialValues.spreadRadius) || 0}`;
         this.spreadRadiusUnitSelector.value = getUnit(initialValues.spreadRadius);
 
-        this.advancedShadowBoxTextArea.value = this.domElementStyleSheet['box-shadow'];
+        this.advancedShadowBoxTextArea.value = this.getBoxShadowValues().join(',\n');
     }
 
     private updateBasicProperty() {
@@ -388,36 +390,29 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
     }
 
     private getInitialValues() {
-        let boxShadowString = this.domElementStyleSheet['box-shadow'];
+        const boxShadowValues = this.getBoxShadowValues();
 
-        let color, inset;
+        let color;
         let sizesArr = [];
 
-        if (boxShadowString) {
-            if (boxShadowString.split(',').filter((ele) => ele.includes('rgb')).length > 1) {
-                this.advancedEnabled = true;
-            } else {
-                if (boxShadowString.split(',').length > 1) {
-                    this.advancedEnabled = true;
-                }
-            }
-
-            if (boxShadowString.includes('rgb')) {
-                const initialIndexOfRGB = boxShadowString.indexOf('rgb');
-                const finalIndexOfRGB = boxShadowString.indexOf(')')
-
-                color = boxShadowString.slice(initialIndexOfRGB, finalIndexOfRGB + 1)
-
-                boxShadowString = boxShadowString.replace(color, '');
-            }
-
-            const boxShadowArr = boxShadowString.split(' ');
-
-            inset = boxShadowArr.find((ele) => ele === 'inset')
-
-            sizesArr = boxShadowArr.filter((ele) => !isNaN(parseInt(ele)));
+        if (boxShadowValues.length > 1) {
+            this.advancedEnabled = true;
         }
 
+        if (boxShadowValues[0].includes('rgb')) {
+            const initialIndexOfRGB = boxShadowValues[0].indexOf('rgb');
+            const finalIndexOfRGB = boxShadowValues[0].indexOf(')')
+
+            color = boxShadowValues[0].slice(initialIndexOfRGB, finalIndexOfRGB + 1)
+
+            boxShadowValues[0] = boxShadowValues[0].replace(color, '');
+        }
+
+        const boxShadowArr = boxShadowValues[0].split(' ');
+
+        const inset = boxShadowArr.find((ele) => ele === 'inset')
+
+        sizesArr = boxShadowArr.filter((ele) => !isNaN(parseInt(ele)));
 
         return {
             color,
@@ -427,6 +422,22 @@ export default class BoxShadowComponent implements ClassChangeObserverInterface 
             blurRadius: sizesArr[2],
             spreadRadius: sizesArr[3],
         }
+    }
+
+    private getBoxShadowValues(): string[] {
+        const boxShadowString = this.domElementStyleSheet['box-shadow'];
+
+        if(boxShadowString){
+            // REGEX: To obtain multiple box shadow styles separated by a comma. Without taking care of rgb( , , )
+            const regex = /([^,(]+?\([^)]+\)[^,]*|[^,]+)/g;
+
+            return boxShadowString
+                .match(regex)
+                .map(el => el.trim())
+                .filter(el => el !== '' || el !== null || el !== undefined);
+        }
+
+        return [''];
     }
 
     public classNameUpdated(name: string) {

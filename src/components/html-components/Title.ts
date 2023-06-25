@@ -14,7 +14,13 @@ export default class Title extends RawHTMLConponent implements ComponentChangeOb
     private static iterator = 0;
 
     constructor(type: TitleTypesEnum, createNewHTMLComponentPublisher) {
-        const name = defineElementName(`title${Title.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'title',
+            iterator: Title.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Title.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;

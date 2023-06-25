@@ -12,7 +12,13 @@ export default class Footer extends RawContainer {
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher) {
-        const name = defineElementName(`footer${Footer.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'footer',
+            iterator: Footer.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Footer.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;

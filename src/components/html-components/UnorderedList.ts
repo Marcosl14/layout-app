@@ -15,7 +15,13 @@ export default class UnorderedList extends RawContainer {
     protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
     constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
-        const name = defineElementName(`unordered_list${UnorderedList.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'unordered_list',
+            iterator: UnorderedList.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        UnorderedList.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             padding: 30px;

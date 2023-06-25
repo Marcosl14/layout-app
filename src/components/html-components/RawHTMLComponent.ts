@@ -35,6 +35,7 @@ import AddTableCellComponent from '../common/components/addTableCell.component';
 import PositionComponent from '../common/components/position.component';
 import validateAndSave from '../common/functions/validate-and-save-loocalstorage';
 import AddOptionComponent from '../common/components/addOption.component';
+import OutlineComponent from '../common/components/outline.component';
 
 export default abstract class RawHTMLConponent implements ComponentChangeObserverInterface {
     protected _domElement: HTMLElement;
@@ -150,6 +151,12 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
         return component.component;
     }
 
+    protected addOutlineComponents() {
+        const component = new OutlineComponent(this._domElement);
+        this.classChangePublisher.attach(component);
+        return component.component;
+    }
+
     protected addBackgroundSettingsComponent() {
         const component = new BackgroundComponent(this._domElement);
         this.classChangePublisher.attach(component);
@@ -227,12 +234,8 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
 
     protected addActionsComponents() {
         return new ContainerBuilder()
-            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-            .setStyle(StyleNameEnum.padding, '3px')
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Available Actions')
                     .build()
@@ -241,7 +244,6 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.addDuplicateElementComponent())
                 .appendChild(this.addDuplicateElementWithChildrensComponent())
                 .appendChild(this.addRemoveElementComponent())
@@ -326,6 +328,7 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
         AddComponentEnum.addFontComponens,
         AddComponentEnum.addBackgroundSettingsComponent,
         AddComponentEnum.addBorderSettingsComponent,
+        AddComponentEnum.addOutlineComponents,
         AddComponentEnum.addBoxShadowComponent,
         AddComponentEnum.addDisplayAsChildComponent,
         AddComponentEnum.addPositionComponent,

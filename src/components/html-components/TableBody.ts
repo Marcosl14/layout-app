@@ -13,7 +13,13 @@ export default class TableBody extends RawContainer {
     protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
     constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
-        const name = defineElementName(`table_body${TableBody.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'table_body',
+            iterator: TableBody.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        TableBody.iterator = iterator;
 
         const element = new TableBodyBuilder()
             .setName(name)

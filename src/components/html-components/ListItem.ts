@@ -10,7 +10,13 @@ export default class ListItem extends RawHTMLConponent implements ComponentChang
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher) {
-        const name = defineElementName(`list_item${ListItem.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'list_item',
+            iterator: ListItem.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        ListItem.iterator = iterator;
 
         const element = new ListItemBuilder()
             .setName(name)

@@ -11,13 +11,19 @@ export default class Option extends RawHTMLConponent implements ComponentChangeO
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
-        const name = defineElementName(`option${Option.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'option',
+            iterator: Option.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Option.iterator = iterator;
 
         const element = new OptionBuilder()
             .setName(name)
             .setId(name)
-            .setText('New Option')
-            .setValue('New Option')
+            .setText(name)
+            .setValue(name)
             .draggable()
             .build();
 
@@ -50,8 +56,6 @@ export default class Option extends RawHTMLConponent implements ComponentChangeO
             AddComponentEnum.addTextAndValueChangeComponent,
             AddComponentEnum.addClassNameDefinitionComponent
         );
-
-        // TODO falta poder modificar los values y los texts desde aca...
 
         this.buildElements();
     }

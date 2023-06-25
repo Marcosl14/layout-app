@@ -90,7 +90,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
         const topContainer = new ContainerBuilder()
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Top Border Color / Style')
                     .build()
@@ -99,14 +98,12 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.topBorderColorInput)
                 .appendChild(this.topBorderStyleSelector)
                 .build()
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Top Border Width')
                     .build()
@@ -115,14 +112,12 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.topBorderWidthInput)
                 .appendChild(this.topBorderWidthUnitSelector)
                 .build()
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Top Border Radius')
                     .build()
@@ -131,7 +126,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.topBorderRadiusInput)
                 .appendChild(this.topBorderRadiusUnitSelector)
                 .build()
@@ -141,7 +135,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
         const rightContainer = new ContainerBuilder()
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Right Border Color / Style')
                     .build()
@@ -150,14 +143,12 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.rightBorderColorInput)
                 .appendChild(this.rightBorderStyleSelector)
                 .build()
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Right Border Width')
                     .build()
@@ -166,14 +157,12 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.rightBorderWidthInput)
                 .appendChild(this.rightBorderWidthUnitSelector)
                 .build()
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Right Border Radius')
                     .build()
@@ -182,7 +171,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.rightBorderRadiusInput)
                 .appendChild(this.rightBorderRadiusUnitSelector)
                 .build()
@@ -192,7 +180,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
         const bottomContainer = new ContainerBuilder()
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Bottom Border Color / Style')
                     .build()
@@ -201,14 +188,12 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.bottomBorderColorInput)
                 .appendChild(this.bottomBorderStyleSelector)
                 .build()
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Bottom Border Width')
                     .build()
@@ -217,14 +202,12 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.bottomBorderWidthInput)
                 .appendChild(this.bottomBorderWidthUnitSelector)
                 .build()
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Bottom Border Radius')
                     .build()
@@ -233,7 +216,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.bottomBorderRadiusInput)
                 .appendChild(this.bottomBorderRadiusUnitSelector)
                 .build()
@@ -243,7 +225,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
         const leftContainer = new ContainerBuilder()
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Left Border Color / Style')
                     .build()
@@ -252,14 +233,12 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.leftBorderColorInput)
                 .appendChild(this.leftBorderStyleSelector)
                 .build()
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Left Border Width')
                     .build()
@@ -268,14 +247,12 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.leftBorderWidthInput)
                 .appendChild(this.leftBorderWidthUnitSelector)
                 .build()
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Left Border Radius')
                     .build()
@@ -284,7 +261,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.leftBorderRadiusInput)
                 .appendChild(this.leftBorderRadiusUnitSelector)
                 .build()
@@ -299,9 +275,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             .build()
 
         this.container = new ContainerBuilder()
-            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-            .setStyle(StyleNameEnum.padding, '3px')
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new LabelBuilder()
                 .setInnerText('Border Type Selector')
                 .build()
@@ -549,15 +522,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
             this.rightBorderStyleSelector.value = this.topBorderStyleSelector.value;
             this.bottomBorderStyleSelector.value = this.topBorderStyleSelector.value;
             this.leftBorderStyleSelector.value = this.topBorderStyleSelector.value;
-
-            if(top === BorderStyleEnum.none) {
-                this.resetBorderProperty('border-style', 'all');
-                this.resetBorderProperty('border-color', 'all');
-                this.resetBorderProperty('border-width', 'all');
-                this.resetBorderProperty('border-radius', 'all');
-                this.resetBorderProperty('border-image', 'all');
-                return;
-            }
         } else {
             top = this.topBorderStyleSelector.value;
             right = this.rightBorderStyleSelector.value;
@@ -566,30 +530,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
         }
 
         this.domElementStyleSheet['border-style'] = [top, right, bottom, left].join(' ')
-    }
-
-    private resetBorderProperty(
-        property: 'border-style' | 'border-color' | 'border-width' | 'border-radius' | 'border-image',
-        position: 'top' | 'right' | 'bottom' | 'left' | 'all'
-    ) {
-        const style = position === 'all' ? property : `${property}-${position}`;
-        this.domElementStyleSheet[style] = '';
-
-        if(property === 'border-style') {
-            this.setBorderStyleValuesAccordingToClass();
-        }
-
-        if(property === 'border-color') {
-            this.setBorderColorValuesAccordingToClass();
-        }
-
-        if(property === 'border-width') {
-            this.setBorderWidthValuesAccordingToClass();
-        }
-
-        if(property === 'border-radius') {
-            this.setBorderRadiusValuesAccordingToClass();
-        }
     }
 
     private updateBorderColor() {
@@ -618,11 +558,6 @@ export default class BorderComponent implements ClassChangeObserverInterface {
         let {top, right, bottom, left} = this.getCurrentBorderWidth();
 
         if (this.selectAllCheckBox.checked) {
-            if(parseInt(this.topBorderWidthInput.value) === 0) {
-                this.resetBorderProperty('border-width', 'all');
-                return;
-            }
-
             top = `${this.topBorderWidthInput.value}${this.topBorderWidthUnitSelector.value}`;
             right = top;
             bottom = top;
@@ -649,7 +584,7 @@ export default class BorderComponent implements ClassChangeObserverInterface {
 
         if (this.selectAllCheckBox.checked) {
             if(parseInt(this.topBorderRadiusInput.value) === 0) {
-                this.resetBorderProperty('border-radius', 'all');
+                this.domElementStyleSheet['border-radius'] = '';
                 return;
             }
 

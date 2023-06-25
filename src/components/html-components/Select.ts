@@ -15,7 +15,13 @@ export default class Select extends RawHTMLConponent implements ComponentChangeO
     protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
     constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
-        const name = defineElementName(`select${Select.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'select',
+            iterator: Select.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Select.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;

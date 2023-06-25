@@ -12,7 +12,13 @@ export default class Paragraph extends RawHTMLConponent implements ComponentChan
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher) {
-        const name = defineElementName(`paragraph${Paragraph.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'paragraph',
+            iterator: Paragraph.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Paragraph.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             display: inline

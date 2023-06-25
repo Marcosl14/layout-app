@@ -11,31 +11,28 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
+// TODO: cuando hice un remove hover del container me volvio el flex para atras...
+
+// TODO: cuando abro un proyecto, el Select Item no funca, pero haciendo click, anda todo OK...
+// hay veces que no carga el ancho...
+
+// TODO: faltan los transition...
+
+// TODO: si la clase solo la utiliza ese unico componente,
+// quizas el nombre de la clase css deberia ir con # y no con punto...
+
 // TODO: deployar pagina en otro servidor web, no en github pages
 // TODO: incorporar google metrics o algo para medir los usuarios que utilizan la pagina
+// TODO: hacer repo privado
 
 // TODO: dar estilos facheritos a las tablas, por ejemplo, algo especifico para el header,
 // y que las filas tengan diferentes colores... que el footer tenga otro color distinto...
-
-// TODO: Agregar imagenes al background...
-// TODO: el background-color tambien podria ser en degrade, pero podemos dejar que eso lo hagan con la rawclass
-
-// TODO: ver forma de remover el borde original del input. No es la misma propiedad que el border...
-// TODO: el borderbox del input viene como advanced... Ver si tenemos que hacerle algo
-
-// TODO: cuando creo un nombre futuro, y justo creo un elemento con ese nombre futuro, tira error...
-// por eso yo le pasaba el iterator... ver como solucionar...
 
 // TODO: con el id habria que reemplazar todos los caracteres especiales por guiones o algo asi...???
 
 // TODO: falta propiedad scrollable en div.
 
 // TODO: cualquier elemento debe poder modificar el display settings, solo que algunos no tendran el flex o grid.
-
-// TODO: en el Select Item no se encuentra el app-container.
-// Es que para que esto funcione, el app-container deberia ser creado como un new Container();
-// De hecho, cuando creo un solo componente, no lo puedo seleccionar por el selector...
-// Ver si en vez de usar change, usamos 'select'
 
 // TODO: falta un boton de remove initial properties, asi sacamos los bordes y eso a un div, por ejemplo...
 
@@ -104,8 +101,18 @@ TODO: Ver como se hariamos para que un td o th pueda compartir dos espacios.
 
 
 // Para una v1.5:
+
+// TODO: Agregar imagenes al background...
+// TODO: el background-color tambien podria ser en degrade, pero podemos dejar que eso lo hagan con la rawclass
+// https://developer.mozilla.org/en-US/docs/Web/CSS/background
+
 // TODO: hacer mas bello el contenedor de todas las fuentes que tiene el elemento
 // TODO: el select es solo draggable si esta contenido en un div... No hay otra manera???.
+
+// TODO: estoy pensando que quizas estaria bueno tener un selector con todas las prop que tiene ese componente
+// y que cuando selecciones, ahi si se habra el contenedor con dicha prop...
+
+
 
 
 
@@ -117,4 +124,9 @@ TODO: Ver como se hariamos para que un td o th pueda compartir dos espacios.
 
 // TODO: insertar rules para el media query : https://davidwalsh.name/add-rules-stylesheets
 // https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
+
+
+
+
+
 

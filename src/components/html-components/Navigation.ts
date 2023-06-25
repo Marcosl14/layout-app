@@ -12,7 +12,13 @@ export default class Navigation extends RawContainer {
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher) {
-        const name = defineElementName(`navigation${Navigation.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'navigation',
+            iterator: Navigation.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Navigation.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;

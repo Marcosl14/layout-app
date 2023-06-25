@@ -12,7 +12,13 @@ export default class Aside extends RawContainer {
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher) {
-        const name = defineElementName(`aside${Aside.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'aside',
+            iterator: Aside.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Aside.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;

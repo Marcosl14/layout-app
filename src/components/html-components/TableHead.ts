@@ -13,7 +13,13 @@ export default class TableHead extends RawContainer {
     protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
     constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
-        const name = defineElementName(`table_head${TableHead.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'table_head',
+            iterator: TableHead.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        TableHead.iterator = iterator;
 
         const element = new TableHeadBuilder()
             .setName(name)

@@ -15,7 +15,13 @@ export default class Table extends RawContainer {
     protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
     constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
-        const name = defineElementName(`table${Table.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'table',
+            iterator: Table.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Table.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;

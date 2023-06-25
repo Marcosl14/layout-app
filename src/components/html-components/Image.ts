@@ -11,7 +11,13 @@ export default class Image extends RawHTMLConponent implements ComponentChangeOb
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher) {
-        const name = defineElementName(`image${Image.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'image',
+            iterator: Image.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Image.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;

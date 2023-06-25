@@ -13,7 +13,13 @@ export default class TableRow extends RawContainer {
     protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
     constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher, parentNode: HTMLElement) {
-        const name = defineElementName(`table_row${TableRow.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'table_row',
+            iterator: TableRow.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        TableRow.iterator = iterator;
 
         const element = new TableRowBuilder()
             .setName(name)

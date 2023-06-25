@@ -12,7 +12,13 @@ export default class Header extends RawContainer {
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher) {
-        const name = defineElementName(`header${Header.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'header',
+            iterator: Header.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        Header.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;

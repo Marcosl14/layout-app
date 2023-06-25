@@ -7,6 +7,7 @@ export enum AddComponentEnum {
     addFontComponens = 'addFontComponens',
     addBackgroundSettingsComponent = 'addBackgroundSettingsComponent',
     addBorderSettingsComponent = 'addBorderSettingsComponent',
+    addOutlineComponents = 'addOutlineComponents',
     addBoxShadowComponent = 'addBoxShadowComponent',
     addDisplayAsChildComponent = 'addDisplayAsChildComponent',
     addPositionComponent = 'addPositionComponent',

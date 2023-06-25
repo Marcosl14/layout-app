@@ -14,7 +14,13 @@ export default class TableHeadCell extends RawHTMLConponent implements Component
     private static iterator = 0;
 
     constructor(createNewHTMLComponentPublisher) {
-        const name = defineElementName(`table_head_cell${TableHeadCell.iterator++}`, RawHTMLConponent.instances);
+        const {name, iterator} = defineElementName({
+            prefix: 'table_head_cell',
+            iterator: TableHeadCell.iterator,
+            instances: RawHTMLConponent.instances,
+        });
+
+        TableHeadCell.iterator = iterator;
 
         CssStyleSheet.insertRule(`.${name} {
             margin: 10px;
