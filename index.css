@@ -1,6 +1,6 @@
 :root {
-    --components-container-width: 200px;
-    --actions-container-width: 300px;
+    --components-container-width: 230px;
+    --actions-container-width: 320px;
 }
 
 body {
@@ -43,27 +43,6 @@ body {
     overflow: auto;
 }
 
-#actions-container {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    border-style: solid;
-    border-width: 2px;
-    border-radius: 5px;
-    border-color: black;
-    margin-left: 5px;
-    padding: 10px;
-
-    width: var(--actions-container-width);
-    min-width: var(--actions-container-width);
-
-    overflow-y: auto;
-}
-
-#actions-container>div>*:not(label) {
-    margin-bottom: 10px;
-}
-
 .dom-element {
     box-sizing: border-box
 }
@@ -77,6 +56,11 @@ body {
     margin: 0px;
     border: dashed 1px black;
     width: 100%;
+    display: block;
+}
+
+.dom-element-container:hover {
+    border: dashed 1px red;
 }
 
 .dom-element-input {
@@ -104,67 +88,132 @@ body {
     opacity: 0.6
 }
 
-.dom-element-label {
-    display: block;
-    color: black;
-    padding: 10px;
-    border: 1px solid #4CAF50;
-    width: 100%;
-    margin: 0px;
-}
-
-.dom-element-label:hover {
-    border: 1px solid red;
-}
-
-.dom-element-title {
-    display: block;
-    color: black;
-    padding: 10px;
-    margin: 0px;
-    border: 1px solid #4CAF50;
-    width: 100%;
-}
-
-.dom-element-title:hover {
-    border: 1px solid red;
-}
-
-.dom-element-image {
-    display: block;
-    color: black;
-    padding: 10px;
-    margin: 0px;
-    border: 1px solid #4CAF50;
-    width: 100%;
-}
-
-.dom-element-image:hover {
-    border: 1px solid red;
-}
-
-.dom-element-text-area {
-    resize: none;
-}
-
 .update-dom-elements {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     margin-bottom: 10px;
+    padding: 0px 10px;
 
-    padding: 3px;
-    border: 1px solid #4CAF50;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(135, 135, 135);
+    border-radius: 10px;
+    box-shadow: rgb(0, 0, 0) 0px 0px 5px 0px;
 }
 
-.update-dom-elements>div {
+#actions-container {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    border-color: black;
+    margin-left: 5px;
+    padding: 10px;
+
+    width: var(--actions-container-width);
+    min-width: var(--actions-container-width);
+
+    overflow-y: auto;
 }
 
-.update-size-input {
-    width: 50px;
+.update-dom-elements > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#actions-container > div > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin-bottom: 10px;
+    padding: 0px 10px;
+
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(135, 135, 135);
+    border-radius: 10px;
+    box-shadow: rgb(0, 0, 0) 0px 0px 5px 0px;
+}
+
+#actions-container *:not(label, div),
+.update-dom-elements *:not(label, div) {
+    margin-bottom: 5px;
+}
+
+#actions-container label{
+    margin: 3px;
+    color: rgb(46, 60, 255);
+}
+
+.update-dom-elements label {
+    margin: 5px 0px;
+    padding: 3px;
+    color: rgb(46, 60, 255);
+}
+
+#actions-container input,
+#actions-container select {
+    box-sizing: border-box;
+    padding: 5px 10px;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 20px;
+    box-shadow: rgb(221, 221, 221) 0px 1px 3px inset;
+    /* width: 100%; */
+    text-align: center;
+    color: rgb(46, 60, 255);
+}
+
+.update-dom-elements input,
+.update-dom-elements select {
+    box-sizing: border-box;
+    padding: 5px 20px;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 20px;
+    box-shadow: rgb(221, 221, 221) 0px 1px 3px inset;
+    width: 100%;
+    text-align: center;
+    color: rgb(46, 60, 255);
+}
+
+.update-dom-elements input[type=number]::-webkit-inner-spin-button,
+.update-dom-elements input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#actions-container input[type=color],
+.update-dom-elements input[type=color] {
+    border-radius: 3px;
+    padding: 1px;
+}
+
+#actions-container input:hover,
+#actions-container select:hover,
+.update-dom-elements input:hover,
+.update-dom-elements select:hover {
+    border: 1px solid red;
+}
+
+#actions-container button,
+.update-dom-elements button {
+    padding: 5px 10px;
+    background-color: rgb(46, 60, 255);
+    border-style: solid;
+    border-width: 0px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    border-radius: 5px;
+}
+
+.update-dom-elements button label {
+    color: white;
+}
+
+.update-dom-elements button:hover {
+    opacity: 0.8;
 }
 
 #html-file-input {
