@@ -1,6 +1,6 @@
 import RawBuilder from './RawBuilder';
 
-export default class ListItemBuilder extends RawBuilder<HTMLOptionElement>{
+export default class OptionBuilder extends RawBuilder<HTMLOptionElement>{
     constructor() {
         super('option');
     }

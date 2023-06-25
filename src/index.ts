@@ -11,6 +11,13 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
+// TODO: cuando hice un remove hover del container me volvio el flex para atras...
+
+// TODO: cuando abro un proyecto, el Select Item no funca, pero haciendo click, anda todo OK...
+// hay veces que no carga el ancho...
+
+// TODO: faltan los transition...
+
 // TODO: si la clase solo la utiliza ese unico componente,
 // quizas el nombre de la clase css deberia ir con # y no con punto...
 
@@ -26,11 +33,6 @@ CssStyleSheet.init();
 // TODO: falta propiedad scrollable en div.
 
 // TODO: cualquier elemento debe poder modificar el display settings, solo que algunos no tendran el flex o grid.
-
-// TODO: en el Select Item no se encuentra el app-container.
-// Es que para que esto funcione, el app-container deberia ser creado como un new Container();
-// De hecho, cuando creo un solo componente, no lo puedo seleccionar por el selector...
-// Ver si en vez de usar change, usamos 'select'
 
 // TODO: falta un boton de remove initial properties, asi sacamos los bordes y eso a un div, por ejemplo...
 

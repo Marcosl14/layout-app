@@ -234,12 +234,8 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
 
     protected addActionsComponents() {
         return new ContainerBuilder()
-            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-            .setStyle(StyleNameEnum.padding, '3px')
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Available Actions')
                     .build()
@@ -248,7 +244,6 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.addDuplicateElementComponent())
                 .appendChild(this.addDuplicateElementWithChildrensComponent())
                 .appendChild(this.addRemoveElementComponent())

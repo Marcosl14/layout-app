@@ -57,7 +57,6 @@ export default class UrlDefinitionComponent implements ClassChangeObserverInterf
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(this.urlInput)
                 .appendChild(acceptButton)
                 .build()
@@ -65,9 +64,6 @@ export default class UrlDefinitionComponent implements ClassChangeObserverInterf
             .build()
 
         this.container = new ContainerBuilder()
-            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-            .setStyle(StyleNameEnum.padding, '3px')
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new LabelBuilder()
                 .setInnerText('Image Properties')
                 .build()

@@ -55,9 +55,6 @@ export default class SizesComponent implements ClassChangeObserverInterface {
         );
 
         this.container = new ContainerBuilder()
-            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-            .setStyle(StyleNameEnum.padding, '3px')
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new LabelBuilder()
                 .setInnerText('Sizes')
                 .build()
@@ -82,7 +79,6 @@ export default class SizesComponent implements ClassChangeObserverInterface {
             )
             .appendChild(new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(inputComponent)
                 .appendChild(selectorComponent)
                 .build()

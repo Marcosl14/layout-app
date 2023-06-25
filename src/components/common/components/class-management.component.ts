@@ -314,7 +314,6 @@ export default class ClassManagementComponent {
             this.appendClassContainer = new ContainerBuilder()
                 .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
                 .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
-                .setStyle(StyleNameEnum.margin, '0px 0px 10px')
                 .appendChild(new LabelBuilder()
                     .setInnerText('Append Class')
                     .build()
@@ -339,7 +338,6 @@ export default class ClassManagementComponent {
         const rawClassEditor = new ContainerBuilder()
             .setStyle(StyleNameEnum.display, DisplayTypesEnum.flex)
             .setStyle(StyleNameEnum['flex-direction'], FlexDirectionEnum.column)
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new LabelBuilder()
                 .setInnerText('Raw Class Editor')
                 .build()
@@ -366,9 +364,6 @@ export default class ClassManagementComponent {
 
         // Main container
         this.container = new ContainerBuilder()
-            .setStyle(StyleNameEnum.border, '1px solid #4CAF50')
-            .setStyle(StyleNameEnum.padding, '3px')
-            .setStyle(StyleNameEnum.margin, '0px 0px 10px')
             .appendChild(new LabelBuilder()
                 .setInnerText('Classes Management')
                 .build()

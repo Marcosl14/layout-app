@@ -1,6 +1,7 @@
 import DisplayComponent from '../common/components/display-as-parent.component';
 import MarginOrPaddingComponent from '../common/components/margin-or-padding.component';
 import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
+import OptionBuilder from '../common/models/OptionBuilder';
 import RawHTMLConponent from '../html-components/RawHTMLComponent';
 import BackgroundComponent from '../common/components/background.component';
 import componentsIndex from './componentsIndex';
@@ -79,7 +80,13 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
         this.sendComponentName = this.sendComponentName.bind(this);
         this.componentChangePublisher = new ComponentChangePublisher();
 
+        const appContainerOption = new OptionBuilder()
+            .setText(this.appContainer.id)
+            .setValue(this.appContainer.id)
+            .build()
+
         this.componentSelector.addEventListener('change', this.sendComponentName);
+        this.componentSelector.appendChild(appContainerOption)
 
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const packageVersion = require('../../../package.json').version;
@@ -168,6 +175,8 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
     private openElementConfigs(event: MouseEvent) {
         event.stopPropagation();
 
+        this.componentSelector.selectedIndex = 0;
+
         this.stylesComponents = new StylesComponentsBuilder()
             .appendChild(new MarginOrPaddingComponent(
                 this.appContainer,
@@ -224,7 +233,11 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
     }
 
     private sendComponentName() {
-        this.componentChangePublisher.notifyComponentName(this.componentSelector.value);
+        if(this.componentSelector.value === 'app-container'){
+            this.appContainer.click();
+        } else {
+            this.componentChangePublisher.notifyComponentName(this.componentSelector.value);
+        }
     }
 
     public createNewHTMLComponent(parentNode, elementType, quantity = 1) {
