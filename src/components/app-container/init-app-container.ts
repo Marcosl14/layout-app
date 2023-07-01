@@ -4,12 +4,12 @@ import StylesComponentsBuilder from '../common/models/StylesComponentsBuilder';
 import OptionBuilder from '../common/models/OptionBuilder';
 import RawHTMLConponent from '../html-components/RawHTMLComponent';
 import BackgroundComponent from '../common/components/background.component';
-import componentsIndex from './componentsIndex';
 import constants from '../common/constants/constants';
 
 import { StyleNameEnum } from '../common/enums/style-name.enum';
 import CssStyleSheet from '../css-stylesheet/css-stylesheet';
 
+import ComponentFactory from './ComponentsFactory';
 import ComponentChangePublisher from '../common/publishers/ComponentChangePublisher';
 import CreateNewHTMLComponentPublisher from '../common/publishers/CreateNewHTMLComponentPublisher';
 import CreateNewHTMLComponentObserverInterface from '../common/interfaces/create-new-hmtl-component-observer.interface';
@@ -143,7 +143,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
 
         const targetElement = event.target as HTMLElement;
 
-        if (!componentsIndex(targetElement.nodeName).isContainer) {
+        if (!new ComponentFactory(targetElement.nodeName).isContainer) {
             return;
         }
 
@@ -155,7 +155,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
         const elementType = event.dataTransfer.getData('text/plain');
 
         const newDomElement: RawHTMLConponent | undefined =
-            componentsIndex(elementType).create(this.createNewInstancePublisher);
+            new ComponentFactory(elementType).create(this.createNewInstancePublisher);
 
         const elementExists = newDomElement ? false : true;
 
@@ -242,7 +242,8 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
 
     public createNewHTMLComponent(parentNode, elementType, quantity = 1) {
         for (let i = 0; i < quantity; i++) {
-            const newDomElement = componentsIndex(elementType).create(this.createNewInstancePublisher, parentNode);
+            const newDomElement =
+                new ComponentFactory(elementType).create(this.createNewInstancePublisher, parentNode);
 
             this.componentChangePublisher.attach(newDomElement);
             parentNode.appendChild(newDomElement.domElement);
@@ -253,8 +254,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
 
     public duplicateHTMLComponent(parentElement: HTMLElement, childToDuplicate: HTMLElement): HTMLElement {
         const newRawDomElement =
-            componentsIndex(childToDuplicate.nodeName)
-                .create(this.createNewInstancePublisher, parentElement);
+            new ComponentFactory(childToDuplicate.nodeName).create(this.createNewInstancePublisher, parentElement);
 
         this.componentChangePublisher.attach(newRawDomElement);
 
@@ -325,7 +325,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             const elementType = node.nodeName;
 
             try {
-                const element = componentsIndex(elementType).create(this.createNewInstancePublisher).domElement;
+                const element = new ComponentFactory(elementType).create(this.createNewInstancePublisher).domElement;
 
                 if (element) {
                     const children = this.createElementsFromContent(node);

@@ -13,6 +13,9 @@ CssStyleSheet.init();
 
 // TODO: cuando hice un remove hover del container me volvio el flex para atras...
 
+// TODO: cuando cargo una tabla dice Element Type Not Found: TR, y a veces no se carga bien,
+// incluso se elimina el contenido del localhots. y solo lo hace con las tablas
+
 // TODO: cuando abro un proyecto, el Select Item no funca, pero haciendo click, anda todo OK...
 // hay veces que no carga el ancho...
 
