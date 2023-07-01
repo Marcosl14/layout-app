@@ -46,14 +46,14 @@ export default class ComponentFactory {
         return this.search(createNewHTMLComponentPublisher, parentNode).create;
     }
 
-    public get isContainer() {
+    public get isContainer(): boolean {
         return this.search().isContainer;
     }
 
     private search(
         createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher,
         parentNode?: HTMLElement
-    ) {
+    ): {create: RawHTMLConponent, isContainer: boolean} {
         switch (this.index) {
             case 'DIV':
                 return {
