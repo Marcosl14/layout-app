@@ -157,7 +157,8 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
         const newDomElement: RawHTMLConponent | undefined =
             new ComponentFactory(elementType)
                 .create({
-                    createNewHTMLComponentPublisher: this.createNewInstancePublisher
+                    createNewHTMLComponentPublisher: this.createNewInstancePublisher,
+                    componentChangePublisher: this.componentChangePublisher
                 });
 
         const elementExists = newDomElement ? false : true;
@@ -166,8 +167,6 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             const draggable = document.getElementById(elementType);
             targetElement.appendChild(draggable);
             return;
-        } else {
-            this.componentChangePublisher.attach(newDomElement);
         }
 
         targetElement.appendChild(newDomElement.domElement);
@@ -249,10 +248,10 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
                 new ComponentFactory(elementType)
                     .create({
                         createNewHTMLComponentPublisher: this.createNewInstancePublisher,
+                        componentChangePublisher: this.componentChangePublisher,
                         parentNode
                     });
 
-            this.componentChangePublisher.attach(newDomElement);
             parentNode.appendChild(newDomElement.domElement);
         }
 
@@ -264,10 +263,9 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             new ComponentFactory(childToDuplicate.nodeName)
                 .create({
                     createNewHTMLComponentPublisher: this.createNewInstancePublisher,
+                    componentChangePublisher: this.componentChangePublisher,
                     parentNode: parentElement
                 });
-
-        this.componentChangePublisher.attach(newRawDomElement);
 
         const newDomElement = newRawDomElement.domElement;
 
@@ -339,6 +337,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
                 const element = new ComponentFactory(elementType)
                     .create({
                         createNewHTMLComponentPublisher: this.createNewInstancePublisher,
+                        componentChangePublisher: this.componentChangePublisher,
                         isLoaded: true,
                     }).domElement;
 

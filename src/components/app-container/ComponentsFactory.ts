@@ -1,4 +1,5 @@
 import CreateNewHTMLComponentPublisher from '../common/publishers/CreateNewHTMLComponentPublisher';
+import ComponentChangePublisher from '../common/publishers/ComponentChangePublisher';
 
 import { TitleTypesEnum } from '../common/enums/title.types.enum';
 
@@ -41,10 +42,17 @@ export default class ComponentFactory {
 
     public create({
         createNewHTMLComponentPublisher,
+        componentChangePublisher,
         parentNode,
         isLoaded
-    }: InputParametersInterface): RawHTMLConponent | undefined {
-        return this.search().create({createNewHTMLComponentPublisher, parentNode, isLoaded});
+    }: CreationInputParameters): RawHTMLConponent | undefined {
+        const newComponent = this.search().create({createNewHTMLComponentPublisher, parentNode, isLoaded});
+
+        if(newComponent) {
+            componentChangePublisher.attach(newComponent);
+        }
+
+        return newComponent;
     }
 
     public get isContainer(): boolean {
@@ -333,3 +341,6 @@ interface InputParametersInterface {
     isLoaded?: boolean,
 }
 
+interface CreationInputParameters extends InputParametersInterface {
+    componentChangePublisher: ComponentChangePublisher,
+}

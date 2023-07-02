@@ -11,15 +11,15 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
-// TODO: cuando hice un remove hover del container me volvio el flex para atras...
-
-// TODO: cuando abro un proyecto, el Select Item no funca, pero haciendo click, anda todo OK...
-// hay veces que no carga el ancho ni el alto...
+// TODO: cualquier elemento debe poder modificar el display settings, solo que algunos no tendran el flex o grid.
 
 // TODO: faltan los transition...
 
+// TODO: falta un boton de remove initial properties, asi sacamos los bordes y eso a un div, por ejemplo...
+
 // TODO: si la clase solo la utiliza ese unico componente,
 // quizas el nombre de la clase css deberia ir con # y no con punto...
+// TODO: con el id habria que reemplazar todos los caracteres especiales por guiones o algo asi...???
 
 // TODO: deployar pagina en otro servidor web, no en github pages
 // TODO: incorporar google metrics o algo para medir los usuarios que utilizan la pagina
@@ -28,13 +28,7 @@ CssStyleSheet.init();
 // TODO: dar estilos facheritos a las tablas, por ejemplo, algo especifico para el header,
 // y que las filas tengan diferentes colores... que el footer tenga otro color distinto...
 
-// TODO: con el id habria que reemplazar todos los caracteres especiales por guiones o algo asi...???
-
 // TODO: falta propiedad scrollable en div.
-
-// TODO: cualquier elemento debe poder modificar el display settings, solo que algunos no tendran el flex o grid.
-
-// TODO: falta un boton de remove initial properties, asi sacamos los bordes y eso a un div, por ejemplo...
 
 /*
 TODO: faltan los siguientes componentes:
