@@ -11,14 +11,6 @@ createNewInstancePublisher.attach(appContainer);
 
 CssStyleSheet.init();
 
-// TODO: cualquier elemento debe poder modificar el display settings, solo que algunos no tendran el flex o grid.
-
-// TODO: faltan los transition...
-
-// TODO: falta un boton de remove initial properties, asi sacamos los bordes y eso a un div, por ejemplo...
-
-// TODO: si la clase solo la utiliza ese unico componente,
-// quizas el nombre de la clase css deberia ir con # y no con punto...
 // TODO: con el id habria que reemplazar todos los caracteres especiales por guiones o algo asi...???
 
 // TODO: deployar pagina en otro servidor web, no en github pages
@@ -95,6 +87,20 @@ TODO: Ver como se hariamos para que un td o th pueda compartir dos espacios.
 
 
 // Para una v1.5:
+
+// TODO: el display se deberia ver en base al padre. Por ejemplo, los list-items tienen estas propiedades:
+  /*
+  display: list-item;
+  display: list-item block;
+  display: list-item inline;
+  display: list-item flow;
+  display: list-item flow-root;
+  display: list-item block flow;
+  display: list-item block flow-root;
+  display: flow list-item block;
+  */
+
+// TODO: faltan los transition...
 
 // TODO: Agregar imagenes al background...
 // TODO: el background-color tambien podria ser en degrade, pero podemos dejar que eso lo hagan con la rawclass
