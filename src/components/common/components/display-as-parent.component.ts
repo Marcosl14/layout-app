@@ -6,7 +6,7 @@ import ContainerBuilder from '../models/ContainerBuilder';
 import SelectorFromEnumBuilder from '../models/SelectorFromEnumBuilder';
 import LabelBuilder from '../models/LabelBuilder';
 import InputBuilder from '../models/InputBuilder';
-import TextareaBuilder from '../models/TextAreaBuilder';
+import TextareaBuilder from '../models/TextareaBuilder';
 
 import InputAndUnitsSelectorComponent from './input-with-units-selector.component';
 import GenericCssPropertyMutatorComponent from './generic-css-property-mutator.component';

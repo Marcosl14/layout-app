@@ -1,6 +1,6 @@
 import ComponentChangeObserverInterface from '../common/interfaces/component-change-observer.interface';
 
-import TextAreaBuilder from '../common/models/TextAreaBuilder';
+import TextAreaBuilder from '../common/models/TextareaBuilder';
 import RawHTMLConponent from './RawHTMLComponent';
 
 import defineElementName from '../common/functions/define-element-name';
