@@ -49,6 +49,9 @@ export default class DisplayAsChildComponent implements ClassChangeObserverInter
     }
 
     get component() {
+        if(this.container.children.length === 0){
+            return;
+        }
         return this.container;
     }
 
@@ -68,7 +71,7 @@ export default class DisplayAsChildComponent implements ClassChangeObserverInter
             ) {
                 this.resetFlex();
                 this.updateGridComponentsStyleSheet();
-            this.setGridAsChildrenInitialValues();
+                this.setGridAsChildrenInitialValues();
                 this.container.appendChild(this.gridContainerAsChildren);
             } else {
                 this.resetFlex();

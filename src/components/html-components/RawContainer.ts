@@ -66,11 +66,6 @@ export default class RawContainer extends RawHTMLConponent implements ComponentC
     }
 
     private buildElementConfigs() {
-        this.insertComponentBefore(
-            AddComponentEnum.addDisplayAsParentComponent,
-            AddComponentEnum.addDisplayAsChildComponent
-        );
-
         this.addChildConfigs();
 
         this.buildElements();

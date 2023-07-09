@@ -76,11 +76,6 @@ export default class Button extends RawHTMLConponent implements ComponentChangeO
             AddComponentEnum.addClassNameDefinitionComponent
         );
 
-        this.insertComponentBefore(
-            AddComponentEnum.addDisplayAsParentComponent,
-            AddComponentEnum.addDisplayAsChildComponent
-        );
-
         this.buildElements();
     }
 }

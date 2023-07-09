@@ -12,7 +12,7 @@ export default class TableHead extends RawContainer {
     private static iterator = 0;
     protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
-    constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
+    constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher, isLoaded: boolean) {
         const {name, iterator} = defineElementName({
             prefix: 'table_head',
             iterator: TableHead.iterator,
@@ -29,7 +29,9 @@ export default class TableHead extends RawContainer {
 
         super(element, createNewHTMLComponentPublisher);
 
-        this.createNewHTMLComponentPublisher.createNewHTMLComponent(this.domElement, 'TR');
+        if(!isLoaded){
+            this.createNewHTMLComponentPublisher.createNewHTMLComponent(this.domElement, 'TR');
+        }
     }
 
     protected addChildConfigs() {
