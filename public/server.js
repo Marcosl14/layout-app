@@ -17,3 +17,5 @@ app.listen(port, () => {
   // eslint-disable-next-line no-undef
   console.log(`Servidor escuchando en el puerto ${port}`);
 });
+
+export default app;
