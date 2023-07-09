@@ -1,9 +1,8 @@
-const express = require('express');
-const process = require('process');
-
+import * as express from 'express'
+import { env } from 'process'
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = env.PORT || 3000;
 
 // Configura el middleware para servir archivos estáticos desde la carpeta 'public'
 app.use(express.static('dist'));
