@@ -8,7 +8,7 @@ import InputBuilder from '../models/InputBuilder';
 import CssStyleSheet from '../../css-stylesheet/css-stylesheet';
 import getUnit from '../functions/get-css-unit';
 import colorToHex from '../functions/rgb-to-hex';
-import TextareaBuilder from '../models/TextAreaBuilder';
+import TextareaBuilder from '../models/TextareaBuilder';
 
 import { StyleNameEnum } from '../enums/style-name.enum';
 import { InputTypeEnum } from '../enums/input-type.enum';

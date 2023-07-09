@@ -12,7 +12,7 @@ export default class TableBody extends RawContainer {
     private static iterator = 0;
     protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
-    constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher) {
+    constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher, isLoaded) {
         const {name, iterator} = defineElementName({
             prefix: 'table_body',
             iterator: TableBody.iterator,
@@ -29,7 +29,9 @@ export default class TableBody extends RawContainer {
 
         super(element, createNewHTMLComponentPublisher);
 
-        this.createNewHTMLComponentPublisher.createNewHTMLComponent(this.domElement, 'TR');
+        if(!isLoaded){
+            this.createNewHTMLComponentPublisher.createNewHTMLComponent(this.domElement, 'TR');
+        }
     }
 
     protected addChildConfigs() {

@@ -330,6 +330,7 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
         AddComponentEnum.addBorderSettingsComponent,
         AddComponentEnum.addOutlineComponents,
         AddComponentEnum.addBoxShadowComponent,
+        AddComponentEnum.addDisplayAsParentComponent,
         AddComponentEnum.addDisplayAsChildComponent,
         AddComponentEnum.addPositionComponent,
         AddComponentEnum.addActionsComponents,
@@ -368,7 +369,11 @@ export default abstract class RawHTMLConponent implements ComponentChangeObserve
         this.stylesComponents = new StylesComponentsBuilder()
 
         this.commonComponents.forEach((componentName) => {
-            this.stylesComponents.appendChild(this[componentName]())
+            const appendableComponent: HTMLElement = this[componentName]();
+
+            if(appendableComponent) {
+                this.stylesComponents.appendChild(appendableComponent);
+            }
         })
 
         this.stylesComponents.build();

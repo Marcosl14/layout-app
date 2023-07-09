@@ -12,7 +12,7 @@ export default class TableRow extends RawContainer {
     private static iterator = 0;
     protected createNewHTMLComponentPublisher?: CreateNewHTMLComponentPublisher;
 
-    constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher, parentNode: HTMLElement) {
+    constructor(createNewHTMLComponentPublisher: CreateNewHTMLComponentPublisher, parentNode?: HTMLElement) {
         const {name, iterator} = defineElementName({
             prefix: 'table_row',
             iterator: TableRow.iterator,
@@ -29,10 +29,12 @@ export default class TableRow extends RawContainer {
 
         super(element, createNewHTMLComponentPublisher);
 
-        if(parentNode.nodeName === 'THEAD'){
-            this.createNewHTMLComponentPublisher.createNewHTMLComponent(this.domElement, 'TH', 3);
-        } else {
-            this.createNewHTMLComponentPublisher.createNewHTMLComponent(this.domElement, 'TD', 3);
+        if(parentNode) {
+            if(parentNode.nodeName === 'THEAD'){
+                this.createNewHTMLComponentPublisher.createNewHTMLComponent(this.domElement, 'TH', 3);
+            } else {
+                this.createNewHTMLComponentPublisher.createNewHTMLComponent(this.domElement, 'TD', 3);
+            }
         }
     }
 

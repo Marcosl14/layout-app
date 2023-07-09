@@ -155,7 +155,11 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
         const elementType = event.dataTransfer.getData('text/plain');
 
         const newDomElement: RawHTMLConponent | undefined =
-            new ComponentFactory(elementType).create(this.createNewInstancePublisher);
+            new ComponentFactory(elementType)
+                .create({
+                    createNewHTMLComponentPublisher: this.createNewInstancePublisher,
+                    componentChangePublisher: this.componentChangePublisher
+                });
 
         const elementExists = newDomElement ? false : true;
 
@@ -163,8 +167,6 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             const draggable = document.getElementById(elementType);
             targetElement.appendChild(draggable);
             return;
-        } else {
-            this.componentChangePublisher.attach(newDomElement);
         }
 
         targetElement.appendChild(newDomElement.domElement);
@@ -233,7 +235,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
     }
 
     private sendComponentName() {
-        if(this.componentSelector.value === 'app-container'){
+        if (this.componentSelector.value === 'app-container') {
             this.appContainer.click();
         } else {
             this.componentChangePublisher.notifyComponentName(this.componentSelector.value);
@@ -243,9 +245,13 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
     public createNewHTMLComponent(parentNode, elementType, quantity = 1) {
         for (let i = 0; i < quantity; i++) {
             const newDomElement =
-                new ComponentFactory(elementType).create(this.createNewInstancePublisher, parentNode);
+                new ComponentFactory(elementType)
+                    .create({
+                        createNewHTMLComponentPublisher: this.createNewInstancePublisher,
+                        componentChangePublisher: this.componentChangePublisher,
+                        parentNode
+                    });
 
-            this.componentChangePublisher.attach(newDomElement);
             parentNode.appendChild(newDomElement.domElement);
         }
 
@@ -254,9 +260,12 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
 
     public duplicateHTMLComponent(parentElement: HTMLElement, childToDuplicate: HTMLElement): HTMLElement {
         const newRawDomElement =
-            new ComponentFactory(childToDuplicate.nodeName).create(this.createNewInstancePublisher, parentElement);
-
-        this.componentChangePublisher.attach(newRawDomElement);
+            new ComponentFactory(childToDuplicate.nodeName)
+                .create({
+                    createNewHTMLComponentPublisher: this.createNewInstancePublisher,
+                    componentChangePublisher: this.componentChangePublisher,
+                    parentNode: parentElement
+                });
 
         const newDomElement = newRawDomElement.domElement;
 
@@ -299,7 +308,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
         reader.readAsText(file);
     }
 
-    private insertHtmlElementsInAppContainer (content) {
+    private insertHtmlElementsInAppContainer(content) {
         const bodyContent = this.getBodyContent(content);
 
         const renderedElements = this.createElementsFromContent(bodyContent);
@@ -325,7 +334,12 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             const elementType = node.nodeName;
 
             try {
-                const element = new ComponentFactory(elementType).create(this.createNewInstancePublisher).domElement;
+                const element = new ComponentFactory(elementType)
+                    .create({
+                        createNewHTMLComponentPublisher: this.createNewInstancePublisher,
+                        componentChangePublisher: this.componentChangePublisher,
+                        isLoaded: true,
+                    }).domElement;
 
                 if (element) {
                     const children = this.createElementsFromContent(node);
@@ -405,11 +419,11 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
     private populateProjects() {
         const projectsArray = JSON.parse(localStorage.getItem('projects-layout-app'));
 
-        if(projectsArray && projectsArray.length > 0){
+        if (projectsArray && projectsArray.length > 0) {
             this.projects = projectsArray;
 
             this.projects.forEach((projectName) => {
-                if(projectName){
+                if (projectName) {
                     const optionElement = document.createElement('option');
                     optionElement.text = projectName.replace('-layout-app', '');
                     optionElement.value = projectName;
@@ -422,12 +436,12 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
     private createProject() {
         const createNewProjectInput: HTMLInputElement = document.querySelector('#create-new-project-input');
 
-        try{
+        try {
             const projectName = this.validateName(createNewProjectInput.value);
             const completeProjectName = `${projectName}-layout-app`;
             const { exists } = validateAndSave(completeProjectName, this.projects);
 
-            if(!exists) {
+            if (!exists) {
                 this.projects.push(completeProjectName);
                 localStorage.setItem('projects-layout-app', JSON.stringify(this.projects));
 
@@ -466,7 +480,7 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
     private loadProject() {
         const loadedProject = localStorage.getItem('loaded-project-layout-app');
 
-        if(!loadedProject){
+        if (!loadedProject) {
             if (!confirm(`The current project was not saved, do you want to continue loading ${
                 this.loadedProjectsSelector.value
             }`)) {
@@ -490,13 +504,13 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
     private saveProject() {
         const loadedProject = localStorage.getItem('loaded-project-layout-app');
 
-        if(loadedProject === this.loadedProjectsSelector.value){
+        if (loadedProject === this.loadedProjectsSelector.value) {
             validateAndSave(this.loadedProjectsSelector.value);
         }
     }
 
     private removeProject() {
-        if(this.loadedProjectsSelector.children.length === 0){
+        if (this.loadedProjectsSelector.children.length === 0) {
             return;
         }
 
@@ -510,12 +524,12 @@ export default class InitAppContainer implements CreateNewHTMLComponentObserverI
             localStorage.removeItem(this.loadedProjectsSelector.value);
 
             const loadedProject = localStorage.getItem('loaded-project-layout-app');
-            if(loadedProject === this.loadedProjectsSelector.value){
+            if (loadedProject === this.loadedProjectsSelector.value) {
                 localStorage.removeItem('loaded-project-layout-app');
             }
 
             this.loadedProjectsSelector.childNodes.forEach((option: HTMLOptionElement) => {
-                if(option.value === this.loadedProjectsSelector.value) {
+                if (option.value === this.loadedProjectsSelector.value) {
                     this.loadedProjectsSelector.removeChild(option);
                 }
             });
